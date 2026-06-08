@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LegendOfZed.Input;
+using UnityEngine;
 
 namespace TopDownShooter
 {
@@ -38,8 +39,9 @@ namespace TopDownShooter
                 return;
             }
             //rotate camera input
-            _rotateToLeft = Input.GetKey(KeyCode.E);
-            _rotateToRight = Input.GetKey(KeyCode.Q);
+            ZedInputReader input = ZedInputReader.Instance;
+            _rotateToLeft = input != null && input.RotateCameraLeftHeld;
+            _rotateToRight = input != null && input.RotateCameraRightHeld;
         }
 
         private void FixedUpdate()
