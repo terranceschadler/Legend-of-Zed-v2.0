@@ -61,19 +61,22 @@ namespace LegendOfZed.Editor
             rigidbody.useGravity = false;
 
             NavMeshAgent agent = zombieRoot.GetComponent<NavMeshAgent>();
-            if (agent == null)
+            if (agent == null && HasAnyNavMesh())
             {
                 agent = zombieRoot.AddComponent<NavMeshAgent>();
             }
 
-            agent.updatePosition = false;
-            agent.updateRotation = false;
-            agent.radius = 0.32f;
-            agent.height = 1.8f;
-            agent.speed = 2.15f;
-            agent.angularSpeed = 540f;
-            agent.stoppingDistance = 1.05f;
-            agent.autoBraking = true;
+            if (agent != null)
+            {
+                agent.updatePosition = false;
+                agent.updateRotation = false;
+                agent.radius = 0.32f;
+                agent.height = 1.8f;
+                agent.speed = 2.15f;
+                agent.angularSpeed = 540f;
+                agent.stoppingDistance = 1.05f;
+                agent.autoBraking = true;
+            }
 
             GameObject visual = EnsureZombieVisual(zombieRoot.transform);
             Animator animator = visual.GetComponentInChildren<Animator>();
@@ -95,7 +98,11 @@ namespace LegendOfZed.Editor
             zombieBrain.StoppingDistance = 1.05f;
             zombieBrain.AttackDamage = 10f;
             zombieBrain.AttackCooldown = 1.25f;
+            zombieBrain.UseRootMotionLocomotion = true;
+            zombieBrain.RootMotionSpeedScale = 1f;
+            zombieBrain.MaxRootMotionStep = 0.35f;
 
+            WireRootMotionRelay(animator, zombieBrain);
             EnsureHitPointIfAvailable(zombieRoot);
 
             EditorUtility.SetDirty(zombieRoot);
@@ -105,7 +112,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". NavMeshAgent is configured for pathing only; visible movement is driven manually. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
+            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Root motion relay is wired on the Animator object. NavMeshAgent is optional and only used when a valid NavMesh exists. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
         }
 
         private static Vector3 ResolveSpawnPosition(PlayerController player)
@@ -120,6 +127,31 @@ namespace LegendOfZed.Editor
             }
 
             return candidate;
+        }
+
+        private static bool HasAnyNavMesh()
+        {
+            NavMeshHit hit;
+            return NavMesh.SamplePosition(Vector3.zero, out hit, 500f, NavMesh.AllAreas);
+        }
+
+        private static void WireRootMotionRelay(Animator animator, ZedPrototypeZombieEnemy zombieBrain)
+        {
+            if (animator == null || zombieBrain == null)
+            {
+                return;
+            }
+
+            animator.applyRootMotion = true;
+            ZedZombieRootMotionRelay relay = animator.GetComponent<ZedZombieRootMotionRelay>();
+            if (relay == null)
+            {
+                relay = animator.gameObject.AddComponent<ZedZombieRootMotionRelay>();
+            }
+
+            relay.Owner = zombieBrain;
+            EditorUtility.SetDirty(animator);
+            EditorUtility.SetDirty(relay);
         }
 
         private static GameObject EnsureZombieVisual(Transform root)
