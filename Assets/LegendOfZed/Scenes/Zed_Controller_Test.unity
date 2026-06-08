@@ -13904,6 +13904,16 @@ MonoBehaviour:
   StoppingDistance: 1.05
   SeparationRadius: 0.85
   SeparationStrength: 1.25
+  UseRootMotionLocomotion: 1
+  RootMotionSpeedScale: 2.25
+  MaxRootMotionStep: 0.8
+  SnapToGround: 1
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  GroundProbeHeight: 3
+  GroundProbeDistance: 8
+  GroundOffset: 0
   WanderRadius: 6
   WanderPointTolerance: 0.45
   MinWanderWait: 0.75
@@ -13912,6 +13922,7 @@ MonoBehaviour:
   AttackDamage: 10
   AttackCooldown: 1.25
   SendDamageMessages: 1
+  RandomizeAttackAnimations: 1
 --- !u!195 &1486407759
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -13993,7 +14004,7 @@ Transform:
   m_GameObject: {fileID: 1486407756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5981479, y: 0.91, z: 0.3968234}
+  m_LocalPosition: {x: 3.5981479, y: 1.8002295, z: 0.3968234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15091,6 +15102,18 @@ PrefabInstance:
       value: Zed_Prototype_Zombie_Visual
       objectReference: {fileID: 0}
     - target: {fileID: 4243538704547566, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4243538704547566, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4243538704547566, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4243538704547566, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -15133,7 +15156,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1418193975600942, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1702679119}
   m_SourcePrefab: {fileID: 100100000, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
 --- !u!95 &1702679116 stripped
 Animator:
@@ -15145,6 +15171,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4243538704547566, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
   m_PrefabInstance: {fileID: 1702679115}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1702679118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1418193975600942, guid: 2165f6a67f710bc47a7cfc0882e7e964, type: 3}
+  m_PrefabInstance: {fileID: 1702679115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1702679119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702679118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 508f6f123ff66704e8758d2045bc6663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Enemies.ZedZombieRootMotionRelay
+  Owner: {fileID: 1486407758}
 --- !u!1 &1711201045
 GameObject:
   m_ObjectHideFlags: 0
