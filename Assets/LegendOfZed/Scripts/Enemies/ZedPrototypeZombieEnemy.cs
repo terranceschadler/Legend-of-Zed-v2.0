@@ -35,8 +35,8 @@ namespace LegendOfZed.Enemies
         public float SeparationRadius = 0.85f;
         public float SeparationStrength = 1.25f;
         public bool UseRootMotionLocomotion = true;
-        public float RootMotionSpeedScale = 1f;
-        public float MaxRootMotionStep = 0.35f;
+        public float RootMotionSpeedScale = 2.25f;
+        public float MaxRootMotionStep = 0.8f;
 
         [Header("Wander")]
         public float WanderRadius = 6f;
