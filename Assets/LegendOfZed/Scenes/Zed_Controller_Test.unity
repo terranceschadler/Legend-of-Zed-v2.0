@@ -10863,7 +10863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20668ae37dcb6494cbf8db1890be72b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Enemies.ZedZombieSpawner
-  ZombiePrototype: {fileID: 1486407756}
+  ZombiePrototype: {fileID: 4215061818071346889, guid: 8769f68f79fe7e247b868da6a6fb520f, type: 3}
   PlayerTarget: {fileID: 6485433374359324191}
   SpawnPoints:
   - {fileID: 800658175}
@@ -10873,7 +10873,7 @@ MonoBehaviour:
   - {fileID: 647165539}
   SpawnOnStart: 1
   MaxAliveZombies: 5
-  HidePrototypeOnStart: 1
+  HidePrototypeOnStart: 0
   ZombieHealth: 60
   DeathDisableDelay: 999
   RagdollOnDeath: 1

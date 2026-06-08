@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LegendOfZed.Runtime;
 using TopDownShooter;
 using UnityEngine;
 
@@ -26,19 +27,12 @@ namespace LegendOfZed.Enemies
 
         private void Start()
         {
-            if (HidePrototypeOnStart && ZombiePrototype != null)
+            if (HidePrototypeOnStart && ZombiePrototype != null && IsSceneObject(ZombiePrototype))
             {
                 ZombiePrototype.SetActive(false);
             }
 
-            if (PlayerTarget == null)
-            {
-                PlayerController player = FindFirstObjectByType<PlayerController>();
-                if (player != null)
-                {
-                    PlayerTarget = player.transform;
-                }
-            }
+            ResolvePlayerTarget();
 
             if (SpawnOnStart)
             {
@@ -77,7 +71,7 @@ namespace LegendOfZed.Enemies
             {
                 if (_aliveZombies[i] != null)
                 {
-                    DestroyImmediate(_aliveZombies[i].gameObject);
+                    DestroySafely(_aliveZombies[i].gameObject);
                 }
             }
 
@@ -98,9 +92,21 @@ namespace LegendOfZed.Enemies
                 return null;
             }
 
+            ResolvePlayerTarget();
+
             GameObject zombieObject = Instantiate(ZombiePrototype, spawnPoint.position, spawnPoint.rotation);
             zombieObject.name = "Zed_Spawned_Zombie";
             zombieObject.SetActive(true);
+
+            ZedPrototypeZombieEnemy zombie = RebindSpawnedZombie(zombieObject);
+            _aliveZombies.Add(zombie);
+            return zombie;
+        }
+
+        private ZedPrototypeZombieEnemy RebindSpawnedZombie(GameObject zombieObject)
+        {
+            RemoveDemoHitPoints(zombieObject);
+            RemoveNavMeshAgentIfPresent(zombieObject);
 
             ZedPrototypeZombieEnemy zombie = zombieObject.GetComponent<ZedPrototypeZombieEnemy>();
             if (zombie == null)
@@ -108,18 +114,69 @@ namespace LegendOfZed.Enemies
                 zombie = zombieObject.AddComponent<ZedPrototypeZombieEnemy>();
             }
 
+            Animator animator = zombieObject.GetComponentInChildren<Animator>(true);
+            zombie.Animator = animator;
             zombie.Target = PlayerTarget;
+            zombie.NavMeshAgent = null;
+
             zombie.MaxHealth = ZombieHealth;
             zombie.CurrentHealth = ZombieHealth;
             zombie.DestroyOnDeath = false;
             zombie.DeathDisableDelay = DeathDisableDelay;
             zombie.RagdollOnDeath = RagdollOnDeath;
 
-            RemoveDemoHitPoints(zombieObject);
-            RemoveNavMeshAgentIfPresent(zombieObject);
+            zombie.StaggerOnBulletHit = true;
+            zombie.HitStaggerSeconds = Mathf.Max(zombie.HitStaggerSeconds, 0.45f);
+            zombie.RequireTargetInRangeAtHitMoment = true;
 
-            _aliveZombies.Add(zombie);
+            if (animator != null)
+            {
+                animator.applyRootMotion = zombie.UseRootMotionLocomotion;
+
+                ZedZombieRootMotionRelay relay = animator.GetComponent<ZedZombieRootMotionRelay>();
+                if (relay == null)
+                {
+                    relay = animator.gameObject.AddComponent<ZedZombieRootMotionRelay>();
+                }
+
+                relay.Owner = zombie;
+            }
+
+            ZedZombieHitReactionMotor hitReaction = zombieObject.GetComponent<ZedZombieHitReactionMotor>();
+            if (hitReaction == null)
+            {
+                hitReaction = zombieObject.AddComponent<ZedZombieHitReactionMotor>();
+            }
+
+            ZedAudioFeedback audioFeedback = zombieObject.GetComponent<ZedAudioFeedback>();
+            if (audioFeedback == null)
+            {
+                audioFeedback = zombieObject.AddComponent<ZedAudioFeedback>();
+            }
+
+            ZedZombieAudioBridge audioBridge = zombieObject.GetComponent<ZedZombieAudioBridge>();
+            if (audioBridge == null)
+            {
+                audioBridge = zombieObject.AddComponent<ZedZombieAudioBridge>();
+            }
+
+            audioBridge.AudioFeedback = audioFeedback;
+
             return zombie;
+        }
+
+        private void ResolvePlayerTarget()
+        {
+            if (PlayerTarget != null)
+            {
+                return;
+            }
+
+            PlayerController player = FindFirstObjectByType<PlayerController>();
+            if (player != null)
+            {
+                PlayerTarget = player.transform;
+            }
         }
 
         private void CleanupDeadReferences()
@@ -138,7 +195,7 @@ namespace LegendOfZed.Enemies
             HitPoint[] hitPoints = root.GetComponentsInChildren<HitPoint>(true);
             for (int i = 0; i < hitPoints.Length; i++)
             {
-                DestroyImmediate(hitPoints[i]);
+                DestroyComponentSafely(hitPoints[i]);
             }
         }
 
@@ -147,7 +204,46 @@ namespace LegendOfZed.Enemies
             UnityEngine.AI.NavMeshAgent agent = root.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (agent != null)
             {
-                DestroyImmediate(agent);
+                DestroyComponentSafely(agent);
+            }
+        }
+
+        private static bool IsSceneObject(GameObject target)
+        {
+            return target != null && target.scene.IsValid();
+        }
+
+        private static void DestroyComponentSafely(Component component)
+        {
+            if (component == null)
+            {
+                return;
+            }
+
+            if (Application.isPlaying)
+            {
+                Destroy(component);
+            }
+            else
+            {
+                DestroyImmediate(component);
+            }
+        }
+
+        private static void DestroySafely(GameObject target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            if (Application.isPlaying)
+            {
+                Destroy(target);
+            }
+            else
+            {
+                DestroyImmediate(target);
             }
         }
     }
