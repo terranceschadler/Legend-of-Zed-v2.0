@@ -15912,6 +15912,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592530073}
   m_CullTransparentMesh: 0
+--- !u!4 &1607568195 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4900190430110074, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+  m_PrefabInstance: {fileID: 7541030523133186556}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1646789813
 GameObject:
   m_ObjectHideFlags: 0
@@ -21386,6 +21391,10 @@ PrefabInstance:
       propertyPath: PlayerAnimator
       value: 
       objectReference: {fileID: 509166250}
+    - target: {fileID: 114234455027906282, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      propertyPath: LowZonePosition
+      value: 
+      objectReference: {fileID: 1607568195}
     - target: {fileID: 114374071582259332, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
       propertyPath: WeaponPosition
       value: 
