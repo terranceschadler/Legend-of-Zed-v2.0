@@ -11,12 +11,12 @@ namespace LegendOfZed.Editor
     public static class ZedV09ShellEjectSetupTool
     {
         private const string ScenePath = "Assets/LegendOfZed/Scenes/Zed_Controller_Test.unity";
-        private const string ShellPrefabName = "Bullet_Shell_FX";
-        private const string SyntyFxFolder = "Assets/Synty/PolygonBattleRoyale/Prefabs/FX";
+        private const string ShellAssetName = "SM_Wep_Bullet_Ammo_01";
+        private const string SyntyRootFolder = "Assets/Synty";
         private const string EjectionPointName = "Zed_V09_Shell_Ejection_Point";
 
-        [MenuItem("Legend of Zed/Setup/v0.9 Setup Shell Eject Feedback")]
-        public static void SetupShellEjectFeedback()
+        [MenuItem("Legend of Zed/Setup/v0.9 Setup Single Shell Mesh Eject Feedback")]
+        public static void SetupSingleShellMeshEjectFeedback()
         {
             if (!File.Exists(ScenePath))
             {
@@ -24,10 +24,10 @@ namespace LegendOfZed.Editor
                 return;
             }
 
-            GameObject shellPrefab = FindShellPrefab();
-            if (shellPrefab == null)
+            GameObject shellMesh = FindShellMeshAsset();
+            if (shellMesh == null)
             {
-                Debug.LogWarning("v0.9 shell eject setup could not find " + ShellPrefabName + " under " + SyntyFxFolder + ".");
+                Debug.LogWarning("v0.9 shell eject setup could not find " + ShellAssetName + " under " + SyntyRootFolder + ". Search Project for the asset and confirm its exact name.");
                 return;
             }
 
@@ -39,20 +39,21 @@ namespace LegendOfZed.Editor
                 return;
             }
 
-            ZedShellEjectOnShot shellEject = shooterController.GetComponent<ZedShellEjectOnShot>();
+            ZedSingleShellMeshEjectOnShot shellEject = shooterController.GetComponent<ZedSingleShellMeshEjectOnShot>();
             if (shellEject == null)
             {
-                shellEject = shooterController.gameObject.AddComponent<ZedShellEjectOnShot>();
+                shellEject = shooterController.gameObject.AddComponent<ZedSingleShellMeshEjectOnShot>();
             }
 
             Transform ejectionPoint = FindOrCreateEjectionPoint(shooterController);
 
             shellEject.ShooterController = shooterController;
-            shellEject.ShellFxPrefab = shellPrefab;
+            shellEject.ShellMeshPrefab = shellMesh;
             shellEject.EjectionPoint = ejectionPoint;
             shellEject.PositionOffset = Vector3.zero;
             shellEject.RotationOffsetEuler = Vector3.zero;
-            shellEject.SpawnVelocity = new Vector3(0.35f, 0.25f, -0.18f);
+            shellEject.TossVelocity = new Vector3(0.3f, 0.22f, -0.16f);
+            shellEject.RandomAngularVelocity = new Vector3(180f, 360f, 180f);
             shellEject.ShellScale = 1f;
             shellEject.ShellLifetime = 4f;
 
@@ -64,24 +65,36 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v0.9 shell eject feedback setup complete. Shells spawn from " + EjectionPointName + " when magazine count drops. No ShooterController code, WeaponData, BulletId, ammo, projectiles, or weapon prefabs were changed.");
+            Debug.Log("v0.9 single shell mesh eject setup complete using " + ShellAssetName + ". One shell mesh spawns when magazine count drops. No ShooterController code, WeaponData, BulletId, ammo, projectiles, or weapon prefabs were changed.");
         }
 
-        private static GameObject FindShellPrefab()
+        private static GameObject FindShellMeshAsset()
         {
-            string[] guids = AssetDatabase.FindAssets(ShellPrefabName + " t:Prefab", new[] { SyntyFxFolder });
+            string[] guids = AssetDatabase.FindAssets(ShellAssetName + " t:Prefab", new[] { SyntyRootFolder });
+            GameObject shell = FindExactAssetFromGuids(guids);
+            if (shell != null)
+            {
+                return shell;
+            }
+
+            guids = AssetDatabase.FindAssets(ShellAssetName + " t:Model", new[] { SyntyRootFolder });
+            return FindExactAssetFromGuids(guids);
+        }
+
+        private static GameObject FindExactAssetFromGuids(string[] guids)
+        {
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                if (Path.GetFileNameWithoutExtension(path) != ShellPrefabName)
+                if (Path.GetFileNameWithoutExtension(path) != ShellAssetName)
                 {
                     continue;
                 }
 
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                if (prefab != null)
+                GameObject asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (asset != null)
                 {
-                    return prefab;
+                    return asset;
                 }
             }
 
