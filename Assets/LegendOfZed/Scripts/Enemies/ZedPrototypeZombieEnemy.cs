@@ -9,8 +9,13 @@ namespace LegendOfZed.Enemies
     {
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
         private static readonly int MovingHash = Animator.StringToHash("IsMoving");
-        private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int AttackingHash = Animator.StringToHash("IsAttacking");
+        private static readonly int AttackIndexHash = Animator.StringToHash("AttackIndex");
+        private static readonly int AttackBiteHash = Animator.StringToHash("AttackBite");
+        private static readonly int AttackLeftHash = Animator.StringToHash("AttackLeft");
+        private static readonly int AttackRightHash = Animator.StringToHash("AttackRight");
+        private static readonly int AttackRight2Hash = Animator.StringToHash("AttackRight2");
+        private static readonly int AttackTwoHandHash = Animator.StringToHash("AttackTwoHand");
 
         [Header("References")]
         public Transform Target;
@@ -41,6 +46,7 @@ namespace LegendOfZed.Enemies
         public float AttackDamage = 10f;
         public float AttackCooldown = 1.25f;
         public bool SendDamageMessages = true;
+        public bool RandomizeAttackAnimations = true;
 
         private Vector3 _spawnPosition;
         private Vector3 _wanderDestination;
@@ -346,8 +352,28 @@ namespace LegendOfZed.Enemies
                 return;
             }
 
+            int attackIndex = RandomizeAttackAnimations ? Random.Range(0, 5) : 0;
+            Animator.SetInteger(AttackIndexHash, attackIndex);
             Animator.SetBool(AttackingHash, true);
-            Animator.SetTrigger(AttackHash);
+
+            switch (attackIndex)
+            {
+                case 0:
+                    Animator.SetTrigger(AttackBiteHash);
+                    break;
+                case 1:
+                    Animator.SetTrigger(AttackLeftHash);
+                    break;
+                case 2:
+                    Animator.SetTrigger(AttackRightHash);
+                    break;
+                case 3:
+                    Animator.SetTrigger(AttackRight2Hash);
+                    break;
+                default:
+                    Animator.SetTrigger(AttackTwoHandHash);
+                    break;
+            }
         }
     }
 }
