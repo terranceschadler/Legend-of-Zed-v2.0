@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ecc556824ece0b14b9ef463e094d9a9f
+timeCreated: 1495239952
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Materials/Plane_Yellow.mat
+  uploadId: 528230

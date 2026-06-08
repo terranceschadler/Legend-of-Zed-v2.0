@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 87fc3aba0aeb0de45ae2ec8f3e3fc04e
+timeCreated: 1564978110
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Items/PowerUps/HandleSlowFallItem.prefab
+  uploadId: 528230

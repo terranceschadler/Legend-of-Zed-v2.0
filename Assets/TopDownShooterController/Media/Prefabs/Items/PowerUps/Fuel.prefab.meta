@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 300bfe3859e65454484514f5dba97015
+timeCreated: 1564978618
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Items/PowerUps/Fuel.prefab
+  uploadId: 528230

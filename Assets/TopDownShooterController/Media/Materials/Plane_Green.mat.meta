@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f36fd893f100d404c93924cc6377cc5e
+timeCreated: 1495239952
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Materials/Plane_Green.mat
+  uploadId: 528230

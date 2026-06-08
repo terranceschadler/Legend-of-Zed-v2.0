@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 09e6e30ef8e380749b971845f28de477
+timeCreated: 1564977745
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Items/PowerUps/DisableAllSkills.prefab
+  uploadId: 528230

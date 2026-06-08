@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e1631d03bcb6c5c41ac1ae03fb21356d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Animations/Player/Grenade/GrenadeLaunch.anim
+  uploadId: 528230

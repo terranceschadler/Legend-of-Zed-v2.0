@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 81b32c4ebd1b6a84a925b536d0d3f9d5
+timeCreated: 1564976801
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Effects/JetPackEffect.prefab
+  uploadId: 528230

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a17c9b6fba6ec564cb476cabf8ca4249
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Demo/DemoScripts/HelpUI.cs
+  uploadId: 528230

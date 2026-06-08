@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c664636922c1dce4982ab5e4a767f1c0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Demo/DemoScripts/DummyShooter.cs
+  uploadId: 528230

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ae3ab98661bfb174781f2cc395a19fc8
+timeCreated: 1564978561
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/WeaponsPrefabs/Pistol.prefab
+  uploadId: 528230

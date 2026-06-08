@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 242f857283f968a40afef0aa6bbefd28
+timeCreated: 1564978071
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Items/PowerUps/HandleJumpItem.prefab
+  uploadId: 528230

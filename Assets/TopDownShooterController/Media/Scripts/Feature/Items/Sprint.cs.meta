@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ed8a04d4f3bc9464b8b547e9dbe45f56
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Scripts/Feature/Items/Sprint.cs
+  uploadId: 528230

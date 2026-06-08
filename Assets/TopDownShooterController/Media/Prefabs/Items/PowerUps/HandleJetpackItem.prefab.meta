@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 34b06d306b4eb904ca8abe92fa99c52f
+timeCreated: 1564978023
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Media/Prefabs/Items/PowerUps/HandleJetpackItem.prefab
+  uploadId: 528230

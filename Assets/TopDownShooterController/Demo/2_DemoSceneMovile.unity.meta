@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c42232b5c9c9563428f5e568845968bb
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135407
+  packageName: Top Down Shooter Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/TopDownShooterController/Demo/2_DemoSceneMovile.unity
+  uploadId: 528230
