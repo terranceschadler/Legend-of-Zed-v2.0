@@ -15,6 +15,7 @@ namespace LegendOfZed.Editor
         private const string ZombieRootName = "Zed_Prototype_Zombie_Enemy";
         private const string ZombieVisualName = "Zed_Prototype_Zombie_Visual";
         private const string SyntyRoot = "Assets/Synty";
+        private const float ZombieVisualScale = 1.12f;
 
         [MenuItem("Legend of Zed/Setup/v1.0 Add Prototype Zombie Enemy")]
         public static void AddPrototypeZombieEnemy()
@@ -79,6 +80,7 @@ namespace LegendOfZed.Editor
             }
 
             GameObject visual = EnsureZombieVisual(zombieRoot.transform);
+            visual.transform.localScale = Vector3.one * ZombieVisualScale;
             Animator animator = visual.GetComponentInChildren<Animator>();
 
             ZedPrototypeZombieEnemy zombieBrain = zombieRoot.GetComponent<ZedPrototypeZombieEnemy>();
@@ -109,6 +111,7 @@ namespace LegendOfZed.Editor
             WireRootMotionRelay(animator, zombieBrain);
             EnsureHitPointIfAvailable(zombieRoot);
 
+            EditorUtility.SetDirty(visual);
             EditorUtility.SetDirty(zombieRoot);
             EditorUtility.SetDirty(zombieBrain);
             EditorSceneManager.MarkSceneDirty(scene);
@@ -116,7 +119,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Zombie root is snapped to ground and kept grounded during root motion. Rigidbody remains kinematic so physics does not fight animation. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
+            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Zombie visual scale set to " + ZombieVisualScale + " while root/collider/pathing scale stays unchanged. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
         }
 
         private static Vector3 ResolveSpawnPosition(PlayerController player)
@@ -199,7 +202,7 @@ namespace LegendOfZed.Editor
             visual.transform.SetParent(root, false);
             visual.transform.localPosition = Vector3.zero;
             visual.transform.localRotation = Quaternion.identity;
-            visual.transform.localScale = Vector3.one;
+            visual.transform.localScale = Vector3.one * ZombieVisualScale;
             return visual;
         }
 
