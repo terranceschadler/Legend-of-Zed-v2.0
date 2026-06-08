@@ -51,11 +51,12 @@ namespace LegendOfZed.Editor
             shellEject.ShellMeshPrefab = shellMesh;
             shellEject.EjectionPoint = ejectionPoint;
             shellEject.PositionOffset = Vector3.zero;
-            shellEject.RotationOffsetEuler = Vector3.zero;
-            shellEject.TossVelocity = new Vector3(0.3f, 0.22f, -0.16f);
-            shellEject.RandomAngularVelocity = new Vector3(180f, 360f, 180f);
-            shellEject.ShellScale = 1f;
-            shellEject.ShellLifetime = 4f;
+            shellEject.RotationOffsetEuler = new Vector3(0f, 90f, 0f);
+            shellEject.TossVelocity = new Vector3(0.02f, 0.28f, -0.55f);
+            shellEject.RandomAngularVelocity = new Vector3(240f, 540f, 240f);
+            shellEject.ShellScale = 1.6f;
+            shellEject.ShellLifetime = 6f;
+            shellEject.ShellMass = 0.025f;
 
             EditorUtility.SetDirty(ejectionPoint.gameObject);
             EditorUtility.SetDirty(shellEject);
@@ -65,7 +66,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v0.9 single shell mesh eject setup complete using " + ShellAssetName + ". One shell mesh spawns when magazine count drops. No ShooterController code, WeaponData, BulletId, ammo, projectiles, or weapon prefabs were changed.");
+            Debug.Log("v0.9 single shell mesh eject setup complete using " + ShellAssetName + ". One scaled shell mesh spawns from the weapon ejection point, uses gravity/physics, and auto-cleans up. No ShooterController code, WeaponData, BulletId, ammo, projectiles, or weapon prefabs were changed.");
         }
 
         private static GameObject FindShellMeshAsset()
@@ -105,18 +106,17 @@ namespace LegendOfZed.Editor
         {
             Transform parent = shooterController.WeaponPosition != null ? shooterController.WeaponPosition : shooterController.transform;
             Transform existing = parent.Find(EjectionPointName);
-            if (existing != null)
+            if (existing == null)
             {
-                return existing;
+                GameObject ejectionPointObject = new GameObject(EjectionPointName);
+                existing = ejectionPointObject.transform;
+                existing.SetParent(parent, false);
             }
 
-            GameObject ejectionPointObject = new GameObject(EjectionPointName);
-            Transform ejectionPoint = ejectionPointObject.transform;
-            ejectionPoint.SetParent(parent, false);
-            ejectionPoint.localPosition = new Vector3(-0.015f, 0.006f, -0.006f);
-            ejectionPoint.localEulerAngles = Vector3.zero;
-            ejectionPoint.localScale = Vector3.one;
-            return ejectionPoint;
+            existing.localPosition = new Vector3(0.001f, 0.006f, -0.010f);
+            existing.localEulerAngles = new Vector3(0f, 90f, 0f);
+            existing.localScale = Vector3.one;
+            return existing;
         }
     }
 }
