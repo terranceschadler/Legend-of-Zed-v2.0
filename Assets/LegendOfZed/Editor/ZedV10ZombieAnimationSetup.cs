@@ -19,18 +19,18 @@ namespace LegendOfZed.Editor
         {
             EnsureGeneratedFolder();
 
-            AnimationClip idle = FindClipByFbxName("bored");
-            AnimationClip walk = FindClipByFbxName("walk");
-            AnimationClip run = FindClipByFbxName("run");
-            AnimationClip attackBite = FindClipByFbxName("atk bite");
-            AnimationClip attackLeft = FindClipByFbxName("atk left");
-            AnimationClip attackRight = FindClipByFbxName("atk right");
-            AnimationClip attackRight2 = FindClipByFbxName("atk right2");
-            AnimationClip attackTwoHand = FindClipByFbxName("atk two hand");
+            AnimationClip idle = FindClipByExactFbxName("bored");
+            AnimationClip walk = FindClipByExactFbxName("walk");
+            AnimationClip run = FindClipByExactFbxName("run");
+            AnimationClip attackBite = FindClipByExactFbxName("atk bite");
+            AnimationClip attackLeft = FindClipByExactFbxName("atk left");
+            AnimationClip attackRight = FindClipByExactFbxName("atk right");
+            AnimationClip attackRight2 = FindClipByExactFbxName("atk right2");
+            AnimationClip attackTwoHand = FindClipByExactFbxName("atk two hand");
 
             if (idle == null || walk == null || run == null)
             {
-                Debug.LogWarning("v1.0 zombie animation setup needs bored, walk, and run FBX clips under " + AnimationRoot + ". Missing: " +
+                Debug.LogWarning("v1.0 zombie animation setup needs exact FBX filenames bored, walk, and run under " + AnimationRoot + ". Missing:" +
                                  MissingLabel("bored", idle) + MissingLabel("walk", walk) + MissingLabel("run", run));
                 return;
             }
@@ -42,7 +42,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 zombie animator built from FBX filenames in " + AnimationRoot + ". Idle=bored, Walk=walk, Run=run, attacks=atk bite/left/right/right2/two hand. Player, weapons, bullets, WeaponData, ammo, projectile IDs, and v0.9 feedback were not changed.");
+            Debug.Log("v1.0 zombie animator built from exact FBX filenames in " + AnimationRoot + ". Idle=bored, Walk=walk, Run=run, attacks=atk bite/left/right/right2/two hand. It will not use 'run on four' for Run. Player, weapons, bullets, WeaponData, ammo, projectile IDs, and v0.9 feedback were not changed.");
         }
 
         private static string MissingLabel(string label, Object asset)
@@ -68,7 +68,7 @@ namespace LegendOfZed.Editor
             }
         }
 
-        private static AnimationClip FindClipByFbxName(string wantedName)
+        private static AnimationClip FindClipByExactFbxName(string wantedName)
         {
             if (!AssetDatabase.IsValidFolder(AnimationRoot))
             {
@@ -82,7 +82,7 @@ namespace LegendOfZed.Editor
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 string fileName = Normalize(Path.GetFileNameWithoutExtension(path));
-                if (!fileName.Contains(wanted))
+                if (fileName != wanted)
                 {
                     continue;
                 }
@@ -100,7 +100,7 @@ namespace LegendOfZed.Editor
                 }
             }
 
-            Debug.LogWarning("v1.0 zombie animation setup could not find an FBX/model filename containing: " + wantedName);
+            Debug.LogWarning("v1.0 zombie animation setup could not find exact FBX/model filename: " + wantedName);
             return null;
         }
 
