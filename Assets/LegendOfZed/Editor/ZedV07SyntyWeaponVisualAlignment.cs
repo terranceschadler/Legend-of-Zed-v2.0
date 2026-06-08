@@ -14,7 +14,6 @@ namespace LegendOfZed.Editor
 
         private static readonly Vector3 AnchorLocalPosition = new Vector3(0.055f, 0.015f, 0.02f);
         private static readonly Vector3 AnchorLocalEulerAngles = new Vector3(82f, 0f, 92f);
-        private static readonly Vector3 AnchorLocalScale = Vector3.one;
 
         [MenuItem("Legend of Zed/Setup/v0.7 Align Weapon Visual To Synty Hand")]
         public static void AlignWeaponVisualToSyntyHand()
@@ -54,7 +53,7 @@ namespace LegendOfZed.Editor
 
             anchor.localPosition = AnchorLocalPosition;
             anchor.localEulerAngles = AnchorLocalEulerAngles;
-            anchor.localScale = AnchorLocalScale;
+            anchor.localScale = CalculateInverseWorldScale(rightHand.lossyScale);
 
             shooterController.WeaponPosition = anchor;
 
@@ -65,7 +64,25 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v0.7 weapon visual alignment applied. ShooterController.WeaponPosition now uses a Synty right-hand scene anchor. No WeaponData, BulletId, ammo, projectile prefab, weapon database entry, ShooterController code, or controller/root transform was changed.");
+            Debug.Log("v0.7 weapon visual alignment applied with hand-scale compensation. RightHand lossyScale=" + rightHand.lossyScale + ", Anchor localScale=" + anchor.localScale + ". No WeaponData, BulletId, ammo, projectile prefab, weapon database entry, ShooterController code, or controller/root transform was changed.");
+        }
+
+        private static Vector3 CalculateInverseWorldScale(Vector3 parentLossyScale)
+        {
+            return new Vector3(
+                SafeInverse(parentLossyScale.x),
+                SafeInverse(parentLossyScale.y),
+                SafeInverse(parentLossyScale.z));
+        }
+
+        private static float SafeInverse(float value)
+        {
+            if (Mathf.Abs(value) < 0.0001f)
+            {
+                return 1f;
+            }
+
+            return 1f / value;
         }
     }
 }
