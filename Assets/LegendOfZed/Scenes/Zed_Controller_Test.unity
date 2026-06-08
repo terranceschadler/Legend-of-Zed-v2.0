@@ -15185,6 +15185,9 @@ MonoBehaviour:
   DestroyOnDeath: 0
   DeathDisableDelay: 999
   RagdollOnDeath: 1
+  StaggerOnBulletHit: 1
+  HitStaggerSeconds: 0.16
+  FaceAttackerOnHit: 0
   DetectionRange: 11
   LoseTargetRange: 15
   AttackRange: 1.35
@@ -15210,7 +15213,10 @@ MonoBehaviour:
   MaxWanderWait: 2
   WanderDestinationRefreshSeconds: 6
   AttackDamage: 10
-  AttackCooldown: 1.25
+  AttackCooldown: 1.45
+  AttackWindupSeconds: 0.35
+  AttackRangeGrace: 0.35
+  RequireTargetInRangeAtHitMoment: 1
   SendDamageMessages: 1
   RandomizeAttackAnimations: 1
 --- !u!54 &1486407760

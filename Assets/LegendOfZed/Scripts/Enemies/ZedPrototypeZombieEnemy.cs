@@ -26,8 +26,13 @@ namespace LegendOfZed.Enemies
         public float MaxHealth = 60f;
         public float CurrentHealth = 60f;
         public bool DestroyOnDeath = false;
-        public float DeathDisableDelay = 4f;
+        public float DeathDisableDelay = 999f;
         public bool RagdollOnDeath = true;
+
+        [Header("Hit Reaction")]
+        public bool StaggerOnBulletHit = true;
+        public float HitStaggerSeconds = 0.16f;
+        public bool FaceAttackerOnHit = false;
 
         [Header("Detection")]
         public float DetectionRange = 11f;
@@ -61,7 +66,10 @@ namespace LegendOfZed.Enemies
 
         [Header("Attack")]
         public float AttackDamage = 10f;
-        public float AttackCooldown = 1.25f;
+        public float AttackCooldown = 1.45f;
+        public float AttackWindupSeconds = 0.35f;
+        public float AttackRangeGrace = 0.35f;
+        public bool RequireTargetInRangeAtHitMoment = true;
         public bool SendDamageMessages = true;
         public bool RandomizeAttackAnimations = true;
 
@@ -71,11 +79,13 @@ namespace LegendOfZed.Enemies
         private float _nextWanderPickTime;
         private float _wanderDestinationExpireTime;
         private float _nextAttackTime;
+        private float _staggerUntilTime;
         private float _lastGroundedY;
         private bool _hasLastGroundedY;
         private bool _hasWanderDestination;
         private bool _isChasing;
         private bool _dead;
+        private bool _attackDamagePending;
 
         public bool IsDead => _dead;
 
@@ -109,6 +119,7 @@ namespace LegendOfZed.Enemies
         private void OnEnable()
         {
             _dead = CurrentHealth <= 0f;
+            _attackDamagePending = false;
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
 
@@ -125,6 +136,12 @@ namespace LegendOfZed.Enemies
         {
             if (_dead) return;
             if (Target == null) Target = FindPlayerTarget();
+
+            if (IsStaggered())
+            {
+                StopLocomotionAnimation();
+                return;
+            }
 
             float distanceToTarget = Target != null ? Vector3.Distance(transform.position, Target.position) : float.PositiveInfinity;
             UpdateTargetState(distanceToTarget);
@@ -143,7 +160,14 @@ namespace LegendOfZed.Enemies
             if (_dead || damage <= 0f) return;
 
             CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
-            if (CurrentHealth <= 0f) Die();
+
+            if (CurrentHealth <= 0f)
+            {
+                Die();
+                return;
+            }
+
+            TriggerHitReaction();
         }
 
         public void TakeDamage(float damage) { ApplyDamage(damage); }
@@ -151,7 +175,7 @@ namespace LegendOfZed.Enemies
 
         public void ApplyRootMotionDelta(Animator sourceAnimator)
         {
-            if (_dead || !UseRootMotionLocomotion || sourceAnimator == null) return;
+            if (_dead || IsStaggered() || !UseRootMotionLocomotion || sourceAnimator == null) return;
 
             if (_desiredMoveDirection.sqrMagnitude <= 0.0001f)
             {
@@ -177,6 +201,28 @@ namespace LegendOfZed.Enemies
             SyncAgentToTransform();
         }
 
+        private void TriggerHitReaction()
+        {
+            if (!StaggerOnBulletHit)
+            {
+                return;
+            }
+
+            _staggerUntilTime = Mathf.Max(_staggerUntilTime, Time.time + HitStaggerSeconds);
+            _desiredMoveDirection = Vector3.zero;
+            SetMovingAnimation(0f);
+
+            if (FaceAttackerOnHit && Target != null)
+            {
+                FaceTowards(Target.position);
+            }
+        }
+
+        private bool IsStaggered()
+        {
+            return StaggerOnBulletHit && Time.time < _staggerUntilTime;
+        }
+
         private void Die()
         {
             if (_dead) return;
@@ -184,6 +230,7 @@ namespace LegendOfZed.Enemies
             _dead = true;
             _isChasing = false;
             _hasWanderDestination = false;
+            _attackDamagePending = false;
             _desiredMoveDirection = Vector3.zero;
 
             if (NavMeshAgent != null) NavMeshAgent.enabled = false;
@@ -358,7 +405,7 @@ namespace LegendOfZed.Enemies
 
         private void DriveLocomotion(Vector3 desiredDirection, float speed)
         {
-            if (_dead) return;
+            if (_dead || IsStaggered()) return;
 
             desiredDirection.y = 0f;
             if (desiredDirection.sqrMagnitude <= 0.0001f)
@@ -460,17 +507,40 @@ namespace LegendOfZed.Enemies
 
         private void TryAttack()
         {
-            if (_dead || Time.time < _nextAttackTime) return;
+            if (_dead || _attackDamagePending || Time.time < _nextAttackTime) return;
 
             _nextAttackTime = Time.time + AttackCooldown;
             TriggerAttackAnimation();
 
             if (SendDamageMessages && Target != null)
             {
-                Target.SendMessage("ApplyDamage", AttackDamage, SendMessageOptions.DontRequireReceiver);
-                Target.SendMessage("TakeDamage", AttackDamage, SendMessageOptions.DontRequireReceiver);
-                Target.SendMessage("Damage", AttackDamage, SendMessageOptions.DontRequireReceiver);
+                StartCoroutine(ApplyAttackDamageAfterWindup());
             }
+        }
+
+        private IEnumerator ApplyAttackDamageAfterWindup()
+        {
+            _attackDamagePending = true;
+            yield return new WaitForSeconds(AttackWindupSeconds);
+            _attackDamagePending = false;
+
+            if (_dead || Target == null)
+            {
+                yield break;
+            }
+
+            if (RequireTargetInRangeAtHitMoment)
+            {
+                float distance = Vector3.Distance(transform.position, Target.position);
+                if (distance > AttackRange + AttackRangeGrace)
+                {
+                    yield break;
+                }
+            }
+
+            Target.SendMessage("ApplyDamage", AttackDamage, SendMessageOptions.DontRequireReceiver);
+            Target.SendMessage("TakeDamage", AttackDamage, SendMessageOptions.DontRequireReceiver);
+            Target.SendMessage("Damage", AttackDamage, SendMessageOptions.DontRequireReceiver);
         }
 
         private void SetMovingAnimation(float speed)

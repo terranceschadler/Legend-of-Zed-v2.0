@@ -53,6 +53,12 @@ namespace TopDownShooter
                 if (zedEnemy != null)
                 {
                     zedEnemy.ApplyDamage(DamagePower);
+
+                    ZedZombieHitReactionMotor hitReaction = zedEnemy.GetComponent<ZedZombieHitReactionMotor>();
+                    if (hitReaction != null)
+                    {
+                        hitReaction.PlayBulletHitReaction();
+                    }
                 }
                 else
                 {
@@ -132,6 +138,13 @@ namespace TopDownShooter
             if (zedEnemy != null)
             {
                 zedEnemy.ApplyDamage(DamagePower);
+
+                ZedZombieHitReactionMotor hitReaction = zedEnemy.GetComponent<ZedZombieHitReactionMotor>();
+                if (hitReaction != null)
+                {
+                    hitReaction.PlayBulletHitReaction();
+                }
+
                 return;
             }
 
