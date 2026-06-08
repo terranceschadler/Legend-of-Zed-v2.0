@@ -1578,7 +1578,8 @@ Transform:
   m_LocalPosition: {x: 0.067, y: 0.003, z: 0.015}
   m_LocalScale: {x: 60.57, y: 60.57, z: 60.57}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 663129275}
   m_Father: {fileID: 509166252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &158539473
@@ -6667,6 +6668,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646703887}
   m_CullTransparentMesh: 0
+--- !u!1 &663129274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 663129275}
+  m_Layer: 0
+  m_Name: Zed_V09_Shell_Ejection_Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &663129275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663129274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.00173, y: 0.00276, z: 0.00396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 152685442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &682023554
 GameObject:
   m_ObjectHideFlags: 0
@@ -19154,7 +19186,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114374071582259332, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
   m_PrefabInstance: {fileID: 7541030523133186556}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: daf90829c7f9fa6409958a70ad990863, type: 3}
@@ -19204,7 +19236,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114234455027906282, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
   m_PrefabInstance: {fileID: 7541030523133186556}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bf897e62590c8448bba761e6cca19ea, type: 3}
@@ -19336,8 +19368,54 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4110713121089084, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
       insertIndex: -1
       addedObject: {fileID: 509166251}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7541030523133186558}
+    - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7541030523133186559}
   m_SourcePrefab: {fileID: 100100000, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+--- !u!1 &7541030523133186557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+  m_PrefabInstance: {fileID: 7541030523133186556}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7541030523133186558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7279819cca3a2540a1bc103c9bfdcb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Feedback.ZedShellEjectOnShot
+--- !u!114 &7541030523133186559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3ae8e610b2320419d508943142b1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Feedback.ZedSingleShellMeshEjectOnShot
+  ShooterController: {fileID: 4663096227966350608}
+  ShellMeshPrefab: {fileID: 1859234679933314, guid: 4700ce61fd21e32439977dd4e8211f37, type: 3}
+  EjectionPoint: {fileID: 663129275}
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffsetEuler: {x: 0, y: 90, z: 0}
+  TossVelocity: {x: 0.02, y: 0.28, z: -0.55}
+  RandomAngularVelocity: {x: 240, y: 540, z: 240}
+  ShellScale: 1.6
+  ShellLifetime: 6
+  ShellMass: 0.025
+  ShellBounceMaterial: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ namespace LegendOfZed.Feedback
         public float ShellScale = 1.6f;
         public float ShellLifetime = 6f;
         public float ShellMass = 0.025f;
-        public PhysicMaterial ShellBounceMaterial;
+        public PhysicsMaterial ShellBounceMaterial;
 
         private int _lastWeaponIndex = int.MinValue;
         private int _lastMagazineCount = -1;
