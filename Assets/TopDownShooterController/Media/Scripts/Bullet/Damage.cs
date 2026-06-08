@@ -45,15 +45,14 @@ namespace TopDownShooter
             {
                 var rigidBody = hit.GetComponent<Rigidbody>();
 
-                if (hit.GetComponent<HitPoint>())
-                {
-                    hit.GetComponent<HitPoint>().ApplyDamage(DamagePower);
-                }
-
                 ZedPrototypeZombieEnemy zedEnemy = hit.GetComponentInParent<ZedPrototypeZombieEnemy>();
                 if (zedEnemy != null)
                 {
                     zedEnemy.ApplyDamage(DamagePower);
+                }
+                else if (hit.GetComponent<HitPoint>())
+                {
+                    hit.GetComponent<HitPoint>().ApplyDamage(DamagePower);
                 }
 
                 if (rigidBody)
@@ -108,6 +107,13 @@ namespace TopDownShooter
                 return;
             }
 
+            ZedPrototypeZombieEnemy zedEnemy = hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>();
+            if (zedEnemy != null)
+            {
+                zedEnemy.ApplyDamage(DamagePower);
+                return;
+            }
+
             HitPoint hitPoint = hitCollider.GetComponent<HitPoint>();
             if (hitPoint == null)
             {
@@ -117,12 +123,6 @@ namespace TopDownShooter
             if (hitPoint != null)
             {
                 hitPoint.ApplyDamage(DamagePower);
-            }
-
-            ZedPrototypeZombieEnemy zedEnemy = hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>();
-            if (zedEnemy != null)
-            {
-                zedEnemy.ApplyDamage(DamagePower);
             }
         }
 
@@ -149,7 +149,7 @@ namespace TopDownShooter
 
         private static bool IsEnemyHit(Collider hitCollider)
         {
-            return hitCollider.GetComponent<HitPoint>() != null || hitCollider.GetComponentInParent<HitPoint>() != null || hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>() != null;
+            return hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>() != null || hitCollider.GetComponent<HitPoint>() != null || hitCollider.GetComponentInParent<HitPoint>() != null;
         }
 
         private void OnDrawGizmosSelected()
