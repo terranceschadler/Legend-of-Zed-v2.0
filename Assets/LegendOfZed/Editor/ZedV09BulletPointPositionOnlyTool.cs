@@ -15,7 +15,7 @@ namespace LegendOfZed.Editor
         [MenuItem("Legend of Zed/Setup/v0.9 Create BulletPoint Position Marker")]
         public static void CreateBulletPointPositionMarker()
         {
-            if (!OpenControllerTestScene(out Scene scene))
+            if (!GetControllerTestScene(out Scene scene))
             {
                 return;
             }
@@ -35,11 +35,7 @@ namespace LegendOfZed.Editor
 
             Selection.activeGameObject = marker;
 
-            EditorUtility.SetDirty(marker);
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, ScenePath);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            SaveIfNotPlaying(scene, marker, null, null);
 
             Debug.Log("v0.9 BulletPoint position marker created at the existing BulletPoint. Move only this marker's position to the visible muzzle, then run 'Apply Marker Position To BulletPoint Only'.");
         }
@@ -47,7 +43,7 @@ namespace LegendOfZed.Editor
         [MenuItem("Legend of Zed/Setup/v0.9 Apply Marker Position To BulletPoint Only")]
         public static void ApplyMarkerPositionToBulletPointOnly()
         {
-            if (!OpenControllerTestScene(out Scene scene))
+            if (!GetControllerTestScene(out Scene scene))
             {
                 return;
             }
@@ -79,20 +75,16 @@ namespace LegendOfZed.Editor
                 bulletPoint.SetParent(preservedParent, true);
             }
 
-            EditorUtility.SetDirty(bulletPoint.gameObject);
-            EditorUtility.SetDirty(shooterController);
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, ScenePath);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            SaveIfNotPlaying(scene, bulletPoint.gameObject, shooterController, null);
 
-            Debug.Log("v0.9 applied marker position to ShooterController.BulletPoint only. BulletPoint rotation and parent were preserved. No WeaponData, BulletId, ammo, projectile, ShooterController code, or weapon prefab was changed.");
+            Debug.Log("v0.9 applied marker position to ShooterController.BulletPoint only. BulletPoint rotation and parent were preserved. No WeaponData, BulletId, ammo, projectile, ShooterController code, or weapon prefab was changed." +
+                      (EditorApplication.isPlaying ? " NOTE: this was applied during Play Mode, so copy the final BulletPoint position before exiting Play Mode and paste it again in Edit Mode if you want it saved." : string.Empty));
         }
 
         [MenuItem("Legend of Zed/Setup/v0.9 Delete BulletPoint Position Marker")]
         public static void DeleteBulletPointPositionMarker()
         {
-            if (!OpenControllerTestScene(out Scene scene))
+            if (!GetControllerTestScene(out Scene scene))
             {
                 return;
             }
@@ -101,17 +93,26 @@ namespace LegendOfZed.Editor
             if (marker != null)
             {
                 Object.DestroyImmediate(marker);
-                EditorSceneManager.MarkSceneDirty(scene);
-                EditorSceneManager.SaveScene(scene, ScenePath);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                SaveIfNotPlaying(scene, null, null, null);
                 Debug.Log("v0.9 BulletPoint position marker deleted.");
             }
         }
 
-        private static bool OpenControllerTestScene(out Scene scene)
+        private static bool GetControllerTestScene(out Scene scene)
         {
             scene = default;
+
+            if (EditorApplication.isPlaying)
+            {
+                scene = SceneManager.GetActiveScene();
+                if (!scene.IsValid())
+                {
+                    Debug.LogWarning("v0.9 BulletPoint tool could not get the active Play Mode scene.");
+                    return false;
+                }
+
+                return true;
+            }
 
             if (!File.Exists(ScenePath))
             {
@@ -121,6 +122,34 @@ namespace LegendOfZed.Editor
 
             scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             return scene.IsValid();
+        }
+
+        private static void SaveIfNotPlaying(Scene scene, Object primaryDirtyObject, Object secondaryDirtyObject, Object tertiaryDirtyObject)
+        {
+            if (primaryDirtyObject != null)
+            {
+                EditorUtility.SetDirty(primaryDirtyObject);
+            }
+
+            if (secondaryDirtyObject != null)
+            {
+                EditorUtility.SetDirty(secondaryDirtyObject);
+            }
+
+            if (tertiaryDirtyObject != null)
+            {
+                EditorUtility.SetDirty(tertiaryDirtyObject);
+            }
+
+            if (EditorApplication.isPlaying)
+            {
+                return;
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private static bool ValidateShooterController(ShooterController shooterController)
