@@ -21678,6 +21678,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7541030523133186559}
+    - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7541030523133186560}
   m_SourcePrefab: {fileID: 100100000, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
 --- !u!1 &7541030523133186557 stripped
 GameObject:
@@ -21707,6 +21710,29 @@ MonoBehaviour:
   ShellLifetime: 6
   ShellMass: 0.025
   ShellBounceMaterial: {fileID: 0}
+--- !u!114 &7541030523133186560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5750857aaedcc45934c6acfd75b607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Player.ZedPlayerHealth
+  MaxHealth: 100
+  CurrentHealth: 100
+  IsDead: 0
+  DamageInvulnerabilitySeconds: 0.65
+  LogDamageForTesting: 1
+  DisableMovementOnDeath: 1
+  DisableShootingOnDeath: 1
+  DeathMessage: PLAYER DOWN
+  ShowDebugHud: 1
+  ShowDamageFlash: 1
+  DamageFlashSeconds: 0.22
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
