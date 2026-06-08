@@ -15,7 +15,7 @@ namespace LegendOfZed.Editor
         private const string ZombieRootName = "Zed_Prototype_Zombie_Enemy";
         private const string ZombieVisualName = "Zed_Prototype_Zombie_Visual";
         private const string SyntyRoot = "Assets/Synty";
-        private const float ZombieVisualScale = 1.12f;
+        private const float ZombieVisualScale = 1.38f;
 
         [MenuItem("Legend of Zed/Setup/v1.0 Add Prototype Zombie Enemy")]
         public static void AddPrototypeZombieEnemy()
