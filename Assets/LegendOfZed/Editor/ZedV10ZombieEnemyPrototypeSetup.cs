@@ -17,12 +17,12 @@ namespace LegendOfZed.Editor
         private const string SyntyRoot = "Assets/Synty";
         private const float ZombieVisualScale = 1.25f;
 
-        [MenuItem("Legend of Zed/Setup/v1.0 Add Prototype Zombie Enemy")]
+        [MenuItem("Legend of Zed/Setup/v1.1 Add/Refresh Prototype Zombie Enemy")]
         public static void AddPrototypeZombieEnemy()
         {
             if (!File.Exists(ScenePath))
             {
-                Debug.LogWarning("v1.0 zombie setup could not find scene: " + ScenePath);
+                Debug.LogWarning("v1.1 zombie setup could not find scene: " + ScenePath);
                 return;
             }
 
@@ -37,6 +37,7 @@ namespace LegendOfZed.Editor
                 EditorSceneManager.MoveGameObjectToScene(zombieRoot, scene);
             }
 
+            zombieRoot.SetActive(true);
             zombieRoot.transform.position = spawnPosition;
             zombieRoot.transform.rotation = Quaternion.identity;
             zombieRoot.transform.localScale = Vector3.one;
@@ -51,6 +52,7 @@ namespace LegendOfZed.Editor
             capsule.height = 1.8f;
             capsule.radius = 0.32f;
             capsule.isTrigger = false;
+            capsule.enabled = true;
 
             Rigidbody rigidbody = zombieRoot.GetComponent<Rigidbody>();
             if (rigidbody == null)
@@ -69,6 +71,7 @@ namespace LegendOfZed.Editor
 
             if (agent != null)
             {
+                agent.enabled = true;
                 agent.updatePosition = false;
                 agent.updateRotation = false;
                 agent.radius = 0.32f;
@@ -80,6 +83,7 @@ namespace LegendOfZed.Editor
             }
 
             GameObject visual = EnsureZombieVisual(zombieRoot.transform);
+            visual.SetActive(true);
             visual.transform.localScale = Vector3.one * ZombieVisualScale;
             Animator animator = visual.GetComponentInChildren<Animator>();
 
@@ -92,6 +96,10 @@ namespace LegendOfZed.Editor
             zombieBrain.Target = player != null ? player.transform : null;
             zombieBrain.NavMeshAgent = agent;
             zombieBrain.Animator = animator;
+            zombieBrain.MaxHealth = 60f;
+            zombieBrain.CurrentHealth = zombieBrain.MaxHealth;
+            zombieBrain.DestroyOnDeath = false;
+            zombieBrain.DeathDisableDelay = 2.5f;
             zombieBrain.DetectionRange = 11f;
             zombieBrain.LoseTargetRange = 15f;
             zombieBrain.AttackRange = 1.35f;
@@ -119,7 +127,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Zombie visual scale set to " + ZombieVisualScale + " while root/collider/pathing scale stays unchanged. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
+            Debug.Log("v1.1 prototype zombie enemy refreshed in " + ScenePath + ". Health=60, death disables after 2.5 seconds, direct bullet damage is supported. Player controller, ShooterController, WeaponData, ammo, and projectile IDs were not changed.");
         }
 
         private static Vector3 ResolveSpawnPosition(PlayerController player)
@@ -254,7 +262,7 @@ namespace LegendOfZed.Editor
             System.Type hitPointType = FindTypeByName("TopDownShooter.HitPoint") ?? FindTypeByName("HitPoint");
             if (hitPointType == null || !typeof(Component).IsAssignableFrom(hitPointType))
             {
-                Debug.LogWarning("v1.0 zombie setup could not find a HitPoint component type. Zombie was created, but bullets may not damage it until a project health/HitPoint component is added.");
+                Debug.LogWarning("v1.1 zombie setup could not find a HitPoint component type. Zombie has built-in ZedPrototypeZombieEnemy health, so direct v1.1 bullet damage still works.");
                 return;
             }
 
