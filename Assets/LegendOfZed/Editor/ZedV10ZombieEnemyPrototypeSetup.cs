@@ -27,7 +27,7 @@ namespace LegendOfZed.Editor
 
             Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             PlayerController player = Object.FindFirstObjectByType<PlayerController>();
-            Vector3 spawnPosition = ResolveSpawnPosition(player);
+            Vector3 spawnPosition = SnapToGround(ResolveSpawnPosition(player));
 
             GameObject zombieRoot = GameObject.Find(ZombieRootName);
             if (zombieRoot == null)
@@ -101,6 +101,10 @@ namespace LegendOfZed.Editor
             zombieBrain.UseRootMotionLocomotion = true;
             zombieBrain.RootMotionSpeedScale = 2.25f;
             zombieBrain.MaxRootMotionStep = 0.8f;
+            zombieBrain.SnapToGround = true;
+            zombieBrain.GroundProbeHeight = 3f;
+            zombieBrain.GroundProbeDistance = 8f;
+            zombieBrain.GroundOffset = 0f;
 
             WireRootMotionRelay(animator, zombieBrain);
             EnsureHitPointIfAvailable(zombieRoot);
@@ -112,7 +116,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Root motion relay is wired on the Animator object. RootMotionSpeedScale defaults to 2.25 for less foot sliding. NavMeshAgent is optional and only used when a valid NavMesh exists. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
+            Debug.Log("v1.0 prototype zombie enemy added to " + ScenePath + ". Zombie root is snapped to ground and kept grounded during root motion. Rigidbody remains kinematic so physics does not fight animation. Player controller, ShooterController, WeaponData, bullets, ammo, projectile IDs, and v0.9 feedback code were not changed.");
         }
 
         private static Vector3 ResolveSpawnPosition(PlayerController player)
@@ -127,6 +131,22 @@ namespace LegendOfZed.Editor
             }
 
             return candidate;
+        }
+
+        private static Vector3 SnapToGround(Vector3 position)
+        {
+            Vector3 origin = position + Vector3.up * 6f;
+            RaycastHit hit;
+            if (Physics.Raycast(origin, Vector3.down, out hit, 20f, ~0, QueryTriggerInteraction.Ignore))
+            {
+                position.y = hit.point.y;
+            }
+            else
+            {
+                position.y = 0f;
+            }
+
+            return position;
         }
 
         private static bool HasAnyNavMesh()
