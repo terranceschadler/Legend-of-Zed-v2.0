@@ -1,3 +1,4 @@
+using System.Collections;
 using TopDownShooter;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,11 +17,18 @@ namespace LegendOfZed.Enemies
         private static readonly int AttackRightHash = Animator.StringToHash("AttackRight");
         private static readonly int AttackRight2Hash = Animator.StringToHash("AttackRight2");
         private static readonly int AttackTwoHandHash = Animator.StringToHash("AttackTwoHand");
+        private static readonly int DeadHash = Animator.StringToHash("Dead");
 
         [Header("References")]
         public Transform Target;
         public NavMeshAgent NavMeshAgent;
         public Animator Animator;
+
+        [Header("Health")]
+        public float MaxHealth = 60f;
+        public float CurrentHealth = 60f;
+        public bool DestroyOnDeath = false;
+        public float DeathDisableDelay = 2.5f;
 
         [Header("Detection")]
         public float DetectionRange = 11f;
@@ -68,17 +76,22 @@ namespace LegendOfZed.Enemies
         private bool _hasLastGroundedY;
         private bool _hasWanderDestination;
         private bool _isChasing;
+        private bool _dead;
+
+        public bool IsDead => _dead;
 
         private void Reset()
         {
             NavMeshAgent = GetComponent<NavMeshAgent>();
             Animator = GetComponentInChildren<Animator>();
+            CurrentHealth = MaxHealth;
         }
 
         private void Awake()
         {
             if (NavMeshAgent == null) NavMeshAgent = GetComponent<NavMeshAgent>();
             if (Animator == null) Animator = GetComponentInChildren<Animator>();
+            if (CurrentHealth <= 0f) CurrentHealth = MaxHealth;
 
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
@@ -95,6 +108,7 @@ namespace LegendOfZed.Enemies
 
         private void OnEnable()
         {
+            _dead = CurrentHealth <= 0f;
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
             SnapCurrentPositionToGround();
@@ -102,6 +116,7 @@ namespace LegendOfZed.Enemies
 
         private void Update()
         {
+            if (_dead) return;
             if (Target == null) Target = FindPlayerTarget();
 
             float distanceToTarget = Target != null ? Vector3.Distance(transform.position, Target.position) : float.PositiveInfinity;
@@ -122,9 +137,30 @@ namespace LegendOfZed.Enemies
             SnapCurrentPositionToGround();
         }
 
+        public void ApplyDamage(float damage)
+        {
+            if (_dead || damage <= 0f) return;
+
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
+            if (CurrentHealth <= 0f)
+            {
+                Die();
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            ApplyDamage(damage);
+        }
+
+        public void Damage(float damage)
+        {
+            ApplyDamage(damage);
+        }
+
         public void ApplyRootMotionDelta(Animator sourceAnimator)
         {
-            if (!UseRootMotionLocomotion || sourceAnimator == null)
+            if (_dead || !UseRootMotionLocomotion || sourceAnimator == null)
             {
                 return;
             }
@@ -150,6 +186,53 @@ namespace LegendOfZed.Enemies
             transform.position += _desiredMoveDirection.normalized * clampedDistance;
             SnapCurrentPositionToGround();
             SyncAgentToTransform();
+        }
+
+        private void Die()
+        {
+            if (_dead) return;
+            _dead = true;
+            _isChasing = false;
+            _hasWanderDestination = false;
+            _desiredMoveDirection = Vector3.zero;
+
+            if (NavMeshAgent != null) NavMeshAgent.enabled = false;
+
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                rigidbody.isKinematic = true;
+                rigidbody.useGravity = false;
+            }
+
+            if (Animator != null)
+            {
+                Animator.SetBool(MovingHash, false);
+                Animator.SetBool(AttackingHash, false);
+                Animator.SetFloat(SpeedHash, 0f);
+                Animator.SetTrigger(DeadHash);
+            }
+
+            StartCoroutine(DisableAfterDeathDelay());
+        }
+
+        private IEnumerator DisableAfterDeathDelay()
+        {
+            yield return new WaitForSeconds(DeathDisableDelay);
+            if (DestroyOnDeath)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         private void ConfigureAgentForPathOnly()
@@ -283,7 +366,7 @@ namespace LegendOfZed.Enemies
             for (int i = 0; i < nearby.Length; i++)
             {
                 ZedPrototypeZombieEnemy otherZombie = nearby[i].GetComponentInParent<ZedPrototypeZombieEnemy>();
-                if (otherZombie == null || otherZombie == this) continue;
+                if (otherZombie == null || otherZombie == this || otherZombie.IsDead) continue;
 
                 Vector3 away = transform.position - otherZombie.transform.position;
                 away.y = 0f;
@@ -296,6 +379,7 @@ namespace LegendOfZed.Enemies
 
         private void DriveLocomotion(Vector3 desiredDirection, float speed)
         {
+            if (_dead) return;
             desiredDirection.y = 0f;
             if (desiredDirection.sqrMagnitude <= 0.0001f)
             {
@@ -395,7 +479,7 @@ namespace LegendOfZed.Enemies
 
         private void TryAttack()
         {
-            if (Time.time < _nextAttackTime) return;
+            if (_dead || Time.time < _nextAttackTime) return;
 
             _nextAttackTime = Time.time + AttackCooldown;
             TriggerAttackAnimation();
@@ -418,7 +502,7 @@ namespace LegendOfZed.Enemies
 
         private void TriggerAttackAnimation()
         {
-            if (Animator == null) return;
+            if (Animator == null || _dead) return;
 
             int attackIndex = RandomizeAttackAnimations ? Random.Range(0, 5) : 0;
             Animator.SetInteger(AttackIndexHash, attackIndex);
