@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LegendOfZed.Input;
+using UnityEngine;
 
 /* Script to easy setup your own input configurations.
  * You can use the virtual joystick solution in this pack or use another solution.
@@ -47,7 +48,8 @@ namespace TopDownShooter
                 return JoystickControllerLeft.Horizontal;
             }
 
-            return Input.GetAxis("Horizontal");
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null ? input.Move.x : 0f;
         }
 
         public float GetVerticalValue()
@@ -57,7 +59,8 @@ namespace TopDownShooter
                 return JoystickControllerLeft.Vertical;
             }
 
-            return Input.GetAxis("Vertical");
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null ? input.Move.y : 0f;
         }
 
         public float GetHorizontal2Value()
@@ -72,9 +75,8 @@ namespace TopDownShooter
                 return JoystickControllerRight.Horizontal;
             }
 
-            //if you go to use a joystick like a Xbox joystick replace "GetMouseDirection().x" put you new Horizontal axis in this place and uncheck mouse and virtual joystick like this:
-            //return Input.GetAxis("NewControlAxis");
-            return Input.GetAxis("Horizontal");
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null ? input.Move.x : 0f;
         }
 
         public float GetVertical2Value()
@@ -89,20 +91,20 @@ namespace TopDownShooter
                 return JoystickControllerRight.Vertical;
             }
 
-            //if you go to use a joystick like a Xbox joystick replace "Input.GetAxis("Vertical")" put you new Vertical axis in this place and uncheck mouse and virtual joystick like this:
-            //return Input.GetAxis("NewControlAxis");
-
-            return Input.GetAxis("Vertical");
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null ? input.Move.y : 0f;
         }
 
         public bool GetJumpValue()
         {
-            return Input.GetKeyDown(KeyCode.Space);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.JumpPressedThisFrame;
         }
 
         public bool GetDashValue()
         {
-            return Input.GetKeyDown(KeyCode.F);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.DashPressedThisFrame;
         }
 
         public bool GetJetPackValue()
@@ -112,7 +114,8 @@ namespace TopDownShooter
                 return _activeJetPack;
             }
 
-            return Input.GetKey(KeyCode.X);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.JetPackHeld;
         }
 
         public bool GetSlowFallValue()
@@ -128,17 +131,20 @@ namespace TopDownShooter
                 return true;
             }
 
-            return Input.GetKeyDown(KeyCode.V);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.SlowFallPressedThisFrame;
         }
 
         public bool GetDropWeaponValue()
         {
-            return Input.GetKeyDown(KeyCode.G);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.DropWeaponPressedThisFrame;
         }
 
         public bool GetReloadWeaponValue()
         {
-            return Input.GetKeyDown(KeyCode.R);
+            ZedInputReader input = ZedInputReader.Instance;
+            return input != null && input.ReloadPressedThisFrame;
         }
 
         public void ActivateJetPack(bool active)
@@ -157,14 +163,18 @@ namespace TopDownShooter
 
         public Vector3 GetMouseDirection()
         {
-            if (Camera.main == null) return Vector3.zero;
-            var newRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit groundHit;
+            ZedInputReader input = ZedInputReader.Instance;
+            if (input == null || !input.FireHeld || Camera.main == null)
+            {
+                return Vector3.zero;
+            }
+
+            Ray newRay = Camera.main.ScreenPointToRay(input.AimScreenPosition);
 
             //check if the player press mouse button and the ray hit the ground
-            if (Input.GetMouseButton(0) && Physics.Raycast(newRay, out groundHit, 1000, GroundLayer))
+            if (Physics.Raycast(newRay, out RaycastHit groundHit, 1000, GroundLayer))
             {
-                var playerToMouse = groundHit.point - transform.position;
+                Vector3 playerToMouse = groundHit.point - transform.position;
 
                 playerToMouse.y = 0f;
 
