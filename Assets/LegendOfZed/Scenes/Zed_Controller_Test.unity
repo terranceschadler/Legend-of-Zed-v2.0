@@ -10871,12 +10871,18 @@ MonoBehaviour:
   - {fileID: 1111735819}
   - {fileID: 1338775530}
   - {fileID: 647165539}
-  SpawnOnStart: 1
-  MaxAliveZombies: 5
   HidePrototypeOnStart: 0
+  SpawnOnStart: 1
+  LoopWaves: 0
+  ZombiesPerWave: 5
+  MaxAliveZombies: 5
+  InitialSpawnDelay: 0.25
+  DelayBetweenSpawns: 0.45
+  DelayBetweenWaves: 4
   ZombieHealth: 60
   DeathDisableDelay: 999
   RagdollOnDeath: 1
+  LogWaveEvents: 0
 --- !u!4 &1153638061
 Transform:
   m_ObjectHideFlags: 0

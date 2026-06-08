@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using LegendOfZed.Runtime;
 using TopDownShooter;
 using UnityEngine;
@@ -14,16 +15,40 @@ namespace LegendOfZed.Enemies
 
         [Header("Spawn Points")]
         public List<Transform> SpawnPoints = new List<Transform>();
-        public bool SpawnOnStart = true;
-        public int MaxAliveZombies = 5;
         public bool HidePrototypeOnStart = true;
+
+        [Header("Wave Control")]
+        public bool SpawnOnStart = true;
+        public bool LoopWaves = false;
+        public int ZombiesPerWave = 5;
+        public int MaxAliveZombies = 5;
+        public float InitialSpawnDelay = 0.25f;
+        public float DelayBetweenSpawns = 0.45f;
+        public float DelayBetweenWaves = 4f;
 
         [Header("Spawned Zombie Defaults")]
         public float ZombieHealth = 60f;
         public float DeathDisableDelay = 999f;
         public bool RagdollOnDeath = true;
 
+        [Header("Debug")]
+        public bool LogWaveEvents = false;
+
         private readonly List<ZedPrototypeZombieEnemy> _aliveZombies = new List<ZedPrototypeZombieEnemy>();
+        private Coroutine _waveRoutine;
+        private int _waveNumber;
+        private int _nextSpawnPointIndex;
+
+        public int AliveCount
+        {
+            get
+            {
+                CleanupDeadReferences();
+                return _aliveZombies.Count;
+            }
+        }
+
+        public bool IsSpawning => _waveRoutine != null;
 
         private void Start()
         {
@@ -36,37 +61,47 @@ namespace LegendOfZed.Enemies
 
             if (SpawnOnStart)
             {
-                SpawnInitialWave();
+                StartWaves();
             }
         }
 
-        [ContextMenu("Spawn Initial Wave")]
-        public void SpawnInitialWave()
+        [ContextMenu("Start Waves")]
+        public void StartWaves()
         {
-            CleanupDeadReferences();
-
-            if (ZombiePrototype == null)
+            if (_waveRoutine != null)
             {
-                Debug.LogWarning("ZedZombieSpawner has no ZombiePrototype assigned.", this);
                 return;
             }
 
-            if (SpawnPoints == null || SpawnPoints.Count == 0)
+            _waveRoutine = StartCoroutine(WaveRoutine());
+        }
+
+        [ContextMenu("Stop Waves")]
+        public void StopWaves()
+        {
+            if (_waveRoutine != null)
             {
-                Debug.LogWarning("ZedZombieSpawner has no spawn points.", this);
+                StopCoroutine(_waveRoutine);
+                _waveRoutine = null;
+            }
+        }
+
+        [ContextMenu("Spawn One Wave Now")]
+        public void SpawnOneWaveNow()
+        {
+            if (_waveRoutine != null)
+            {
                 return;
             }
 
-            int spawnCount = Mathf.Min(MaxAliveZombies, SpawnPoints.Count);
-            for (int i = 0; i < spawnCount; i++)
-            {
-                SpawnZombieAt(SpawnPoints[i]);
-            }
+            _waveRoutine = StartCoroutine(SpawnSingleWaveRoutine());
         }
 
         [ContextMenu("Clear Spawned Zombies")]
         public void ClearSpawnedZombies()
         {
+            StopWaves();
+
             for (int i = _aliveZombies.Count - 1; i >= 0; i--)
             {
                 if (_aliveZombies[i] != null)
@@ -76,6 +111,101 @@ namespace LegendOfZed.Enemies
             }
 
             _aliveZombies.Clear();
+        }
+
+        private IEnumerator WaveRoutine()
+        {
+            if (InitialSpawnDelay > 0f)
+            {
+                yield return new WaitForSeconds(InitialSpawnDelay);
+            }
+
+            do
+            {
+                yield return SpawnWaveRoutine();
+
+                if (!LoopWaves)
+                {
+                    break;
+                }
+
+                while (AliveCount > 0)
+                {
+                    yield return null;
+                }
+
+                if (DelayBetweenWaves > 0f)
+                {
+                    yield return new WaitForSeconds(DelayBetweenWaves);
+                }
+            }
+            while (LoopWaves);
+
+            _waveRoutine = null;
+        }
+
+        private IEnumerator SpawnSingleWaveRoutine()
+        {
+            yield return SpawnWaveRoutine();
+            _waveRoutine = null;
+        }
+
+        private IEnumerator SpawnWaveRoutine()
+        {
+            if (!CanSpawn())
+            {
+                _waveRoutine = null;
+                yield break;
+            }
+
+            _waveNumber++;
+
+            if (LogWaveEvents)
+            {
+                Debug.Log("Starting zombie wave " + _waveNumber + " with " + ZombiesPerWave + " requested zombie(s).", this);
+            }
+
+            int spawnedThisWave = 0;
+            int attempts = 0;
+            int maxAttempts = Mathf.Max(ZombiesPerWave * 4, SpawnPoints.Count * 2);
+
+            while (spawnedThisWave < ZombiesPerWave && attempts < maxAttempts)
+            {
+                attempts++;
+                CleanupDeadReferences();
+
+                if (_aliveZombies.Count >= MaxAliveZombies)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                Transform spawnPoint = GetNextSpawnPoint();
+                if (spawnPoint == null)
+                {
+                    yield break;
+                }
+
+                ZedPrototypeZombieEnemy spawned = SpawnZombieAt(spawnPoint);
+                if (spawned != null)
+                {
+                    spawnedThisWave++;
+                }
+
+                if (DelayBetweenSpawns > 0f)
+                {
+                    yield return new WaitForSeconds(DelayBetweenSpawns);
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
+
+            if (LogWaveEvents)
+            {
+                Debug.Log("Finished zombie wave " + _waveNumber + ". Spawned=" + spawnedThisWave + ".", this);
+            }
         }
 
         public ZedPrototypeZombieEnemy SpawnZombieAt(Transform spawnPoint)
@@ -101,6 +231,46 @@ namespace LegendOfZed.Enemies
             ZedPrototypeZombieEnemy zombie = RebindSpawnedZombie(zombieObject);
             _aliveZombies.Add(zombie);
             return zombie;
+        }
+
+        private bool CanSpawn()
+        {
+            if (ZombiePrototype == null)
+            {
+                Debug.LogWarning("ZedZombieSpawner has no ZombiePrototype assigned.", this);
+                return false;
+            }
+
+            if (SpawnPoints == null || SpawnPoints.Count == 0)
+            {
+                Debug.LogWarning("ZedZombieSpawner has no spawn points.", this);
+                return false;
+            }
+
+            return true;
+        }
+
+        private Transform GetNextSpawnPoint()
+        {
+            if (SpawnPoints == null || SpawnPoints.Count == 0)
+            {
+                return null;
+            }
+
+            int checkedCount = 0;
+            while (checkedCount < SpawnPoints.Count)
+            {
+                int index = _nextSpawnPointIndex % SpawnPoints.Count;
+                _nextSpawnPointIndex++;
+                checkedCount++;
+
+                if (SpawnPoints[index] != null)
+                {
+                    return SpawnPoints[index];
+                }
+            }
+
+            return null;
         }
 
         private ZedPrototypeZombieEnemy RebindSpawnedZombie(GameObject zombieObject)
