@@ -38,6 +38,13 @@ namespace LegendOfZed.Enemies
         public float RootMotionSpeedScale = 2.25f;
         public float MaxRootMotionStep = 0.8f;
 
+        [Header("Grounding")]
+        public bool SnapToGround = true;
+        public LayerMask GroundLayers = ~0;
+        public float GroundProbeHeight = 3f;
+        public float GroundProbeDistance = 8f;
+        public float GroundOffset = 0f;
+
         [Header("Wander")]
         public float WanderRadius = 6f;
         public float WanderPointTolerance = 0.45f;
@@ -68,8 +75,6 @@ namespace LegendOfZed.Enemies
 
         private void Awake()
         {
-            _spawnPosition = transform.position;
-
             if (NavMeshAgent == null)
             {
                 NavMeshAgent = GetComponent<NavMeshAgent>();
@@ -82,6 +87,8 @@ namespace LegendOfZed.Enemies
 
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
+            SnapCurrentPositionToGround();
+            _spawnPosition = transform.position;
         }
 
         private void Start()
@@ -91,6 +98,7 @@ namespace LegendOfZed.Enemies
                 Target = FindPlayerTarget();
             }
 
+            SnapCurrentPositionToGround();
             PickWanderDestination(true);
         }
 
@@ -98,6 +106,7 @@ namespace LegendOfZed.Enemies
         {
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
+            SnapCurrentPositionToGround();
         }
 
         private void Update()
@@ -129,6 +138,7 @@ namespace LegendOfZed.Enemies
 
             if (_desiredMoveDirection.sqrMagnitude <= 0.0001f)
             {
+                SnapCurrentPositionToGround();
                 SyncAgentToTransform();
                 return;
             }
@@ -139,12 +149,14 @@ namespace LegendOfZed.Enemies
 
             if (rootDistance <= 0.0001f)
             {
+                SnapCurrentPositionToGround();
                 SyncAgentToTransform();
                 return;
             }
 
             float clampedDistance = Mathf.Min(rootDistance, MaxRootMotionStep);
             transform.position += _desiredMoveDirection.normalized * clampedDistance;
+            SnapCurrentPositionToGround();
             SyncAgentToTransform();
         }
 
@@ -257,6 +269,7 @@ namespace LegendOfZed.Enemies
                 candidate = navHit.position;
             }
 
+            candidate = GetGroundedPosition(candidate);
             _wanderDestination = candidate;
             _hasWanderDestination = true;
             _wanderDestinationExpireTime = Time.time + WanderDestinationRefreshSeconds;
@@ -343,6 +356,7 @@ namespace LegendOfZed.Enemies
             if (!UseRootMotionLocomotion)
             {
                 transform.position += direction * speed * Time.deltaTime;
+                SnapCurrentPositionToGround();
                 SyncAgentToTransform();
             }
         }
@@ -351,7 +365,32 @@ namespace LegendOfZed.Enemies
         {
             _desiredMoveDirection = Vector3.zero;
             SetMovingAnimation(0f);
+            SnapCurrentPositionToGround();
             SyncAgentToTransform();
+        }
+
+        private Vector3 GetGroundedPosition(Vector3 position)
+        {
+            if (!SnapToGround)
+            {
+                return position;
+            }
+
+            Vector3 rayOrigin = position + Vector3.up * GroundProbeHeight;
+            float rayDistance = GroundProbeHeight + GroundProbeDistance;
+
+            RaycastHit hit;
+            if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayDistance, GroundLayers, QueryTriggerInteraction.Ignore))
+            {
+                position.y = hit.point.y + GroundOffset;
+            }
+
+            return position;
+        }
+
+        private void SnapCurrentPositionToGround()
+        {
+            transform.position = GetGroundedPosition(transform.position);
         }
 
         private void SyncAgentToTransform()
