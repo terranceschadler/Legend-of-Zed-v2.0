@@ -365,6 +365,9 @@ Transform:
   - {fileID: 1111735819}
   - {fileID: 1338775530}
   - {fileID: 647165539}
+  - {fileID: 153164878}
+  - {fileID: 1811538137}
+  - {fileID: 566949499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &25491652
@@ -1719,6 +1722,58 @@ Transform:
   - {fileID: 663129275}
   m_Father: {fileID: 509166252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &153164877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 153164878}
+  - component: {fileID: 153164879}
+  m_Layer: 0
+  m_Name: ZombieSpawnPoint_6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &153164878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153164877}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -5.401852, y: 0.00022888533, z: -6.6031766}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6634432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &153164879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153164877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 6
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &158539473
 GameObject:
   m_ObjectHideFlags: 0
@@ -5426,6 +5481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 514447024}
+  - component: {fileID: 514447025}
   m_Layer: 0
   m_Name: ZombieSpawnPoint_2
   m_TagString: Untagged
@@ -5442,12 +5498,32 @@ Transform:
   m_GameObject: {fileID: 514447023}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.92387956, z: -0, w: 0.38268346}
-  m_LocalPosition: {x: -1.4018521, y: 0.00022888533, z: -1.6031766}
+  m_LocalPosition: {x: -2.4018521, y: 0.00022888533, z: -0.6031766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6634432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &514447025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514447023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 2
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &523431935
 GameObject:
   m_ObjectHideFlags: 0
@@ -6265,6 +6341,58 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565598911}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &566949498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 566949499}
+  - component: {fileID: 566949500}
+  m_Layer: 0
+  m_Name: ZombieSpawnPoint_8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &566949499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566949498}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.5981479, y: 0.91, z: -15.603176}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6634432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &566949500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566949498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 8
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &570629205
 GameObject:
   m_ObjectHideFlags: 0
@@ -7001,6 +7129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 647165539}
+  - component: {fileID: 647165540}
   m_Layer: 0
   m_Name: ZombieSpawnPoint_5
   m_TagString: Untagged
@@ -7016,13 +7145,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647165538}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 3.5981479, y: 5.4002295, z: 0.3968234}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 12.598148, y: 0.00022888533, z: -6.6031766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6634432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647165540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647165538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 5
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &663129274
 GameObject:
   m_ObjectHideFlags: 0
@@ -8222,6 +8371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 800658175}
+  - component: {fileID: 800658176}
   m_Layer: 0
   m_Name: ZombieSpawnPoint_1
   m_TagString: Untagged
@@ -8237,13 +8387,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800658174}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9238795, z: -0, w: -0.38268346}
-  m_LocalPosition: {x: 8.598148, y: 1.7220995, z: -1.6031766}
+  m_LocalRotation: {x: -0, y: 0.92387956, z: -0, w: -0.38268346}
+  m_LocalPosition: {x: 9.598148, y: 2.9450383, z: -0.6031766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6634432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &800658176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800658174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 1
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &814330700
 GameObject:
   m_ObjectHideFlags: 0
@@ -10515,6 +10685,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1111735819}
+  - component: {fileID: 1111735820}
   m_Layer: 0
   m_Name: ZombieSpawnPoint_3
   m_TagString: Untagged
@@ -10530,13 +10701,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1111735818}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 10.598148, y: 0.00022888533, z: -6.6031766}
+  m_LocalRotation: {x: -0, y: -0.3826835, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 9.598148, y: 0.00022888533, z: -12.603176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6634432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1111735820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111735818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 3
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &1112573270
 GameObject:
   m_ObjectHideFlags: 0
@@ -10871,6 +11062,9 @@ MonoBehaviour:
   - {fileID: 1111735819}
   - {fileID: 1338775530}
   - {fileID: 647165539}
+  - {fileID: 153164878}
+  - {fileID: 1811538137}
+  - {fileID: 566949499}
   HidePrototypeOnStart: 0
   SpawnOnStart: 1
   LoopWaves: 0
@@ -13767,6 +13961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1338775530}
+  - component: {fileID: 1338775531}
   m_Layer: 0
   m_Name: ZombieSpawnPoint_4
   m_TagString: Untagged
@@ -13782,13 +13977,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338775529}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.4018521, y: 0.00022888533, z: -6.6031766}
+  m_LocalRotation: {x: -0, y: 0.38268346, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: -2.4018521, y: 0.00022888533, z: -12.603176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6634432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1338775531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338775529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 4
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &1357920382
 GameObject:
   m_ObjectHideFlags: 0
@@ -17974,6 +18189,58 @@ Transform:
   - {fileID: 905468617}
   m_Father: {fileID: 1936508752}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1811538136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1811538137}
+  - component: {fileID: 1811538138}
+  m_Layer: 0
+  m_Name: ZombieSpawnPoint_7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1811538137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811538136}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 3.5981479, y: 0.00022888533, z: 2.3968234}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6634432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1811538138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811538136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8746e3e2738a74b97720bf15ae22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Spawning.ZedZombieSpawnPointMarker
+  SpawnLabel: Zombie Spawn 7
+  SpawnRadius: 0.75
+  FacePlayerOnSetup: 1
+  DrawGizmos: 1
+  DrawLabel: 1
+  GizmoColor: {r: 1, g: 0.2, b: 0.1, a: 0.8}
+  DirectionColor: {r: 1, g: 1, b: 0.2, a: 0.9}
+  DirectionLength: 1.25
 --- !u!1 &1823407757
 GameObject:
   m_ObjectHideFlags: 0
