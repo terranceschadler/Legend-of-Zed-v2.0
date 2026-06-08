@@ -15158,6 +15158,9 @@ GameObject:
   - component: {fileID: 1486407761}
   - component: {fileID: 1486407760}
   - component: {fileID: 1486407758}
+  - component: {fileID: 1486407765}
+  - component: {fileID: 1486407764}
+  - component: {fileID: 1486407763}
   m_Layer: 0
   m_Name: Zed_Prototype_Zombie_Enemy
   m_TagString: Untagged
@@ -15285,6 +15288,67 @@ Transform:
   - {fileID: 1702679117}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1486407763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486407756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f0d3eaa61835c4ab00e055161bd040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Enemies.ZedZombieHitReactionMotor
+  EnableHitShove: 1
+  ShoveDistance: 0.55
+  ShoveSeconds: 0.14
+  ExtraStaggerSeconds: 0.45
+  PlayHitAudio: 1
+--- !u!114 &1486407764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486407756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae00f11b969e7df48924c072dce882ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Enemies.ZedZombieAudioBridge
+  AudioFeedback: {fileID: 1486407765}
+--- !u!114 &1486407765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486407756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f6b501404023740a392c606797631c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Runtime.ZedAudioFeedback
+  AudioSource: {fileID: 0}
+  CreateSourceIfMissing: 1
+  Spatialize: 1
+  SpatialBlend: 1
+  MinDistance: 2
+  MaxDistance: 18
+  IdleGroans: []
+  AttackClips: []
+  HitClips: []
+  DeathClips: []
+  HurtClips: []
+  IdleVolume: 0.55
+  AttackVolume: 0.75
+  HitVolume: 0.7
+  DeathVolume: 0.85
+  HurtVolume: 0.75
+  PlayIdleGroans: 1
+  MinIdleGroanDelay: 3.5
+  MaxIdleGroanDelay: 8
 --- !u!1 &1505321767
 GameObject:
   m_ObjectHideFlags: 0
@@ -21687,6 +21751,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7541030523133186560}
+    - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7541030523133186562}
+    - targetCorrespondingSourceObject: {fileID: 1482610530638662, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7541030523133186561}
   m_SourcePrefab: {fileID: 100100000, guid: f9dc6efd48b81a54ea6a8558f7fe9948, type: 3}
 --- !u!1 &7541030523133186557 stripped
 GameObject:
@@ -21733,12 +21803,58 @@ MonoBehaviour:
   IsDead: 0
   DamageInvulnerabilitySeconds: 0.65
   LogDamageForTesting: 1
+  AudioBridge: {fileID: 7541030523133186561}
+  PlayHurtAudio: 1
   DisableMovementOnDeath: 1
   DisableShootingOnDeath: 1
   DeathMessage: PLAYER DOWN
   ShowDebugHud: 1
   ShowDamageFlash: 1
   DamageFlashSeconds: 0.22
+--- !u!114 &7541030523133186561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1323c609a18c06541a1f4420f4003c48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Player.ZedPlayerAudioBridge
+  AudioFeedback: {fileID: 7541030523133186562}
+--- !u!114 &7541030523133186562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541030523133186557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f6b501404023740a392c606797631c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.Runtime.ZedAudioFeedback
+  AudioSource: {fileID: 0}
+  CreateSourceIfMissing: 1
+  Spatialize: 0
+  SpatialBlend: 1
+  MinDistance: 2
+  MaxDistance: 18
+  IdleGroans: []
+  AttackClips: []
+  HitClips: []
+  DeathClips: []
+  HurtClips: []
+  IdleVolume: 0.55
+  AttackVolume: 0.75
+  HitVolume: 0.7
+  DeathVolume: 0.85
+  HurtVolume: 0.75
+  PlayIdleGroans: 0
+  MinIdleGroanDelay: 3.5
+  MaxIdleGroanDelay: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

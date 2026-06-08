@@ -11,30 +11,46 @@ namespace LegendOfZed.Enemies
         public float ShoveDistance = 0.55f;
         public float ShoveSeconds = 0.14f;
         public float ExtraStaggerSeconds = 0.45f;
+        public bool PlayHitAudio = true;
 
         private ZedPrototypeZombieEnemy _zombie;
+        private ZedZombieAudioBridge _audioBridge;
         private Transform _playerTarget;
         private Coroutine _shoveRoutine;
 
         private void Awake()
         {
             _zombie = GetComponent<ZedPrototypeZombieEnemy>();
+            _audioBridge = GetComponent<ZedZombieAudioBridge>();
             FindPlayerTarget();
         }
 
         public void PlayBulletHitReaction()
         {
-            if (!EnableHitShove)
-            {
-                return;
-            }
-
             if (_zombie == null)
             {
                 _zombie = GetComponent<ZedPrototypeZombieEnemy>();
             }
 
             if (_zombie != null && _zombie.IsDead)
+            {
+                return;
+            }
+
+            if (PlayHitAudio)
+            {
+                if (_audioBridge == null)
+                {
+                    _audioBridge = GetComponent<ZedZombieAudioBridge>();
+                }
+
+                if (_audioBridge != null)
+                {
+                    _audioBridge.PlayHitAudio();
+                }
+            }
+
+            if (!EnableHitShove)
             {
                 return;
             }

@@ -15,6 +15,10 @@ namespace LegendOfZed.Player
         public float DamageInvulnerabilitySeconds = 0.65f;
         public bool LogDamageForTesting = true;
 
+        [Header("Audio")]
+        public ZedPlayerAudioBridge AudioBridge;
+        public bool PlayHurtAudio = true;
+
         [Header("Death")]
         public bool DisableMovementOnDeath = true;
         public bool DisableShootingOnDeath = true;
@@ -34,6 +38,10 @@ namespace LegendOfZed.Player
         {
             _movement = GetComponent<MovementCharacterController>();
             _shooter = GetComponent<ShooterController>();
+            if (AudioBridge == null)
+            {
+                AudioBridge = GetComponent<ZedPlayerAudioBridge>();
+            }
 
             if (CurrentHealth <= 0f)
             {
@@ -60,6 +68,11 @@ namespace LegendOfZed.Player
             if (_shooter == null)
             {
                 _shooter = GetComponent<ShooterController>();
+            }
+
+            if (AudioBridge == null)
+            {
+                AudioBridge = GetComponent<ZedPlayerAudioBridge>();
             }
         }
 
@@ -89,6 +102,11 @@ namespace LegendOfZed.Player
             _damageFlashUntilTime = Time.time + DamageFlashSeconds;
 
             CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+
+            if (PlayHurtAudio && AudioBridge != null)
+            {
+                AudioBridge.PlayHurtAudio();
+            }
 
             if (LogDamageForTesting)
             {
