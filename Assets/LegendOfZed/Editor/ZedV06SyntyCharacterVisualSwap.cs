@@ -13,7 +13,7 @@ namespace LegendOfZed.Editor
         private const string CharacterPrefabName = "Character_MercenaryMale_01";
         private const string NewVisualName = "Zed_Synty_Character_MercenaryMale_01_Visual";
         private const string HiddenRendererPrefix = "ZedHiddenOriginalRenderer_";
-        private const float SyntyVisualScaleMultiplier = 1.8f;
+        private const float SyntyVisualScaleMultiplier = 1.25f;
 
         [MenuItem("Legend of Zed/Setup/v0.6 Apply Synty Character Visual Only")]
         public static void ApplySyntyCharacterVisualOnly()
@@ -39,24 +39,22 @@ namespace LegendOfZed.Editor
                 return;
             }
 
-            Animator currentAnimator = playerController.MovCharController.PlayerAnimator;
-            Transform visualParent = currentAnimator.transform.parent != null ? currentAnimator.transform.parent : playerController.transform;
-
-            Transform existingVisual = visualParent.Find(NewVisualName);
-            if (existingVisual != null)
+            GameObject existingVisualObject = FindExistingSyntyVisualInScene();
+            if (existingVisualObject != null)
             {
-                existingVisual.localScale = Vector3.one * SyntyVisualScaleMultiplier;
-                EditorUtility.SetDirty(existingVisual.gameObject);
+                existingVisualObject.transform.localScale = Vector3.one * SyntyVisualScaleMultiplier;
+                EditorUtility.SetDirty(existingVisualObject);
                 EditorSceneManager.MarkSceneDirty(scene);
                 EditorSceneManager.SaveScene(scene, ScenePath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-                Debug.Log("v0.6 resized existing Synty character visual to scale multiplier " + SyntyVisualScaleMultiplier + ". No weapon data, ammo, projectiles, prefabs, or controller logic were changed.");
+                Debug.Log("v0.6 resized existing Synty character visual root " + existingVisualObject.name + " to scale multiplier " + SyntyVisualScaleMultiplier + ". No weapon data, ammo, projectiles, prefabs, or controller logic were changed.");
                 return;
             }
 
-            Animator originalAnimator = currentAnimator;
+            Animator originalAnimator = playerController.MovCharController.PlayerAnimator;
             Transform originalVisual = originalAnimator.transform;
+            Transform visualParent = originalVisual.parent != null ? originalVisual.parent : playerController.transform;
 
             RemoveExistingNewVisual(visualParent);
             RestoreRenderers(originalVisual);
@@ -97,6 +95,20 @@ namespace LegendOfZed.Editor
             AssetDatabase.Refresh();
 
             Debug.Log("v0.6 Synty visual-only character swap complete at scale multiplier " + SyntyVisualScaleMultiplier + ". Only the scene character visual renderers and MovementCharacterController.PlayerAnimator were changed. WeaponData, ShooterController, ammo, projectiles, prefabs, and weapon scripts were not changed.");
+        }
+
+        private static GameObject FindExistingSyntyVisualInScene()
+        {
+            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (GameObject sceneObject in allObjects)
+            {
+                if (sceneObject != null && sceneObject.name == NewVisualName)
+                {
+                    return sceneObject;
+                }
+            }
+
+            return null;
         }
 
         private static GameObject FindExactPrefab(string prefabName)
