@@ -35,6 +35,24 @@ namespace LegendOfZed.Editor
                 return;
             }
 
+            SetClipLooping("bored", true);
+            SetClipLooping("walk", true);
+            SetClipLooping("run", true);
+            SetClipLooping("atk bite", false);
+            SetClipLooping("atk left", false);
+            SetClipLooping("atk right", false);
+            SetClipLooping("atk right2", false);
+            SetClipLooping("atk two hand", false);
+
+            idle = FindClipByExactFbxName("bored");
+            walk = FindClipByExactFbxName("walk");
+            run = FindClipByExactFbxName("run");
+            attackBite = FindClipByExactFbxName("atk bite");
+            attackLeft = FindClipByExactFbxName("atk left");
+            attackRight = FindClipByExactFbxName("atk right");
+            attackRight2 = FindClipByExactFbxName("atk right2");
+            attackTwoHand = FindClipByExactFbxName("atk two hand");
+
             AnimatorController controller = CreateOrReplaceController();
             ConfigureController(controller, idle, walk, run, attackBite, attackLeft, attackRight, attackRight2, attackTwoHand);
             AssignControllerToPrototypeZombie(controller);
@@ -42,7 +60,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v1.0 zombie animator built from exact FBX filenames in " + AnimationRoot + ". Idle=bored, Walk=walk, Run=run, attacks=atk bite/left/right/right2/two hand. It will not use 'run on four' for Run. Player, weapons, bullets, WeaponData, ammo, projectile IDs, and v0.9 feedback were not changed.");
+            Debug.Log("v1.0 zombie animator built from exact FBX filenames in " + AnimationRoot + ". Idle=bored looped, Walk=walk looped, Run=run looped, attacks are one-shot. It will not use 'run on four' for Run. Player, weapons, bullets, WeaponData, ammo, projectile IDs, and v0.9 feedback were not changed.");
         }
 
         private static string MissingLabel(string label, Object asset)
@@ -70,6 +88,31 @@ namespace LegendOfZed.Editor
 
         private static AnimationClip FindClipByExactFbxName(string wantedName)
         {
+            string path = FindExactModelPath(wantedName);
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogWarning("v1.0 zombie animation setup could not find exact FBX/model filename: " + wantedName);
+                return null;
+            }
+
+            Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
+            foreach (Object asset in assets)
+            {
+                AnimationClip clip = asset as AnimationClip;
+                if (clip == null || clip.name.StartsWith("__preview__"))
+                {
+                    continue;
+                }
+
+                return clip;
+            }
+
+            Debug.LogWarning("v1.0 zombie animation setup found " + wantedName + " but no usable AnimationClip inside it.");
+            return null;
+        }
+
+        private static string FindExactModelPath(string wantedName)
+        {
             if (!AssetDatabase.IsValidFolder(AnimationRoot))
             {
                 Debug.LogWarning("v1.0 zombie animation setup could not find animation folder: " + AnimationRoot);
@@ -82,26 +125,59 @@ namespace LegendOfZed.Editor
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 string fileName = Normalize(Path.GetFileNameWithoutExtension(path));
-                if (fileName != wanted)
+                if (fileName == wanted)
                 {
-                    continue;
-                }
-
-                Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
-                foreach (Object asset in assets)
-                {
-                    AnimationClip clip = asset as AnimationClip;
-                    if (clip == null || clip.name.StartsWith("__preview__"))
-                    {
-                        continue;
-                    }
-
-                    return clip;
+                    return path;
                 }
             }
 
-            Debug.LogWarning("v1.0 zombie animation setup could not find exact FBX/model filename: " + wantedName);
             return null;
+        }
+
+        private static void SetClipLooping(string fbxName, bool loop)
+        {
+            string path = FindExactModelPath(fbxName);
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            ModelImporter importer = AssetImporter.GetAtPath(path) as ModelImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            ModelImporterClipAnimation[] clips = importer.clipAnimations;
+            if (clips == null || clips.Length == 0)
+            {
+                clips = importer.defaultClipAnimations;
+            }
+
+            bool changed = false;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if (clips[i].loopTime != loop)
+                {
+                    clips[i].loopTime = loop;
+                    changed = true;
+                }
+
+                if (clips[i].loopPose != loop)
+                {
+                    clips[i].loopPose = loop;
+                    changed = true;
+                }
+            }
+
+            if (!changed)
+            {
+                return;
+            }
+
+            importer.clipAnimations = clips;
+            EditorUtility.SetDirty(importer);
+            importer.SaveAndReimport();
         }
 
         private static string Normalize(string value)
