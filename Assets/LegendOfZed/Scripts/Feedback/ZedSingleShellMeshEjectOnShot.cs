@@ -13,10 +13,12 @@ namespace LegendOfZed.Feedback
         [Header("Visual Tuning")]
         public Vector3 PositionOffset = Vector3.zero;
         public Vector3 RotationOffsetEuler = Vector3.zero;
-        public Vector3 TossVelocity = new Vector3(0.3f, 0.22f, -0.16f);
-        public Vector3 RandomAngularVelocity = new Vector3(180f, 360f, 180f);
-        public float ShellScale = 1f;
-        public float ShellLifetime = 4f;
+        public Vector3 TossVelocity = new Vector3(0.02f, 0.28f, -0.55f);
+        public Vector3 RandomAngularVelocity = new Vector3(240f, 540f, 240f);
+        public float ShellScale = 1.6f;
+        public float ShellLifetime = 6f;
+        public float ShellMass = 0.025f;
+        public PhysicMaterial ShellBounceMaterial;
 
         private int _lastWeaponIndex = int.MinValue;
         private int _lastMagazineCount = -1;
@@ -118,8 +120,22 @@ namespace LegendOfZed.Feedback
                 shellRigidbody = shell.AddComponent<Rigidbody>();
             }
 
-            shellRigidbody.mass = 0.02f;
-            shellRigidbody.linearDamping = 0.1f;
+            Collider shellCollider = shell.GetComponent<Collider>();
+            if (shellCollider == null)
+            {
+                shellCollider = shell.AddComponent<BoxCollider>();
+            }
+
+            if (ShellBounceMaterial != null)
+            {
+                shellCollider.sharedMaterial = ShellBounceMaterial;
+            }
+
+            shellRigidbody.mass = ShellMass;
+            shellRigidbody.useGravity = true;
+            shellRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            shellRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            shellRigidbody.linearDamping = 0.08f;
             shellRigidbody.angularDamping = 0.05f;
             shellRigidbody.linearVelocity = source.TransformDirection(TossVelocity);
             shellRigidbody.angularVelocity = new Vector3(
