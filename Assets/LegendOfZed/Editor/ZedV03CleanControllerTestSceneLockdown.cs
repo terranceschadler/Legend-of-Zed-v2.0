@@ -1,4 +1,5 @@
 using System.IO;
+using TopDownShooter;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,7 +11,6 @@ namespace LegendOfZed.Editor
 {
     public static class ZedV03CleanControllerTestSceneLockdown
     {
-        private const string SourceScenePath = "Assets/Scenes/SampleScene.unity";
         private const string TargetFolder = "Assets/LegendOfZed/Scenes";
         private const string TargetScenePath = "Assets/LegendOfZed/Scenes/Zed_Controller_Test.unity";
         private const string MarkerName = "Zed_Controller_Test_Root";
@@ -18,9 +18,10 @@ namespace LegendOfZed.Editor
         [MenuItem("Legend of Zed/Setup/v0.3 Lock Clean Controller Test Scene")]
         public static void LockCleanControllerTestScene()
         {
-            if (!File.Exists(SourceScenePath))
+            string sourceScenePath = FindBestControllerDemoScene();
+            if (string.IsNullOrEmpty(sourceScenePath))
             {
-                Debug.LogWarning("v0.3 scene lockdown could not find source scene: " + SourceScenePath);
+                Debug.LogWarning("v0.3 scene lockdown could not find a TopDownShooterController scene containing PlayerController/ShooterController. Open the working package demo scene once, then rerun this menu.");
                 return;
             }
 
@@ -32,9 +33,9 @@ namespace LegendOfZed.Editor
                 AssetDatabase.DeleteAsset(TargetScenePath);
             }
 
-            if (!AssetDatabase.CopyAsset(SourceScenePath, TargetScenePath))
+            if (!AssetDatabase.CopyAsset(sourceScenePath, TargetScenePath))
             {
-                Debug.LogWarning("v0.3 scene lockdown failed to copy " + SourceScenePath + " to " + TargetScenePath);
+                Debug.LogWarning("v0.3 scene lockdown failed to copy " + sourceScenePath + " to " + TargetScenePath);
                 return;
             }
 
@@ -50,7 +51,60 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v0.3 clean controller test scene locked at " + TargetScenePath + ". Source scene was copied unchanged except for Input System UI module cleanup, root marker, and Build Settings scene path. No weapon data, ammo, projectiles, prefabs, controller logic, Synty, or materials were changed.");
+            Debug.Log("v0.3 clean controller test scene locked at " + TargetScenePath + ". Source scene copied from " + sourceScenePath + ". No weapon data, ammo, projectiles, prefabs, controller logic, Synty, or materials were changed.");
+        }
+
+        private static string FindBestControllerDemoScene()
+        {
+            string[] sceneGuids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets/TopDownShooterController" });
+            string bestPath = string.Empty;
+            int bestScore = int.MinValue;
+
+            foreach (string guid in sceneGuids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                if (string.IsNullOrEmpty(path) || !path.EndsWith(".unity"))
+                {
+                    continue;
+                }
+
+                if (path == TargetScenePath)
+                {
+                    continue;
+                }
+
+                int score = ScoreScenePath(path);
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestPath = path;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(bestPath) && bestScore > int.MinValue)
+            {
+                Debug.Log("v0.3 selected controller demo source scene: " + bestPath);
+                return bestPath;
+            }
+
+            return string.Empty;
+        }
+
+        private static int ScoreScenePath(string path)
+        {
+            string lowerPath = path.ToLowerInvariant();
+            int score = 0;
+
+            if (lowerPath.Contains("topdownshootercontroller")) score += 100;
+            if (lowerPath.Contains("demo")) score += 50;
+            if (lowerPath.Contains("1_demoscenepc")) score += 1000;
+            if (lowerPath.Contains("mainscene")) score += 700;
+            if (lowerPath.Contains("shooterenemy")) score += 500;
+            if (lowerPath.Contains("powers")) score -= 100;
+            if (lowerPath.Contains("movie")) score -= 200;
+            if (lowerPath.Contains("settings")) score -= 500;
+
+            return score;
         }
 
         private static void EnsureMarker(Scene scene)
