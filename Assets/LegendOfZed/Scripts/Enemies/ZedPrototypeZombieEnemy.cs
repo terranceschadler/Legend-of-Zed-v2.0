@@ -34,6 +34,9 @@ namespace LegendOfZed.Enemies
         public float StoppingDistance = 1.05f;
         public float SeparationRadius = 0.85f;
         public float SeparationStrength = 1.25f;
+        public bool UseRootMotionLocomotion = true;
+        public float RootMotionSpeedScale = 1f;
+        public float MaxRootMotionStep = 0.35f;
 
         [Header("Wander")]
         public float WanderRadius = 6f;
@@ -50,6 +53,8 @@ namespace LegendOfZed.Enemies
 
         private Vector3 _spawnPosition;
         private Vector3 _wanderDestination;
+        private Vector3 _desiredMoveDirection;
+        private float _desiredAnimationSpeed;
         private float _nextWanderPickTime;
         private float _wanderDestinationExpireTime;
         private float _nextAttackTime;
@@ -77,6 +82,7 @@ namespace LegendOfZed.Enemies
             }
 
             ConfigureAgentForPathOnly();
+            ConfigureAnimatorForRootMotion();
         }
 
         private void Start()
@@ -92,6 +98,7 @@ namespace LegendOfZed.Enemies
         private void OnEnable()
         {
             ConfigureAgentForPathOnly();
+            ConfigureAnimatorForRootMotion();
         }
 
         private void Update()
@@ -114,6 +121,35 @@ namespace LegendOfZed.Enemies
             }
         }
 
+        private void OnAnimatorMove()
+        {
+            if (!UseRootMotionLocomotion || Animator == null)
+            {
+                return;
+            }
+
+            if (_desiredMoveDirection.sqrMagnitude <= 0.0001f)
+            {
+                SyncAgentToTransform();
+                return;
+            }
+
+            Vector3 rootDelta = Animator.deltaPosition;
+            rootDelta.y = 0f;
+            float rootDistance = rootDelta.magnitude * RootMotionSpeedScale;
+
+            if (rootDistance <= 0.0001f)
+            {
+                SyncAgentToTransform();
+                return;
+            }
+
+            float clampedDistance = Mathf.Min(rootDistance, MaxRootMotionStep);
+            Vector3 nextPosition = transform.position + _desiredMoveDirection.normalized * clampedDistance;
+            transform.position = nextPosition;
+            SyncAgentToTransform();
+        }
+
         private void ConfigureAgentForPathOnly()
         {
             if (NavMeshAgent == null)
@@ -127,6 +163,16 @@ namespace LegendOfZed.Enemies
             NavMeshAgent.angularSpeed = TurnSpeed;
             NavMeshAgent.stoppingDistance = StoppingDistance;
             NavMeshAgent.autoBraking = true;
+        }
+
+        private void ConfigureAnimatorForRootMotion()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
+
+            Animator.applyRootMotion = UseRootMotionLocomotion;
         }
 
         private Transform FindPlayerTarget()
@@ -168,7 +214,7 @@ namespace LegendOfZed.Enemies
         {
             if (distanceToTarget <= AttackRange)
             {
-                SetMovingAnimation(0f);
+                StopLocomotionAnimation();
                 FaceTowards(Target.position);
                 TryAttack();
                 return;
@@ -176,7 +222,7 @@ namespace LegendOfZed.Enemies
 
             Vector3 desiredMove = GetPathMoveDirection(Target.position, ChaseSpeed);
             desiredMove += GetSeparationOffset();
-            MoveManually(desiredMove, ChaseSpeed);
+            DriveLocomotion(desiredMove, ChaseSpeed);
         }
 
         private void Wander()
@@ -188,13 +234,13 @@ namespace LegendOfZed.Enemies
                     PickWanderDestination(false);
                 }
 
-                SetMovingAnimation(0f);
+                StopLocomotionAnimation();
                 return;
             }
 
             Vector3 desiredMove = GetPathMoveDirection(_wanderDestination, WalkSpeed);
             desiredMove += GetSeparationOffset() * 0.5f;
-            MoveManually(desiredMove, WalkSpeed);
+            DriveLocomotion(desiredMove, WalkSpeed);
         }
 
         private void PickWanderDestination(bool immediate)
@@ -275,21 +321,40 @@ namespace LegendOfZed.Enemies
             return separation * SeparationStrength;
         }
 
-        private void MoveManually(Vector3 desiredDirection, float speed)
+        private void DriveLocomotion(Vector3 desiredDirection, float speed)
         {
             desiredDirection.y = 0f;
 
             if (desiredDirection.sqrMagnitude <= 0.0001f)
             {
-                SetMovingAnimation(0f);
+                StopLocomotionAnimation();
                 return;
             }
 
             Vector3 direction = desiredDirection.normalized;
-            transform.position += direction * speed * Time.deltaTime;
+            _desiredMoveDirection = direction;
+            _desiredAnimationSpeed = speed;
+
             FaceDirection(direction);
             SetMovingAnimation(speed);
 
+            if (!UseRootMotionLocomotion)
+            {
+                transform.position += direction * speed * Time.deltaTime;
+                SyncAgentToTransform();
+            }
+        }
+
+        private void StopLocomotionAnimation()
+        {
+            _desiredMoveDirection = Vector3.zero;
+            _desiredAnimationSpeed = 0f;
+            SetMovingAnimation(0f);
+            SyncAgentToTransform();
+        }
+
+        private void SyncAgentToTransform()
+        {
             if (NavMeshAgent != null && NavMeshAgent.enabled && NavMeshAgent.isOnNavMesh)
             {
                 NavMeshAgent.nextPosition = transform.position;
