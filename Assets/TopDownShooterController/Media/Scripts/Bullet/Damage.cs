@@ -1,5 +1,5 @@
-﻿using System;
-using LegendOfZed.Enemies;
+﻿using LegendOfZed.Enemies;
+using LegendOfZed.Runtime;
 using UnityEngine;
 
 namespace TopDownShooter
@@ -10,7 +10,12 @@ namespace TopDownShooter
         public GameObject BulletImpact;
         public GameObject EnemyBulletImpact;
 
-        [Header("DamageOnExplode")] public bool ExplodeDamageBullet;
+        [Header("Impact Cleanup")]
+        public float BulletImpactLifetime = 2f;
+        public float EnemyBulletImpactLifetime = 3f;
+
+        [Header("DamageOnExplode")]
+        public bool ExplodeDamageBullet;
         public float DamageRadius;
         public float ExplosionForcePower;
         public LayerMask RayCasterLayer;
@@ -29,8 +34,7 @@ namespace TopDownShooter
         public void SetupBullet(Vector3 launchForce, float bulletDamage)
         {
             DamagePower = bulletDamage;
-            RigidBodyComponent
-                .AddForce(launchForce);
+            RigidBodyComponent.AddForce(launchForce);
         }
 
         public void SetupMeleeAttack(float damage)
@@ -40,19 +44,23 @@ namespace TopDownShooter
 
         private void ExplodeDamage()
         {
-            var hitCollider = Physics.OverlapSphere(transform.position, DamageRadius, RayCasterLayer);
-            foreach (var hit in hitCollider)
+            Collider[] hitCollider = Physics.OverlapSphere(transform.position, DamageRadius, RayCasterLayer);
+            foreach (Collider hit in hitCollider)
             {
-                var rigidBody = hit.GetComponent<Rigidbody>();
+                Rigidbody rigidBody = hit.GetComponent<Rigidbody>();
 
                 ZedPrototypeZombieEnemy zedEnemy = hit.GetComponentInParent<ZedPrototypeZombieEnemy>();
                 if (zedEnemy != null)
                 {
                     zedEnemy.ApplyDamage(DamagePower);
                 }
-                else if (hit.GetComponent<HitPoint>())
+                else
                 {
-                    hit.GetComponent<HitPoint>().ApplyDamage(DamagePower);
+                    HitPoint hitPoint = hit.GetComponent<HitPoint>();
+                    if (hitPoint != null)
+                    {
+                        hitPoint.ApplyDamage(DamagePower);
+                    }
                 }
 
                 if (rigidBody)
@@ -64,14 +72,20 @@ namespace TopDownShooter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_impact) return;
+            if (_impact)
+            {
+                return;
+            }
+
             _impact = true;
+
             if (!ExplodeDamageBullet)
             {
                 ApplyDirectHitDamage(other);
             }
 
             SpawnImpactFeedback(other, other.ClosestPointOnBounds(transform.position));
+
             if (ExplodeDamageBullet)
             {
                 ExplodeDamage();
@@ -83,14 +97,21 @@ namespace TopDownShooter
 
         private void OnCollisionEnter(Collision other)
         {
-            if (_impact) return;
+            if (_impact)
+            {
+                return;
+            }
+
             _impact = true;
+
             if (!ExplodeDamageBullet)
             {
                 ApplyDirectHitDamage(other.collider);
             }
 
-            SpawnImpactFeedback(other.collider, other.contacts[0].point);
+            Vector3 contactPoint = other.contacts.Length > 0 ? other.contacts[0].point : transform.position;
+            SpawnImpactFeedback(other.collider, contactPoint);
+
             if (ExplodeDamageBullet)
             {
                 ExplodeDamage();
@@ -134,7 +155,14 @@ namespace TopDownShooter
                 return;
             }
 
-            Instantiate(impactPrefab, hitPoint, impactPrefab.transform.rotation);
+            GameObject spawnedImpact = Instantiate(impactPrefab, hitPoint, impactPrefab.transform.rotation);
+            ZedAutoDestroyAfterSeconds autoDestroy = spawnedImpact.GetComponent<ZedAutoDestroyAfterSeconds>();
+            if (autoDestroy == null)
+            {
+                autoDestroy = spawnedImpact.AddComponent<ZedAutoDestroyAfterSeconds>();
+            }
+
+            autoDestroy.Lifetime = IsEnemyHit(hitCollider) ? EnemyBulletImpactLifetime : BulletImpactLifetime;
         }
 
         private GameObject GetImpactPrefab(Collider hitCollider)
@@ -149,7 +177,10 @@ namespace TopDownShooter
 
         private static bool IsEnemyHit(Collider hitCollider)
         {
-            return hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>() != null || hitCollider.GetComponent<HitPoint>() != null || hitCollider.GetComponentInParent<HitPoint>() != null;
+            return hitCollider != null &&
+                   (hitCollider.GetComponentInParent<ZedPrototypeZombieEnemy>() != null ||
+                    hitCollider.GetComponent<HitPoint>() != null ||
+                    hitCollider.GetComponentInParent<HitPoint>() != null);
         }
 
         private void OnDrawGizmosSelected()
