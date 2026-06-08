@@ -64,6 +64,8 @@ namespace LegendOfZed.Enemies
         private float _nextWanderPickTime;
         private float _wanderDestinationExpireTime;
         private float _nextAttackTime;
+        private float _lastGroundedY;
+        private bool _hasLastGroundedY;
         private bool _hasWanderDestination;
         private bool _isChasing;
 
@@ -75,15 +77,8 @@ namespace LegendOfZed.Enemies
 
         private void Awake()
         {
-            if (NavMeshAgent == null)
-            {
-                NavMeshAgent = GetComponent<NavMeshAgent>();
-            }
-
-            if (Animator == null)
-            {
-                Animator = GetComponentInChildren<Animator>();
-            }
+            if (NavMeshAgent == null) NavMeshAgent = GetComponent<NavMeshAgent>();
+            if (Animator == null) Animator = GetComponentInChildren<Animator>();
 
             ConfigureAgentForPathOnly();
             ConfigureAnimatorForRootMotion();
@@ -93,11 +88,7 @@ namespace LegendOfZed.Enemies
 
         private void Start()
         {
-            if (Target == null)
-            {
-                Target = FindPlayerTarget();
-            }
-
+            if (Target == null) Target = FindPlayerTarget();
             SnapCurrentPositionToGround();
             PickWanderDestination(true);
         }
@@ -111,10 +102,7 @@ namespace LegendOfZed.Enemies
 
         private void Update()
         {
-            if (Target == null)
-            {
-                Target = FindPlayerTarget();
-            }
+            if (Target == null) Target = FindPlayerTarget();
 
             float distanceToTarget = Target != null ? Vector3.Distance(transform.position, Target.position) : float.PositiveInfinity;
             UpdateTargetState(distanceToTarget);
@@ -127,6 +115,11 @@ namespace LegendOfZed.Enemies
             {
                 Wander();
             }
+        }
+
+        private void LateUpdate()
+        {
+            SnapCurrentPositionToGround();
         }
 
         public void ApplyRootMotionDelta(Animator sourceAnimator)
@@ -146,7 +139,6 @@ namespace LegendOfZed.Enemies
             Vector3 rootDelta = sourceAnimator.deltaPosition;
             rootDelta.y = 0f;
             float rootDistance = rootDelta.magnitude * RootMotionSpeedScale;
-
             if (rootDistance <= 0.0001f)
             {
                 SnapCurrentPositionToGround();
@@ -162,11 +154,7 @@ namespace LegendOfZed.Enemies
 
         private void ConfigureAgentForPathOnly()
         {
-            if (NavMeshAgent == null)
-            {
-                return;
-            }
-
+            if (NavMeshAgent == null) return;
             NavMeshAgent.updatePosition = false;
             NavMeshAgent.updateRotation = false;
             NavMeshAgent.speed = ChaseSpeed;
@@ -177,21 +165,13 @@ namespace LegendOfZed.Enemies
 
         private void ConfigureAnimatorForRootMotion()
         {
-            if (Animator == null)
-            {
-                return;
-            }
-
-            Animator.applyRootMotion = UseRootMotionLocomotion;
+            if (Animator != null) Animator.applyRootMotion = UseRootMotionLocomotion;
         }
 
         private Transform FindPlayerTarget()
         {
             PlayerController playerController = FindFirstObjectByType<PlayerController>();
-            if (playerController != null)
-            {
-                return playerController.transform;
-            }
+            if (playerController != null) return playerController.transform;
 
             GameObject taggedPlayer = GameObject.FindGameObjectWithTag("Player");
             return taggedPlayer != null ? taggedPlayer.transform : null;
@@ -239,11 +219,7 @@ namespace LegendOfZed.Enemies
         {
             if (!_hasWanderDestination || Time.time >= _wanderDestinationExpireTime || Vector3.Distance(transform.position, _wanderDestination) <= WanderPointTolerance)
             {
-                if (Time.time >= _nextWanderPickTime)
-                {
-                    PickWanderDestination(false);
-                }
-
+                if (Time.time >= _nextWanderPickTime) PickWanderDestination(false);
                 StopLocomotionAnimation();
                 return;
             }
@@ -255,19 +231,13 @@ namespace LegendOfZed.Enemies
 
         private void PickWanderDestination(bool immediate)
         {
-            if (!immediate)
-            {
-                _nextWanderPickTime = Time.time + Random.Range(MinWanderWait, MaxWanderWait);
-            }
+            if (!immediate) _nextWanderPickTime = Time.time + Random.Range(MinWanderWait, MaxWanderWait);
 
             Vector2 randomCircle = Random.insideUnitCircle * WanderRadius;
             Vector3 candidate = _spawnPosition + new Vector3(randomCircle.x, 0f, randomCircle.y);
 
             NavMeshHit navHit;
-            if (NavMesh.SamplePosition(candidate, out navHit, WanderRadius, NavMesh.AllAreas))
-            {
-                candidate = navHit.position;
-            }
+            if (NavMesh.SamplePosition(candidate, out navHit, WanderRadius, NavMesh.AllAreas)) candidate = navHit.position;
 
             candidate = GetGroundedPosition(candidate);
             _wanderDestination = candidate;
@@ -285,10 +255,7 @@ namespace LegendOfZed.Enemies
                 NavMeshAgent.speed = speed;
                 Vector3 desiredVelocity = NavMeshAgent.desiredVelocity;
                 desiredVelocity.y = 0f;
-                if (desiredVelocity.sqrMagnitude > 0.0001f)
-                {
-                    return desiredVelocity.normalized;
-                }
+                if (desiredVelocity.sqrMagnitude > 0.0001f) return desiredVelocity.normalized;
             }
 
             Vector3 direct = destination - transform.position;
@@ -298,11 +265,7 @@ namespace LegendOfZed.Enemies
 
         private void SetAgentDestination(Vector3 destination)
         {
-            if (!HasUsableNavMeshAgent())
-            {
-                return;
-            }
-
+            if (!HasUsableNavMeshAgent()) return;
             NavMeshAgent.nextPosition = transform.position;
             NavMeshAgent.SetDestination(destination);
         }
@@ -320,18 +283,12 @@ namespace LegendOfZed.Enemies
             for (int i = 0; i < nearby.Length; i++)
             {
                 ZedPrototypeZombieEnemy otherZombie = nearby[i].GetComponentInParent<ZedPrototypeZombieEnemy>();
-                if (otherZombie == null || otherZombie == this)
-                {
-                    continue;
-                }
+                if (otherZombie == null || otherZombie == this) continue;
 
                 Vector3 away = transform.position - otherZombie.transform.position;
                 away.y = 0f;
                 float sqrMagnitude = away.sqrMagnitude;
-                if (sqrMagnitude > 0.0001f)
-                {
-                    separation += away.normalized / Mathf.Max(0.1f, sqrMagnitude);
-                }
+                if (sqrMagnitude > 0.0001f) separation += away.normalized / Mathf.Max(0.1f, sqrMagnitude);
             }
 
             return separation * SeparationStrength;
@@ -340,7 +297,6 @@ namespace LegendOfZed.Enemies
         private void DriveLocomotion(Vector3 desiredDirection, float speed)
         {
             desiredDirection.y = 0f;
-
             if (desiredDirection.sqrMagnitude <= 0.0001f)
             {
                 StopLocomotionAnimation();
@@ -349,7 +305,6 @@ namespace LegendOfZed.Enemies
 
             Vector3 direction = desiredDirection.normalized;
             _desiredMoveDirection = direction;
-
             FaceDirection(direction);
             SetMovingAnimation(speed);
 
@@ -371,21 +326,45 @@ namespace LegendOfZed.Enemies
 
         private Vector3 GetGroundedPosition(Vector3 position)
         {
-            if (!SnapToGround)
-            {
-                return position;
-            }
+            if (!SnapToGround) return position;
 
             Vector3 rayOrigin = position + Vector3.up * GroundProbeHeight;
             float rayDistance = GroundProbeHeight + GroundProbeDistance;
+            RaycastHit[] hits = Physics.RaycastAll(rayOrigin, Vector3.down, rayDistance, GroundLayers, QueryTriggerInteraction.Ignore);
 
-            RaycastHit hit;
-            if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayDistance, GroundLayers, QueryTriggerInteraction.Ignore))
+            float closestDistance = float.PositiveInfinity;
+            bool foundGround = false;
+            float groundY = position.y;
+
+            for (int i = 0; i < hits.Length; i++)
             {
-                position.y = hit.point.y + GroundOffset;
+                RaycastHit hit = hits[i];
+                if (hit.collider == null || IsOwnCollider(hit.collider)) continue;
+                if (hit.distance >= closestDistance) continue;
+
+                closestDistance = hit.distance;
+                groundY = hit.point.y + GroundOffset;
+                foundGround = true;
+            }
+
+            if (foundGround)
+            {
+                _lastGroundedY = groundY;
+                _hasLastGroundedY = true;
+                position.y = groundY;
+            }
+            else if (_hasLastGroundedY)
+            {
+                position.y = _lastGroundedY;
             }
 
             return position;
+        }
+
+        private bool IsOwnCollider(Collider hitCollider)
+        {
+            Transform hitTransform = hitCollider.transform;
+            return hitTransform == transform || hitTransform.IsChildOf(transform);
         }
 
         private void SnapCurrentPositionToGround()
@@ -395,10 +374,7 @@ namespace LegendOfZed.Enemies
 
         private void SyncAgentToTransform()
         {
-            if (HasUsableNavMeshAgent())
-            {
-                NavMeshAgent.nextPosition = transform.position;
-            }
+            if (HasUsableNavMeshAgent()) NavMeshAgent.nextPosition = transform.position;
         }
 
         private void FaceTowards(Vector3 worldPosition)
@@ -411,10 +387,7 @@ namespace LegendOfZed.Enemies
         private void FaceDirection(Vector3 direction)
         {
             direction.y = 0f;
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
+            if (direction.sqrMagnitude <= 0.0001f) return;
 
             Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, TurnSpeed * Time.deltaTime);
@@ -422,10 +395,7 @@ namespace LegendOfZed.Enemies
 
         private void TryAttack()
         {
-            if (Time.time < _nextAttackTime)
-            {
-                return;
-            }
+            if (Time.time < _nextAttackTime) return;
 
             _nextAttackTime = Time.time + AttackCooldown;
             TriggerAttackAnimation();
@@ -440,11 +410,7 @@ namespace LegendOfZed.Enemies
 
         private void SetMovingAnimation(float speed)
         {
-            if (Animator == null)
-            {
-                return;
-            }
-
+            if (Animator == null) return;
             Animator.SetFloat(SpeedHash, speed);
             Animator.SetBool(MovingHash, speed > 0.01f);
             Animator.SetBool(AttackingHash, false);
@@ -452,10 +418,7 @@ namespace LegendOfZed.Enemies
 
         private void TriggerAttackAnimation()
         {
-            if (Animator == null)
-            {
-                return;
-            }
+            if (Animator == null) return;
 
             int attackIndex = RandomizeAttackAnimations ? Random.Range(0, 5) : 0;
             Animator.SetInteger(AttackIndexHash, attackIndex);
