@@ -11,10 +11,10 @@ namespace LegendOfZed.Editor
     {
         private const string ScenePath = "Assets/LegendOfZed/Scenes/Zed_Controller_Test.unity";
         private const string AnchorName = "Zed_Synty_RightHand_WeaponPosition";
-        private const float WeaponSocketScaleMultiplier = 8f;
 
-        private static readonly Vector3 AnchorLocalPosition = new Vector3(0.055f, 0.015f, 0.02f);
-        private static readonly Vector3 AnchorLocalEulerAngles = new Vector3(82f, 0f, 92f);
+        private static readonly Vector3 AnchorLocalPosition = new Vector3(0.067f, 0.003f, 0.015f);
+        private static readonly Vector3 AnchorLocalEulerAngles = new Vector3(-22.004f, -181.868f, 102.104f);
+        private static readonly Vector3 AnchorLocalScale = new Vector3(60.57f, 60.57f, 60.57f);
 
         [MenuItem("Legend of Zed/Setup/v0.7 Align Weapon Visual To Synty Hand")]
         public static void AlignWeaponVisualToSyntyHand()
@@ -52,11 +52,9 @@ namespace LegendOfZed.Editor
                 anchor.SetParent(rightHand, false);
             }
 
-            Vector3 compensatedSocketScale = CalculateInverseWorldScale(rightHand.lossyScale) * WeaponSocketScaleMultiplier;
-
             anchor.localPosition = AnchorLocalPosition;
             anchor.localEulerAngles = AnchorLocalEulerAngles;
-            anchor.localScale = compensatedSocketScale;
+            anchor.localScale = AnchorLocalScale;
 
             shooterController.WeaponPosition = anchor;
 
@@ -67,25 +65,7 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v0.7 weapon visual alignment applied with socket scale multiplier " + WeaponSocketScaleMultiplier + ". RightHand lossyScale=" + rightHand.lossyScale + ", Anchor localScale=" + anchor.localScale + ". No WeaponData, BulletId, ammo, projectile prefab, weapon database entry, ShooterController code, or controller/root transform was changed.");
-        }
-
-        private static Vector3 CalculateInverseWorldScale(Vector3 parentLossyScale)
-        {
-            return new Vector3(
-                SafeInverse(parentLossyScale.x),
-                SafeInverse(parentLossyScale.y),
-                SafeInverse(parentLossyScale.z));
-        }
-
-        private static float SafeInverse(float value)
-        {
-            if (Mathf.Abs(value) < 0.0001f)
-            {
-                return 1f;
-            }
-
-            return 1f / value;
+            Debug.Log("v0.7 weapon visual alignment applied with tuned socket values. Position=" + AnchorLocalPosition + ", Rotation=" + AnchorLocalEulerAngles + ", Scale=" + AnchorLocalScale + ". No WeaponData, BulletId, ammo, projectile prefab, weapon database entry, ShooterController code, or controller/root transform was changed.");
         }
     }
 }
