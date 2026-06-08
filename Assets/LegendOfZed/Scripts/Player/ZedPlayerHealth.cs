@@ -13,7 +13,7 @@ namespace LegendOfZed.Player
 
         [Header("Damage Rules")]
         public float DamageInvulnerabilitySeconds = 0.65f;
-        public bool LogDamageForTesting = true;
+        public bool LogDamageForTesting = false;
 
         [Header("Audio")]
         public ZedPlayerAudioBridge AudioBridge;
@@ -25,7 +25,7 @@ namespace LegendOfZed.Player
         public string DeathMessage = "PLAYER DOWN";
 
         [Header("Debug HUD")]
-        public bool ShowDebugHud = true;
+        public bool ShowDebugHud = false;
         public bool ShowDamageFlash = true;
         public float DamageFlashSeconds = 0.22f;
 
@@ -173,17 +173,17 @@ namespace LegendOfZed.Player
 
         private void OnGUI()
         {
+            if (ShowDamageFlash && Time.time < _damageFlashUntilTime)
+            {
+                DrawDamageFlash();
+            }
+
             if (!ShowDebugHud)
             {
                 return;
             }
 
             DrawHealthHud();
-
-            if (ShowDamageFlash && Time.time < _damageFlashUntilTime)
-            {
-                DrawDamageFlash();
-            }
 
             if (IsDead)
             {

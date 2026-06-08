@@ -21802,13 +21802,13 @@ MonoBehaviour:
   CurrentHealth: 100
   IsDead: 0
   DamageInvulnerabilitySeconds: 0.65
-  LogDamageForTesting: 1
+  LogDamageForTesting: 0
   AudioBridge: {fileID: 7541030523133186561}
   PlayHurtAudio: 1
   DisableMovementOnDeath: 1
   DisableShootingOnDeath: 1
   DeathMessage: PLAYER DOWN
-  ShowDebugHud: 1
+  ShowDebugHud: 0
   ShowDamageFlash: 1
   DamageFlashSeconds: 0.22
 --- !u!114 &7541030523133186561
