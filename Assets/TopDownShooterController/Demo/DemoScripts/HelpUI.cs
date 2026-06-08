@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LegendOfZed.Input;
 using UnityEngine;
 using UnityEngine.UI;
 using TopDownShooter;
@@ -14,12 +13,16 @@ public class HelpUI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        JetPackFuel.text = ((int) Player.JetPackFuel).ToString();
+        if (JetPackFuel != null && Player != null)
+        {
+            JetPackFuel.text = ((int)Player.JetPackFuel).ToString();
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        ZedInputReader input = ZedInputReader.Instance;
+        if (input != null && input.PausePressedThisFrame && LoadSceneScript != null)
         {
             LoadSceneScript.LoadNewScene("MainScene");
         }
