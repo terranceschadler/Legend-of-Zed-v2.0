@@ -54,7 +54,6 @@ namespace LegendOfZed.Enemies
         private Vector3 _spawnPosition;
         private Vector3 _wanderDestination;
         private Vector3 _desiredMoveDirection;
-        private float _desiredAnimationSpeed;
         private float _nextWanderPickTime;
         private float _wanderDestinationExpireTime;
         private float _nextAttackTime;
@@ -121,9 +120,9 @@ namespace LegendOfZed.Enemies
             }
         }
 
-        private void OnAnimatorMove()
+        public void ApplyRootMotionDelta(Animator sourceAnimator)
         {
-            if (!UseRootMotionLocomotion || Animator == null)
+            if (!UseRootMotionLocomotion || sourceAnimator == null)
             {
                 return;
             }
@@ -134,7 +133,7 @@ namespace LegendOfZed.Enemies
                 return;
             }
 
-            Vector3 rootDelta = Animator.deltaPosition;
+            Vector3 rootDelta = sourceAnimator.deltaPosition;
             rootDelta.y = 0f;
             float rootDistance = rootDelta.magnitude * RootMotionSpeedScale;
 
@@ -145,8 +144,7 @@ namespace LegendOfZed.Enemies
             }
 
             float clampedDistance = Mathf.Min(rootDistance, MaxRootMotionStep);
-            Vector3 nextPosition = transform.position + _desiredMoveDirection.normalized * clampedDistance;
-            transform.position = nextPosition;
+            transform.position += _desiredMoveDirection.normalized * clampedDistance;
             SyncAgentToTransform();
         }
 
@@ -269,7 +267,7 @@ namespace LegendOfZed.Enemies
         {
             SetAgentDestination(destination);
 
-            if (NavMeshAgent != null && NavMeshAgent.enabled && NavMeshAgent.isOnNavMesh)
+            if (HasUsableNavMeshAgent())
             {
                 NavMeshAgent.speed = speed;
                 Vector3 desiredVelocity = NavMeshAgent.desiredVelocity;
@@ -287,13 +285,18 @@ namespace LegendOfZed.Enemies
 
         private void SetAgentDestination(Vector3 destination)
         {
-            if (NavMeshAgent == null || !NavMeshAgent.enabled || !NavMeshAgent.isOnNavMesh)
+            if (!HasUsableNavMeshAgent())
             {
                 return;
             }
 
             NavMeshAgent.nextPosition = transform.position;
             NavMeshAgent.SetDestination(destination);
+        }
+
+        private bool HasUsableNavMeshAgent()
+        {
+            return NavMeshAgent != null && NavMeshAgent.enabled && NavMeshAgent.isOnNavMesh;
         }
 
         private Vector3 GetSeparationOffset()
@@ -333,7 +336,6 @@ namespace LegendOfZed.Enemies
 
             Vector3 direction = desiredDirection.normalized;
             _desiredMoveDirection = direction;
-            _desiredAnimationSpeed = speed;
 
             FaceDirection(direction);
             SetMovingAnimation(speed);
@@ -348,14 +350,13 @@ namespace LegendOfZed.Enemies
         private void StopLocomotionAnimation()
         {
             _desiredMoveDirection = Vector3.zero;
-            _desiredAnimationSpeed = 0f;
             SetMovingAnimation(0f);
             SyncAgentToTransform();
         }
 
         private void SyncAgentToTransform()
         {
-            if (NavMeshAgent != null && NavMeshAgent.enabled && NavMeshAgent.isOnNavMesh)
+            if (HasUsableNavMeshAgent())
             {
                 NavMeshAgent.nextPosition = transform.position;
             }
