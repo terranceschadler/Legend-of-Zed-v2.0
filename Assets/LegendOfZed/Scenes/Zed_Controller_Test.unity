@@ -15189,7 +15189,7 @@ MonoBehaviour:
   DeathDisableDelay: 999
   RagdollOnDeath: 1
   StaggerOnBulletHit: 1
-  HitStaggerSeconds: 0.16
+  HitStaggerSeconds: 0.45
   FaceAttackerOnHit: 0
   DetectionRange: 11
   LoseTargetRange: 15
