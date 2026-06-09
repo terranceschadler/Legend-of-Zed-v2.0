@@ -1,12 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace LegendOfZed.Runtime
 {
     /// <summary>
-    /// Runtime bridge between the imported legacy map tile generator and the current top-down controller scene flow.
-    ///
-    /// This keeps
+    /// Bridges the imported legacy map tile generator into the playable top-down scene without editing the legacy package.
+    /// Attach this to the same scene as the legacy generator. It waits for tiles
