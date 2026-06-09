@@ -158,6 +158,7 @@ MonoBehaviour:
   - {fileID: 3861404993499561602, guid: b06172f24fa7b604a919aef93da5bd29, type: 3}
   - {fileID: 3861404993499561602, guid: 2838e22dec252be46929dc6dda606c26, type: 3}
   - {fileID: 7434624236691401900, guid: 0fd8429797094f14b9b38cfa3e19a9cb, type: 3}
+  - {fileID: 7434624236691401900, guid: 2622cb591e4cb4e4e82a0340fa356fa0, type: 3}
   tileCount: 22
   tileGridSize: 20
   bakingNavMeshCompleted: 0
@@ -170,6 +171,62 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645172292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &743326654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 743326656}
+  - component: {fileID: 743326655}
+  m_Layer: 0
+  m_Name: Zed_MapTile_BoundaryWallBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &743326655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743326654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a50f244f1cab40cfa36f71cde1ea8988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedMapTileBoundaryWallBuilder
+  generator: {fileID: 645172293}
+  wallRootName: Generated_Map_Boundary_Walls
+  wallHeight: 5
+  wallThickness: 1.5
+  yCenter: 2.5
+  addVisibleWallMesh: 1
+  rebuildAutomatically: 1
+  maxFootprintCenterY: 1.25
+  minFootprintSize: 8
+  coordinateTolerance: 0.05
+  includeInternalHoles: 1
+  logDetails: 0
+--- !u!4 &743326656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743326654}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -500,61 +557,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2122139258
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2122139260}
-  - component: {fileID: 2122139259}
-  m_Layer: 0
-  m_Name: Zed_MapTile_BoundaryWallBuilder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2122139259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122139258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35cda5e63a244d3bbe12ab41b2c07d9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedMapTileBoundaryWallBuilder
-  generator: {fileID: 645172293}
-  wallRootName: Generated_Map_Boundary_Walls
-  wallHeight: 5
-  wallThickness: 1.5
-  yCenter: 2.5
-  addVisibleWallMesh: 1
-  rebuildAutomatically: 1
-  maxFootprintCenterY: 1.25
-  minFootprintSize: 8
-  coordinateTolerance: 0.05
-  logDetails: 0
---- !u!4 &2122139260
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122139258}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -563,4 +565,4 @@ SceneRoots:
   - {fileID: 973287007}
   - {fileID: 645172294}
   - {fileID: 1249786258}
-  - {fileID: 2122139260}
+  - {fileID: 743326656}
