@@ -53,7 +53,8 @@ namespace LegendOfZed.Editor
             manager.ReuseExistingGeneratedRoot = true;
             manager.PersistGeneratedRootAcrossScenes = true;
             manager.ClearBeforeGenerate = true;
-            manager.CreateDebugBlockVisuals = true;
+            manager.BlockVisualMode = ZedOverworldGenerationManager.VisualMode.ArtPrefabsWithDebugFallback;
+            manager.CreateDebugFallbackVisuals = true;
 
             EnsureCamera();
             EnsureLight();
@@ -65,13 +66,13 @@ namespace LegendOfZed.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log("v2.2 seeded overworld scene created at " + ScenePath + ". Open it and press Play to verify seeded persistence foundation.");
+            Debug.Log("v2.2 seeded overworld scene created at " + ScenePath + ". Open it and press Play or run v2.3 rebuild to verify seeded persistence foundation.");
         }
 
         [MenuItem("Legend of Zed/Setup/v2.2 Generate Seeded Overworld Now")]
         public static void GenerateSeededOverworldNow()
         {
-            ZedOverworldGenerationManager manager = Object.FindFirstObjectByType<ZedOverworldGenerationManager>();
+            ZedOverworldGenerationManager manager = Object.FindAnyObjectByType<ZedOverworldGenerationManager>();
             if (manager == null)
             {
                 Debug.LogWarning("No ZedOverworldGenerationManager found in the open scene. Run v2.2 Create Seeded Overworld Scene first.");
@@ -91,7 +92,7 @@ namespace LegendOfZed.Editor
         [MenuItem("Legend of Zed/Setup/v2.2 Validate Seeded Overworld Foundation")]
         public static void ValidateSeededOverworldFoundation()
         {
-            ZedOverworldGenerationManager manager = Object.FindFirstObjectByType<ZedOverworldGenerationManager>();
+            ZedOverworldGenerationManager manager = Object.FindAnyObjectByType<ZedOverworldGenerationManager>();
             if (manager == null)
             {
                 Debug.LogWarning("Missing ZedOverworldGenerationManager.");
@@ -143,7 +144,7 @@ namespace LegendOfZed.Editor
 
         private static void EnsureCamera()
         {
-            if (Object.FindFirstObjectByType<Camera>() != null)
+            if (Object.FindAnyObjectByType<Camera>() != null)
             {
                 return;
             }
@@ -158,7 +159,7 @@ namespace LegendOfZed.Editor
 
         private static void EnsureLight()
         {
-            if (Object.FindFirstObjectByType<Light>() != null)
+            if (Object.FindAnyObjectByType<Light>() != null)
             {
                 return;
             }

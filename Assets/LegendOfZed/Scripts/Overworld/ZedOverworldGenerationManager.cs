@@ -9,6 +9,12 @@ namespace LegendOfZed.Overworld
     {
         public const string GeneratedRootName = "Zed_Seeded_Overworld_Root";
 
+        public enum VisualMode
+        {
+            DebugOnly = 0,
+            ArtPrefabsWithDebugFallback = 1
+        }
+
         [Header("Seed")]
         public int OverworldSeed = 2200;
         public bool RandomizeSeedOnNewGame = false;
@@ -29,8 +35,28 @@ namespace LegendOfZed.Overworld
         public bool PersistGeneratedRootAcrossScenes = true;
         public bool ClearBeforeGenerate = true;
 
-        [Header("Debug Foundation Visuals")]
-        public bool CreateDebugBlockVisuals = true;
+        [Header("Visual Mode")]
+        public VisualMode BlockVisualMode = VisualMode.ArtPrefabsWithDebugFallback;
+        public bool CreateDebugFallbackVisuals = true;
+
+        [Header("Road / Sidewalk Art")]
+        public List<GameObject> RoadIntersectionPrefabs = new List<GameObject>();
+        public List<GameObject> RoadStraightPrefabs = new List<GameObject>();
+        public List<GameObject> SidewalkPrefabs = new List<GameObject>();
+
+        [Header("Building Art")]
+        public List<GameObject> BuildingPrefabs = new List<GameObject>();
+        public Vector3 BuildingLocalOffset = Vector3.zero;
+        public Vector3 BuildingLocalScale = Vector3.one;
+
+        [Header("Park Art")]
+        public List<GameObject> ParkGroundPrefabs = new List<GameObject>();
+        public List<GameObject> ParkTreePrefabs = new List<GameObject>();
+        public List<GameObject> ParkBushPrefabs = new List<GameObject>();
+        public int ParkTreeCount = 5;
+        public int ParkBushCount = 8;
+
+        [Header("Debug Materials")]
         public Material RoadDebugMaterial;
         public Material SidewalkDebugMaterial;
         public Material BuildingLotDebugMaterial;
@@ -214,13 +240,151 @@ namespace LegendOfZed.Overworld
             block.BlockType = type;
             block.Seed = OverworldSeed;
             block.EnterableBuildingCandidate = enterable;
-
             GeneratedBlocks.Add(block);
 
-            if (CreateDebugBlockVisuals)
+            bool usedArt = false;
+            if (BlockVisualMode == VisualMode.ArtPrefabsWithDebugFallback)
+            {
+                usedArt = CreateArtVisual(blockObject.transform, coord, type, enterable);
+            }
+
+            if (!usedArt && CreateDebugFallbackVisuals)
             {
                 CreateDebugVisual(blockObject.transform, type, enterable);
             }
+        }
+
+        private bool CreateArtVisual(Transform parent, Vector2Int coord, ZedOverworldBlockType type, bool enterable)
+        {
+            if (type == ZedOverworldBlockType.Road)
+            {
+                return CreateRoadArt(parent, coord);
+            }
+
+            if (type == ZedOverworldBlockType.Park)
+            {
+                return CreateParkArt(parent, coord);
+            }
+
+            return CreateBuildingLotArt(parent, coord, enterable);
+        }
+
+        private bool CreateRoadArt(Transform parent, Vector2Int coord)
+        {
+            bool usedAny = false;
+            GameObject roadPrefab = GetDeterministicPrefab(RoadIntersectionPrefabs.Count > 0 ? RoadIntersectionPrefabs : RoadStraightPrefabs, coord, 101);
+            if (roadPrefab != null)
+            {
+                GameObject road = InstantiatePrefab(roadPrefab, parent, "RoadArt");
+                road.transform.localPosition = Vector3.zero;
+                usedAny = true;
+            }
+
+            if (SidewalkPrefabs.Count > 0)
+            {
+                float size = Mathf.Max(8f, BlockSize);
+                Vector3[] positions =
+                {
+                    new Vector3(0f, 0f, size * 0.46f),
+                    new Vector3(0f, 0f, -size * 0.46f),
+                    new Vector3(size * 0.46f, 0f, 0f),
+                    new Vector3(-size * 0.46f, 0f, 0f)
+                };
+
+                Vector3[] rotations =
+                {
+                    Vector3.zero,
+                    new Vector3(0f, 180f, 0f),
+                    new Vector3(0f, 90f, 0f),
+                    new Vector3(0f, -90f, 0f)
+                };
+
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    GameObject sidewalkPrefab = GetDeterministicPrefab(SidewalkPrefabs, coord, 200 + i);
+                    if (sidewalkPrefab == null)
+                    {
+                        continue;
+                    }
+
+                    GameObject sidewalk = InstantiatePrefab(sidewalkPrefab, parent, "SidewalkArt");
+                    sidewalk.transform.localPosition = positions[i];
+                    sidewalk.transform.localRotation = Quaternion.Euler(rotations[i]);
+                    usedAny = true;
+                }
+            }
+
+            return usedAny;
+        }
+
+        private bool CreateBuildingLotArt(Transform parent, Vector2Int coord, bool enterable)
+        {
+            GameObject buildingPrefab = GetDeterministicPrefab(BuildingPrefabs, coord, 301);
+            if (buildingPrefab == null)
+            {
+                return false;
+            }
+
+            GameObject building = InstantiatePrefab(buildingPrefab, parent, enterable ? "EnterableBuildingArt" : "BuildingArt");
+            building.transform.localPosition = BuildingLocalOffset;
+            building.transform.localRotation = Quaternion.Euler(0f, DeterministicInt(coord, 302, 0, 4) * 90f, 0f);
+            building.transform.localScale = BuildingLocalScale;
+
+            if (enterable)
+            {
+                GameObject marker = new GameObject("EnterablePortalCandidate");
+                marker.transform.SetParent(parent, false);
+                marker.transform.localPosition = new Vector3(0f, 0f, -Mathf.Max(8f, BlockSize) * 0.38f);
+            }
+
+            return true;
+        }
+
+        private bool CreateParkArt(Transform parent, Vector2Int coord)
+        {
+            bool usedAny = false;
+            GameObject groundPrefab = GetDeterministicPrefab(ParkGroundPrefabs, coord, 401);
+            if (groundPrefab != null)
+            {
+                GameObject ground = InstantiatePrefab(groundPrefab, parent, "ParkGroundArt");
+                ground.transform.localPosition = Vector3.zero;
+                usedAny = true;
+            }
+
+            float size = Mathf.Max(8f, BlockSize);
+            int treeCount = Mathf.Max(0, ParkTreeCount);
+            for (int i = 0; i < treeCount; i++)
+            {
+                GameObject treePrefab = GetDeterministicPrefab(ParkTreePrefabs, coord, 500 + i);
+                if (treePrefab == null)
+                {
+                    continue;
+                }
+
+                Vector3 pos = DeterministicLocalParkPosition(coord, 600 + i, size);
+                GameObject tree = InstantiatePrefab(treePrefab, parent, "ParkTreeArt");
+                tree.transform.localPosition = pos;
+                tree.transform.localRotation = Quaternion.Euler(0f, DeterministicInt(coord, 700 + i, 0, 360), 0f);
+                usedAny = true;
+            }
+
+            int bushCount = Mathf.Max(0, ParkBushCount);
+            for (int i = 0; i < bushCount; i++)
+            {
+                GameObject bushPrefab = GetDeterministicPrefab(ParkBushPrefabs, coord, 800 + i);
+                if (bushPrefab == null)
+                {
+                    continue;
+                }
+
+                Vector3 pos = DeterministicLocalParkPosition(coord, 900 + i, size);
+                GameObject bush = InstantiatePrefab(bushPrefab, parent, "ParkBushArt");
+                bush.transform.localPosition = pos;
+                bush.transform.localRotation = Quaternion.Euler(0f, DeterministicInt(coord, 1000 + i, 0, 360), 0f);
+                usedAny = true;
+            }
+
+            return usedAny;
         }
 
         private void CreateDebugVisual(Transform parent, ZedOverworldBlockType type, bool enterable)
@@ -256,6 +420,15 @@ namespace LegendOfZed.Overworld
             }
         }
 
+        private GameObject InstantiatePrefab(GameObject prefab, Transform parent, string namePrefix)
+        {
+            GameObject instance = Instantiate(prefab, parent);
+            instance.name = namePrefix + "_" + prefab.name;
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localRotation = Quaternion.identity;
+            return instance;
+        }
+
         private GameObject CreateBox(string name, Transform parent, Vector3 localPosition, Vector3 scale, Material material)
         {
             GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -272,6 +445,50 @@ namespace LegendOfZed.Overworld
             }
 
             return box;
+        }
+
+        private GameObject GetDeterministicPrefab(List<GameObject> prefabs, Vector2Int coord, int salt)
+        {
+            if (prefabs == null || prefabs.Count == 0)
+            {
+                return null;
+            }
+
+            int index = DeterministicInt(coord, salt, 0, prefabs.Count);
+            for (int i = 0; i < prefabs.Count; i++)
+            {
+                GameObject prefab = prefabs[(index + i) % prefabs.Count];
+                if (prefab != null)
+                {
+                    return prefab;
+                }
+            }
+
+            return null;
+        }
+
+        private Vector3 DeterministicLocalParkPosition(Vector2Int coord, int salt, float size)
+        {
+            float range = size * 0.34f;
+            float x = DeterministicFloat(coord, salt, -range, range);
+            float z = DeterministicFloat(coord, salt + 1, -range, range);
+            return new Vector3(x, 0f, z);
+        }
+
+        private int DeterministicInt(Vector2Int coord, int salt, int minInclusive, int maxExclusive)
+        {
+            if (maxExclusive <= minInclusive)
+            {
+                return minInclusive;
+            }
+
+            float value = RandomValue(coord, salt);
+            return minInclusive + Mathf.FloorToInt(value * (maxExclusive - minInclusive));
+        }
+
+        private float DeterministicFloat(Vector2Int coord, int salt, float min, float max)
+        {
+            return Mathf.Lerp(min, max, RandomValue(coord, salt));
         }
 
         private float RandomValue(Vector2Int coord, int salt)
