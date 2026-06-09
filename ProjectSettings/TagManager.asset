@@ -11,6 +11,7 @@ TagManager:
   - Walkable
   - Gateway
   - MapGenerator
+  - TreeSpawn
   layers:
   - Default
   - TransparentFX
