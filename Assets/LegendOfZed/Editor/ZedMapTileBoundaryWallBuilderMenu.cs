@@ -30,12 +30,13 @@ namespace LegendOfZed.Editor
             builder.maxFootprintCenterY = 1.25f;
             builder.minFootprintSize = 8f;
             builder.coordinateTolerance = 0.05f;
+            builder.includeInternalHoles = true;
             builder.logDetails = false;
 
             EditorUtility.SetDirty(builder);
             Selection.activeObject = builder.gameObject;
 
-            Debug.Log("Floor-footprint perimeter boundary wall builder added/updated in scene.", builder);
+            Debug.Log("Boundary wall builder added/updated in scene. Internal holes will be blocked.", builder);
         }
 
         [MenuItem(MenuRoot + "Remove Boundary Walls From Scene")]

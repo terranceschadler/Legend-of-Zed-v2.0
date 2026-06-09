@@ -10,7 +10,7 @@ namespace LegendOfZed.MapIntegration
         [Header("Generator")]
         public ZedLegacyRandomMapGenerator generator;
 
-        [Header("Footprint Perimeter Wall")]
+        [Header("Footprint Boundary Wall")]
         public string wallRootName = "Generated_Map_Boundary_Walls";
         public float wallHeight = 5f;
         public float wallThickness = 1.5f;
@@ -19,7 +19,7 @@ namespace LegendOfZed.MapIntegration
         public bool rebuildAutomatically = true;
 
         [Header("Tile Footprint Detection")]
-        [Tooltip("Only low renderers can be selected as a tile footprint. This prevents buildings/props from expanding the perimeter.")]
+        [Tooltip("Only low renderers can be selected as a tile footprint. This prevents buildings/props from expanding the boundary.")]
         public float maxFootprintCenterY = 1.25f;
 
         [Tooltip("Ignore small props/deco when selecting the tile footprint renderer.")]
@@ -27,6 +27,10 @@ namespace LegendOfZed.MapIntegration
 
         [Tooltip("Small coordinate tolerance used when merging rectangle edges.")]
         public float coordinateTolerance = 0.05f;
+
+        [Header("Boundary Rules")]
+        [Tooltip("When enabled, boundary walls are also generated around enclosed holes/voids inside the generated map footprint.")]
+        public bool includeInternalHoles = true;
 
         [Header("Debug")]
         public bool logDetails;
@@ -45,7 +49,7 @@ namespace LegendOfZed.MapIntegration
             public float fixedCoord;
             public float start;
             public float end;
-            public int outsideSign;
+            public int outwardSign;
         }
 
         private IEnumerator Start()
@@ -86,8 +90,8 @@ namespace LegendOfZed.MapIntegration
                 return;
             }
 
-            List<Edge> perimeterEdges = BuildUnionPerimeterEdges(footprints);
-            perimeterEdges = MergeCollinearEdges(perimeterEdges);
+            List<Edge> boundaryEdges = BuildFootprintBoundaryEdges(footprints);
+            boundaryEdges = MergeCollinearEdges(boundaryEdges);
 
             GameObject oldRoot = GameObject.Find(wallRootName);
             if (oldRoot != null)
@@ -104,16 +108,20 @@ namespace LegendOfZed.MapIntegration
 
             GameObject root = new GameObject(wallRootName);
 
-            for (int i = 0; i < perimeterEdges.Count; i++)
+            for (int i = 0; i < boundaryEdges.Count; i++)
             {
-                EmitWall(root.transform, perimeterEdges[i], i);
+                EmitWall(root.transform, boundaryEdges[i], i);
             }
 
-            Debug.Log("Generated floor-footprint perimeter boundary walls built. Segments=" + perimeterEdges.Count + ". Tile footprints=" + footprints.Count + ".", root);
+            Debug.Log(
+                "Generated footprint boundary walls built. Segments=" + boundaryEdges.Count +
+                ". Tile footprints=" + footprints.Count +
+                ". Internal holes=" + (includeInternalHoles ? "included" : "ignored") + ".",
+                root);
 
             if (logDetails)
             {
-                Debug.Log("Footprint perimeter builder used " + footprints.Count + " tile footprint rectangle(s).", root);
+                Debug.Log("Footprint boundary builder used " + footprints.Count + " tile footprint rectangle(s).", root);
             }
         }
 
@@ -234,7 +242,7 @@ namespace LegendOfZed.MapIntegration
                    name.Contains("pavement") || parent.Contains("pavement");
         }
 
-        private List<Edge> BuildUnionPerimeterEdges(List<Rect2> rectangles)
+        private List<Edge> BuildFootprintBoundaryEdges(List<Rect2> rectangles)
         {
             List<float> xs = new List<float>();
             List<float> zs = new List<float>();
@@ -252,6 +260,7 @@ namespace LegendOfZed.MapIntegration
 
             int width = xs.Count - 1;
             int height = zs.Count - 1;
+
             bool[,] filled = new bool[width, height];
 
             for (int x = 0; x < width; x++)
@@ -274,7 +283,7 @@ namespace LegendOfZed.MapIntegration
                 }
             }
 
-            bool[,] outside = FloodOutside(filled, width, height);
+            bool[,] outside = includeInternalHoles ? null : FloodOutside(filled, width, height);
 
             List<Edge> edges = new List<Edge>();
 
@@ -287,8 +296,9 @@ namespace LegendOfZed.MapIntegration
                         continue;
                     }
 
-                    // North edge.
-                    if (z + 1 >= height || outside[x, z + 1])
+                    // North
+                    bool northIsEmpty = z + 1 >= height || !filled[x, z + 1];
+                    if (northIsEmpty && (includeInternalHoles || (z + 1 >= height || outside[x, z + 1])))
                     {
                         edges.Add(new Edge
                         {
@@ -296,12 +306,13 @@ namespace LegendOfZed.MapIntegration
                             fixedCoord = zs[z + 1],
                             start = xs[x],
                             end = xs[x + 1],
-                            outsideSign = 1
+                            outwardSign = 1
                         });
                     }
 
-                    // South edge.
-                    if (z - 1 < 0 || outside[x, z - 1])
+                    // South
+                    bool southIsEmpty = z - 1 < 0 || !filled[x, z - 1];
+                    if (southIsEmpty && (includeInternalHoles || (z - 1 < 0 || outside[x, z - 1])))
                     {
                         edges.Add(new Edge
                         {
@@ -309,12 +320,13 @@ namespace LegendOfZed.MapIntegration
                             fixedCoord = zs[z],
                             start = xs[x],
                             end = xs[x + 1],
-                            outsideSign = -1
+                            outwardSign = -1
                         });
                     }
 
-                    // East edge.
-                    if (x + 1 >= width || outside[x + 1, z])
+                    // East
+                    bool eastIsEmpty = x + 1 >= width || !filled[x + 1, z];
+                    if (eastIsEmpty && (includeInternalHoles || (x + 1 >= width || outside[x + 1, z])))
                     {
                         edges.Add(new Edge
                         {
@@ -322,12 +334,13 @@ namespace LegendOfZed.MapIntegration
                             fixedCoord = xs[x + 1],
                             start = zs[z],
                             end = zs[z + 1],
-                            outsideSign = 1
+                            outwardSign = 1
                         });
                     }
 
-                    // West edge.
-                    if (x - 1 < 0 || outside[x - 1, z])
+                    // West
+                    bool westIsEmpty = x - 1 < 0 || !filled[x - 1, z];
+                    if (westIsEmpty && (includeInternalHoles || (x - 1 < 0 || outside[x - 1, z])))
                     {
                         edges.Add(new Edge
                         {
@@ -335,7 +348,7 @@ namespace LegendOfZed.MapIntegration
                             fixedCoord = xs[x],
                             start = zs[z],
                             end = zs[z + 1],
-                            outsideSign = -1
+                            outwardSign = -1
                         });
                     }
                 }
@@ -415,7 +428,7 @@ namespace LegendOfZed.MapIntegration
                     return fixedCompare;
                 }
 
-                int signCompare = a.outsideSign.CompareTo(b.outsideSign);
+                int signCompare = a.outwardSign.CompareTo(b.outwardSign);
                 if (signCompare != 0)
                 {
                     return signCompare;
@@ -439,7 +452,7 @@ namespace LegendOfZed.MapIntegration
                 Edge last = merged[merged.Count - 1];
                 if (last.horizontal == current.horizontal &&
                     Mathf.Abs(last.fixedCoord - current.fixedCoord) <= coordinateTolerance &&
-                    last.outsideSign == current.outsideSign &&
+                    last.outwardSign == current.outwardSign &&
                     Mathf.Abs(last.end - current.start) <= coordinateTolerance)
                 {
                     last.end = current.end;
@@ -467,13 +480,13 @@ namespace LegendOfZed.MapIntegration
 
             if (edge.horizontal)
             {
-                float z = edge.fixedCoord + edge.outsideSign * wallThickness * 0.5f;
+                float z = edge.fixedCoord + edge.outwardSign * wallThickness * 0.5f;
                 center = new Vector3((edge.start + edge.end) * 0.5f, yCenter, z);
                 size = new Vector3(length + wallThickness, wallHeight, wallThickness);
             }
             else
             {
-                float x = edge.fixedCoord + edge.outsideSign * wallThickness * 0.5f;
+                float x = edge.fixedCoord + edge.outwardSign * wallThickness * 0.5f;
                 center = new Vector3(x, yCenter, (edge.start + edge.end) * 0.5f);
                 size = new Vector3(wallThickness, wallHeight, length + wallThickness);
             }
