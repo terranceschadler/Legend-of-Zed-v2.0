@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LegendOfZed/Scenes/Zed_Controller_Test.unity
     guid: ab04946418f9bc54b91a865e103439b2
+  - enabled: 1
+    path: Assets/LegendOfZed/Scenes/Zed_Overworld.unity
+    guid: 3dcc9508d22855c4daaab10d8c85b029
+  - enabled: 1
+    path: Assets/LegendOfZed/Scenes/Zed_Interior_Test.unity
+    guid: 3951e7c6666e09a42a54582e65dbd1e7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
