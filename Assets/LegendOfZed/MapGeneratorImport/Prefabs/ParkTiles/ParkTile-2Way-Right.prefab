@@ -893,6 +893,7 @@ GameObject:
   - component: {fileID: 5757877098351933137}
   - component: {fileID: 5757877098351933138}
   - component: {fileID: 2440173064515363288}
+  - component: {fileID: -6541326888674780554}
   m_Layer: 0
   m_Name: ParkTile-2Way-Right
   m_TagString: RoomTile
@@ -1017,6 +1018,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c818716a4ca4a1e8c83b4a918d69771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.LegacyMapGenerator.ZedLegacyRoomTileSpawnRegistryHook
+--- !u!114 &-6541326888674780554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757877098351933139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c320bfe27e884437919d22b461aa1437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedParkTilePropSpawner
+  treePrefabs:
+  - {fileID: 189882, guid: ee6af68a3d2c1864ebc6cfc3be82d851, type: 3}
+  - {fileID: 131094, guid: d93817f79a1e01242b20f7081cbfa384, type: 3}
+  - {fileID: 129346, guid: c50789636e1fc5c4b8a37e2700e4a3c1, type: 3}
+  treeSpawnTag: TreeSpawn
+  treeSpawnParent: {fileID: 0}
+  spawnOnStart: 1
+  destroyMarkersAfterSpawn: 0
+  randomYaw: 1
+  uniformScaleRange: {x: 0.9, y: 1.15}
+  yOffset: 0
+  logDetails: 1
 --- !u!1 &5757877098415283479
 GameObject:
   m_ObjectHideFlags: 0
