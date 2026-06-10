@@ -61,13 +61,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2655383157955664345}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 15, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &4087851444233891749
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,13 +92,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4087851444233891749}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5757877096790740887
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,11 +940,24 @@ MonoBehaviour:
   buildingPrefabs:
   - {fileID: 7028095771982235631, guid: 0ad0a837c41133a4082f1840da912b0f, type: 3}
   - {fileID: 6695190644320161991, guid: a2e088e45f75e9641a3802fd24e99801, type: 3}
-  - {fileID: 2654444888670232702, guid: c23d08afb02181a43a9592378d0e8156, type: 3}
+  - {fileID: 103878, guid: 942ddb218ec0b7a48a4ff5505f5ea37a, type: 3}
+  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
+  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
+  - {fileID: 126382, guid: 74e2ec188e21dab4dae6203c14a6c526, type: 3}
+  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
+  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
+  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
+  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
+  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
   gateWays: []
   floor: {fileID: 0}
   _randomMapGenerator: {fileID: 0}
   spawningBuildings: 0
+  useBuildingLotFiller: 0
+  fallbackToFixedSpawnsIfLotFillerCannotFill: 1
+  disableBuildingSpawns: 0
+  parkTileNamePrefix: ParkTile
+  treeSpawnTag: TreeSpawn
 --- !u!114 &2440173064515363288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1315,13 +1328,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5880796581043349723}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -15, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &6132527360781830016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,13 +1433,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6838204888669263744}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -15.000002, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &7451112314574153820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,13 +1893,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8174792307827415448}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -14.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9128544124684936456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1945,13 +1958,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9147533308585055400}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &341373711344309983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1960,6 +1973,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5757877098415283478}
     m_Modifications:
+    - target: {fileID: 2967013235136194707, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329424973400131960, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
     - target: {fileID: 4288521901381781190, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
       propertyPath: m_Name
       value: Sidewalks-2way-turn
@@ -2007,6 +2028,18 @@ PrefabInstance:
     - target: {fileID: 5092251299356243008, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736671603271581930, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441698926794619800, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467272520121450141, guid: 19c4c94679510e54bbde54bba6f3791e, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

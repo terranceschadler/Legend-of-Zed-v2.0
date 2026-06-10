@@ -12,6 +12,10 @@ namespace LegendOfZed.Editor
     public static class ZedMapTileGeneratorIntegrationMenu
     {
         private const string RoomTilesFolder = "Assets/LegendOfZed/MapGeneratorImport/Prefabs/RoomTiles";
+        private const string ParkTilesFolder = "Assets/LegendOfZed/MapGeneratorImport/Prefabs/ParkTiles";
+
+        private const int DefaultCityWeight = 10;
+        private const int DefaultParkWeight = 2;
 
         [MenuItem("Legend of Zed/Map Integration/Add Runtime Bridge To Scene")]
         public static void AddRuntimeBridgeToScene()
@@ -19,8 +23,9 @@ namespace LegendOfZed.Editor
             EnsureTagExists("MapGenerator");
             EnsureTagExists("TileSpawn");
             EnsureTagExists("RoomTile");
+            EnsureTagExists("Player");
 
-            ZedLegacyRandomMapGenerator generator = UnityEngine.Object.FindObjectOfType<ZedLegacyRandomMapGenerator>();
+            ZedLegacyRandomMapGenerator generator = UnityEngine.Object.FindAnyObjectByType<ZedLegacyRandomMapGenerator>();
             if (generator == null)
             {
                 GameObject generatorObject = new GameObject("Zed_Legacy_MapTile_Generator");
@@ -32,7 +37,7 @@ namespace LegendOfZed.Editor
 
             RepairGeneratorReferences(generator);
 
-            ZedMapTileGeneratorRuntimeBridge bridge = UnityEngine.Object.FindObjectOfType<ZedMapTileGeneratorRuntimeBridge>();
+            ZedMapTileGeneratorRuntimeBridge bridge = UnityEngine.Object.FindAnyObjectByType<ZedMapTileGeneratorRuntimeBridge>();
             if (bridge == null)
             {
                 GameObject bridgeObject = new GameObject("Zed_MapTileGenerator_RuntimeBridge");
@@ -40,11 +45,13 @@ namespace LegendOfZed.Editor
                 bridge = bridgeObject.AddComponent<ZedMapTileGeneratorRuntimeBridge>();
             }
 
+            AssignBridgeReferences(bridge, generator);
+
             Selection.activeObject = bridge.gameObject;
             EditorGUIUtility.PingObject(bridge.gameObject);
             EditorSceneManagerHelper.MarkActiveSceneDirty();
 
-            Debug.Log("Map tile generator scene setup complete. Generator prefab references repaired from imported RoomTiles folder. Save the scene, then press Play.", bridge.gameObject);
+            Debug.Log("Map tile generator scene setup complete. Generator now uses weighted city/park tile selection. Assign Player Prefab on the bridge if no Player exists in the scene.", bridge.gameObject);
         }
 
         [MenuItem("Legend of Zed/Map Integration/Repair Legacy Generator Tile References")]
@@ -58,7 +65,7 @@ namespace LegendOfZed.Editor
 
             if (generator == null)
             {
-                generator = UnityEngine.Object.FindObjectOfType<ZedLegacyRandomMapGenerator>();
+                generator = UnityEngine.Object.FindAnyObjectByType<ZedLegacyRandomMapGenerator>();
             }
 
             if (generator == null)
@@ -80,21 +87,100 @@ namespace LegendOfZed.Editor
             }
 
             generator.tileCount = Mathf.Max(1, generator.tileCount <= 0 ? 22 : generator.tileCount);
-            generator.startingTile = LoadRoomTileExact("RoomTile-4Way");
-            generator.deadEndTile = LoadRoomTileExact("RoomTile-DeadEnd");
+            generator.startingTile = LoadPrefabExact(RoomTilesFolder, "RoomTile-4Way");
+            generator.deadEndTile = LoadPrefabExact(RoomTilesFolder, "RoomTile-DeadEnd");
             generator.tilePrefabs = LoadRandomRoomTiles(generator.startingTile, generator.deadEndTile);
+            generator.useWeightedTilePrefabs = true;
+            generator.weightedTilePrefabs = BuildWeightedTileList(generator.tilePrefabs);
 
             EditorUtility.SetDirty(generator);
+
+            int parkCount = CountWeightedPrefabsWithPrefix(generator.weightedTilePrefabs, "ParkTile-");
+            int cityCount = CountWeightedPrefabsWithPrefix(generator.weightedTilePrefabs, "RoomTile-");
 
             Debug.Log("Legacy map tile generator references repaired. " +
                       "StartingTile=" + NameOrMissing(generator.startingTile) + ", " +
                       "DeadEndTile=" + NameOrMissing(generator.deadEndTile) + ", " +
-                      "RandomTiles=" + (generator.tilePrefabs == null ? 0 : generator.tilePrefabs.Length) + ".", generator);
+                      "LegacyRandomTiles=" + (generator.tilePrefabs == null ? 0 : generator.tilePrefabs.Length) + ", " +
+                      "WeightedCityTiles=" + cityCount + ", " +
+                      "WeightedParkTiles=" + parkCount + ".", generator);
         }
 
-        private static GameObject LoadRoomTileExact(string prefabName)
+        private static ZedLegacyRandomMapGenerator.WeightedTilePrefab[] BuildWeightedTileList(GameObject[] cityTiles)
         {
-            string[] guids = AssetDatabase.FindAssets(prefabName + " t:Prefab", new[] { RoomTilesFolder });
+            List<ZedLegacyRandomMapGenerator.WeightedTilePrefab> weighted = new List<ZedLegacyRandomMapGenerator.WeightedTilePrefab>();
+
+            if (cityTiles != null)
+            {
+                for (int i = 0; i < cityTiles.Length; i++)
+                {
+                    GameObject prefab = cityTiles[i];
+                    if (prefab == null || prefab.name == "RoomTile-DeadEnd")
+                    {
+                        continue;
+                    }
+
+                    AddWeighted(weighted, prefab, DefaultCityWeight);
+                }
+            }
+
+            AddParkTiles(weighted);
+
+            return weighted.ToArray();
+        }
+
+        private static void AddParkTiles(List<ZedLegacyRandomMapGenerator.WeightedTilePrefab> weighted)
+        {
+            if (!AssetDatabase.IsValidFolder(ParkTilesFolder))
+            {
+                Debug.Log("No ParkTiles folder found yet. Weighted generation will use city tiles only until park prefabs exist at " + ParkTilesFolder + ".");
+                return;
+            }
+
+            string[] guids = AssetDatabase.FindAssets("ParkTile t:Prefab", new[] { ParkTilesFolder });
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (prefab == null || !prefab.name.StartsWith("ParkTile-", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (prefab.name == "ParkTile-DeadEnd")
+                {
+                    continue;
+                }
+
+                AddWeighted(weighted, prefab, DefaultParkWeight);
+            }
+        }
+
+        private static void AddWeighted(List<ZedLegacyRandomMapGenerator.WeightedTilePrefab> weighted, GameObject prefab, int weight)
+        {
+            if (prefab == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < weighted.Count; i++)
+            {
+                if (weighted[i] != null && weighted[i].prefab == prefab)
+                {
+                    return;
+                }
+            }
+
+            weighted.Add(new ZedLegacyRandomMapGenerator.WeightedTilePrefab
+            {
+                prefab = prefab,
+                weight = Mathf.Max(0, weight)
+            });
+        }
+
+        private static GameObject LoadPrefabExact(string folder, string prefabName)
+        {
+            string[] guids = AssetDatabase.FindAssets(prefabName + " t:Prefab", new[] { folder });
             for (int i = 0; i < guids.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[i]);
@@ -105,7 +191,7 @@ namespace LegendOfZed.Editor
                 }
             }
 
-            Debug.LogWarning("Missing required room tile prefab: " + prefabName + " under " + RoomTilesFolder);
+            Debug.LogWarning("Missing required prefab: " + prefabName + " under " + folder);
             return null;
         }
 
@@ -139,7 +225,6 @@ namespace LegendOfZed.Editor
                 }
             }
 
-            // If AssetDatabase search is stale, fall back to the known imported prefab names visible in the package.
             if (prefabs.Count == 0)
             {
                 AddIfFound(prefabs, "RoomTile-2Way-Left");
@@ -161,10 +246,76 @@ namespace LegendOfZed.Editor
 
         private static void AddIfFound(List<GameObject> prefabs, string prefabName)
         {
-            GameObject prefab = LoadRoomTileExact(prefabName);
+            GameObject prefab = LoadPrefabExact(RoomTilesFolder, prefabName);
             if (prefab != null && !prefabs.Contains(prefab))
             {
                 prefabs.Add(prefab);
+            }
+        }
+
+        private static void AssignBridgeReferences(ZedMapTileGeneratorRuntimeBridge bridge, ZedLegacyRandomMapGenerator generator)
+        {
+            if (bridge == null)
+            {
+                return;
+            }
+
+            SerializedObject serializedBridge = new SerializedObject(bridge);
+
+            SerializedProperty mapGeneratorProp = serializedBridge.FindProperty("mapGenerator");
+            if (mapGeneratorProp != null)
+            {
+                mapGeneratorProp.objectReferenceValue = generator;
+            }
+
+            SerializedProperty cameraProp = serializedBridge.FindProperty("gameplayCamera");
+            if (cameraProp != null && cameraProp.objectReferenceValue == null)
+            {
+                cameraProp.objectReferenceValue = Camera.main;
+            }
+
+            SerializedProperty playerProp = serializedBridge.FindProperty("player");
+            if (playerProp != null && playerProp.objectReferenceValue == null)
+            {
+                GameObject taggedPlayer = FindGameObjectWithTagSafe("Player");
+                if (taggedPlayer != null)
+                {
+                    playerProp.objectReferenceValue = taggedPlayer.transform;
+                }
+            }
+
+            serializedBridge.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(bridge);
+        }
+
+        private static int CountWeightedPrefabsWithPrefix(ZedLegacyRandomMapGenerator.WeightedTilePrefab[] prefabs, string prefix)
+        {
+            if (prefabs == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                if (prefabs[i] != null && prefabs[i].prefab != null && prefabs[i].prefab.name.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static GameObject FindGameObjectWithTagSafe(string tag)
+        {
+            try
+            {
+                return GameObject.FindGameObjectWithTag(tag);
+            }
+            catch (UnityException)
+            {
+                return null;
             }
         }
 

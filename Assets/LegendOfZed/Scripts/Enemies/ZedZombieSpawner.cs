@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using LegendOfZed.Runtime;
 using TopDownShooter;
@@ -342,7 +342,7 @@ namespace LegendOfZed.Enemies
                 return;
             }
 
-            PlayerController player = FindFirstObjectByType<PlayerController>();
+            PlayerController player = FindAnyObjectByType<PlayerController>();
             if (player != null)
             {
                 PlayerTarget = player.transform;

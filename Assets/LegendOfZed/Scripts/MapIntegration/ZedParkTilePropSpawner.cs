@@ -17,7 +17,10 @@ namespace LegendOfZed.MapIntegration
         public float yOffset = 0f;
 
         [Header("Debug")]
-        public bool logDetails;
+        public bool logDetails = false;
+
+        [Tooltip("Suppresses routine success logs even if older prefab instances still have logDetails enabled.")]
+        public bool suppressRoutineSuccessLogs = true;
 
         private bool _spawned;
 
@@ -48,7 +51,7 @@ namespace LegendOfZed.MapIntegration
             for (int i = 0; i < children.Length; i++)
             {
                 Transform marker = children[i];
-                if (marker == null || !marker.CompareTag(treeSpawnTag))
+                if (marker == null || !SafeCompareTag(marker.gameObject, treeSpawnTag))
                 {
                     continue;
                 }
@@ -87,7 +90,7 @@ namespace LegendOfZed.MapIntegration
                 }
             }
 
-            if (logDetails)
+            if (logDetails && !suppressRoutineSuccessLogs)
             {
                 Debug.Log("Park tile prop spawner found " + markerCount + " TreeSpawn marker(s) and spawned " + spawnedCount + " tree(s).", this);
             }
@@ -127,6 +130,23 @@ namespace LegendOfZed.MapIntegration
             for (int i = 0; i < renderers.Length; i++)
             {
                 renderers[i].enabled = false;
+            }
+        }
+
+        private static bool SafeCompareTag(GameObject go, string tagName)
+        {
+            if (go == null || string.IsNullOrEmpty(tagName))
+            {
+                return false;
+            }
+
+            try
+            {
+                return go.CompareTag(tagName);
+            }
+            catch (UnityException)
+            {
+                return false;
             }
         }
     }

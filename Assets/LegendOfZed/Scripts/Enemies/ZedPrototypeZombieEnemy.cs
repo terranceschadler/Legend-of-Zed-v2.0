@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using TopDownShooter;
 using UnityEngine;
 using UnityEngine.AI;
@@ -277,7 +277,7 @@ namespace LegendOfZed.Enemies
 
         private Transform FindPlayerTarget()
         {
-            PlayerController playerController = FindFirstObjectByType<PlayerController>();
+            PlayerController playerController = FindAnyObjectByType<PlayerController>();
             if (playerController != null) return playerController.transform;
 
             GameObject taggedPlayer = GameObject.FindGameObjectWithTag("Player");

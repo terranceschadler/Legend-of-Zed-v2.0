@@ -6,8 +6,7 @@ namespace LegendOfZed.MapIntegration
 {
     /// <summary>
     /// Small bridge between the imported legacy map tile generator and the current top-down controller scene.
-    /// It does not modify the legacy generator. It waits for generation to finish, finds a safe spawn point,
-    /// places the player, and aims the camera at the playable map center.
+    /// It waits for generation to finish, finds a safe spawn point, places/spawns the player, and aims the camera.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class ZedMapTileGeneratorRuntimeBridge : MonoBehaviour
@@ -17,6 +16,12 @@ namespace LegendOfZed.MapIntegration
         [SerializeField] private Transform player;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private Camera gameplayCamera;
+
+        [Header("Player Spawn Prep")]
+        [SerializeField] private string playerTag = "Player";
+        [SerializeField] private bool autoFindTaggedPlayer = true;
+        [SerializeField] private bool spawnPlayerPrefabIfNoPlayer = true;
+        [SerializeField] private string spawnedPlayerName = "Zed_Runtime_Player";
 
         [Header("Spawn")]
         [SerializeField] private float spawnHeight = 0.25f;
@@ -72,7 +77,7 @@ namespace LegendOfZed.MapIntegration
 
             if (positionCameraOnStart)
             {
-                PositionCamera(spawnPosition);
+                PositionCamera(player != null ? player.position : spawnPosition);
             }
 
             integrated = true;
@@ -83,12 +88,12 @@ namespace LegendOfZed.MapIntegration
         {
             if (mapGenerator == null)
             {
-                mapGenerator = FindObjectOfType<ZedLegacyRandomMapGenerator>();
+                mapGenerator = FindAnyObjectByType<ZedLegacyRandomMapGenerator>();
             }
 
-            if (player == null)
+            if (player == null && autoFindTaggedPlayer)
             {
-                GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+                GameObject playerObject = FindGameObjectWithTagSafe(playerTag);
                 if (playerObject != null)
                 {
                     player = playerObject.transform;
@@ -112,7 +117,7 @@ namespace LegendOfZed.MapIntegration
                 }
             }
 
-            ZedLegacyRoomTile firstTile = FindObjectOfType<ZedLegacyRoomTile>();
+            ZedLegacyRoomTile firstTile = FindAnyObjectByType<ZedLegacyRoomTile>();
             if (firstTile != null)
             {
                 return ProjectToGround(firstTile.transform.position);
@@ -135,15 +140,22 @@ namespace LegendOfZed.MapIntegration
 
         private void PlacePlayer(Vector3 spawnPosition)
         {
-            if (player == null && playerPrefab != null)
+            if (player == null && playerPrefab != null && spawnPlayerPrefabIfNoPlayer)
             {
                 GameObject spawnedPlayer = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
+                spawnedPlayer.name = spawnedPlayerName;
+
+                if (!string.IsNullOrEmpty(playerTag) && TagExists(playerTag))
+                {
+                    spawnedPlayer.tag = playerTag;
+                }
+
                 player = spawnedPlayer.transform;
             }
 
             if (player == null)
             {
-                Debug.LogWarning("Map tile bridge has no player or playerPrefab to place.", this);
+                Debug.LogWarning("Map tile bridge has no player or playerPrefab assigned yet. Assign the real top-down controller prefab to Player Prefab on Zed_MapTileGenerator_RuntimeBridge.", this);
                 return;
             }
 
@@ -170,13 +182,50 @@ namespace LegendOfZed.MapIntegration
                 parent = new GameObject(generatedParentName);
             }
 
-            ZedLegacyRoomTile[] tiles = FindObjectsOfType<ZedLegacyRoomTile>();
+            ZedLegacyRoomTile[] tiles = FindObjectsByType<ZedLegacyRoomTile>(FindObjectsInactive.Exclude);
             for (int i = 0; i < tiles.Length; i++)
             {
                 if (tiles[i] != null && tiles[i].transform.parent == null)
                 {
                     tiles[i].transform.SetParent(parent.transform, true);
                 }
+            }
+        }
+
+        private static GameObject FindGameObjectWithTagSafe(string tagName)
+        {
+            if (string.IsNullOrEmpty(tagName))
+            {
+                return null;
+            }
+
+            try
+            {
+                return GameObject.FindGameObjectWithTag(tagName);
+            }
+            catch (UnityException)
+            {
+                return null;
+            }
+        }
+
+        private static bool TagExists(string tagName)
+        {
+            if (string.IsNullOrEmpty(tagName))
+            {
+                return false;
+            }
+
+            try
+            {
+                GameObject temp = new GameObject("__tag_check__");
+                temp.tag = tagName;
+                Destroy(temp);
+                return true;
+            }
+            catch (UnityException)
+            {
+                return false;
             }
         }
     }

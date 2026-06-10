@@ -1248,12 +1248,26 @@ MonoBehaviour:
   - {fileID: 1664485418784174825}
   - {fileID: 6328654870677228960}
   buildingPrefabs:
-  - {fileID: 4511986918183281382, guid: cf12c136cad1b3a4bb4fac80582a32c9, type: 3}
-  - {fileID: 2654444888670232702, guid: c23d08afb02181a43a9592378d0e8156, type: 3}
+  - {fileID: 7028095771982235631, guid: 0ad0a837c41133a4082f1840da912b0f, type: 3}
+  - {fileID: 6695190644320161991, guid: a2e088e45f75e9641a3802fd24e99801, type: 3}
+  - {fileID: 103878, guid: 942ddb218ec0b7a48a4ff5505f5ea37a, type: 3}
+  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
+  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
+  - {fileID: 126382, guid: 74e2ec188e21dab4dae6203c14a6c526, type: 3}
+  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
+  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
+  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
+  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
+  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
   gateWays: []
   floor: {fileID: 0}
   _randomMapGenerator: {fileID: 0}
   spawningBuildings: 0
+  useBuildingLotFiller: 0
+  fallbackToFixedSpawnsIfLotFillerCannotFill: 1
+  disableBuildingSpawns: 0
+  parkTileNamePrefix: ParkTile
+  treeSpawnTag: TreeSpawn
 --- !u!114 &4859893451386817639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,6 +1457,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7575780033589801410}
     m_Modifications:
+    - target: {fileID: 70627530894245927, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
     - target: {fileID: 402369456986955686, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
       propertyPath: m_Name
       value: Sidewalks-deadEnd
@@ -1490,6 +1508,30 @@ PrefabInstance:
     - target: {fileID: 812554346422695118, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2092439001397906128, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 5585979487976829060, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121817608762265301, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482846983683336589, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7504386297513588727, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135215433068418405, guid: 8029c8cbc7daeb84bbccfd7da27976a6, type: 3}
+      propertyPath: m_TagString
+      value: CityBlock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -129,7 +129,7 @@ namespace LegendOfZed.MapIntegration
         {
             List<GameObject> tileRoots = new List<GameObject>();
 
-            ZedLegacyRoomTile[] roomTiles = FindObjectsByType<ZedLegacyRoomTile>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            ZedLegacyRoomTile[] roomTiles = FindObjectsByType<ZedLegacyRoomTile>(FindObjectsInactive.Exclude);
             for (int i = 0; i < roomTiles.Length; i++)
             {
                 if (roomTiles[i] != null && !tileRoots.Contains(roomTiles[i].gameObject))

@@ -1,14 +1,31 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace LegendOfZed.LegacyMapGenerator
 {
     public class ZedLegacyRandomMapGenerator : MonoBehaviour
     {
+        [System.Serializable]
+        public class WeightedTilePrefab
+        {
+            public GameObject prefab;
+            [Min(0)] public int weight = 1;
+        }
+
         [Header("Legacy Tile Prefabs")]
         public GameObject startingTile;
         public GameObject deadEndTile;
         public GameObject[] tilePrefabs;
+
+        [Header("Weighted Tile Selection")]
+        [Tooltip("When enabled, random tile selection uses weightedTilePrefabs. If the weighted list is empty, the generator falls back to tilePrefabs.")]
+        public bool useWeightedTilePrefabs = true;
+
+        [Tooltip("City and park tile variants. This does not affect the starting tile or dead-end tile.")]
+        public WeightedTilePrefab[] weightedTilePrefabs;
 
         [Header("Generation")]
         public int tileCount = 22;
@@ -96,7 +113,7 @@ namespace LegendOfZed.LegacyMapGenerator
                 Vector2Int cell = WorldToCell(spawn.transform.position);
                 if (_occupiedCells.Contains(cell))
                 {
-                    Destroy(spawn);
+                    SafeDestroyGameObject(spawn);
                     continue;
                 }
 
@@ -119,7 +136,7 @@ namespace LegendOfZed.LegacyMapGenerator
                 Vector2Int cell = WorldToCell(spawnPoint.position);
                 if (_occupiedCells.Contains(cell))
                 {
-                    Destroy(spawnPoint.gameObject);
+                    SafeDestroyGameObject(spawnPoint.gameObject);
                     continue;
                 }
 
@@ -130,6 +147,65 @@ namespace LegendOfZed.LegacyMapGenerator
         }
 
         private GameObject GetRandomTilePrefab()
+        {
+            if (useWeightedTilePrefabs)
+            {
+                GameObject weightedPrefab = GetRandomWeightedTilePrefab();
+                if (weightedPrefab != null)
+                {
+                    return weightedPrefab;
+                }
+            }
+
+            return GetRandomLegacyTilePrefab();
+        }
+
+        private GameObject GetRandomWeightedTilePrefab()
+        {
+            if (weightedTilePrefabs == null || weightedTilePrefabs.Length == 0)
+            {
+                return null;
+            }
+
+            int totalWeight = 0;
+            for (int i = 0; i < weightedTilePrefabs.Length; i++)
+            {
+                WeightedTilePrefab entry = weightedTilePrefabs[i];
+                if (entry == null || entry.prefab == null || entry.weight <= 0)
+                {
+                    continue;
+                }
+
+                totalWeight += entry.weight;
+            }
+
+            if (totalWeight <= 0)
+            {
+                return null;
+            }
+
+            int roll = Random.Range(0, totalWeight);
+            int cursor = 0;
+
+            for (int i = 0; i < weightedTilePrefabs.Length; i++)
+            {
+                WeightedTilePrefab entry = weightedTilePrefabs[i];
+                if (entry == null || entry.prefab == null || entry.weight <= 0)
+                {
+                    continue;
+                }
+
+                cursor += entry.weight;
+                if (roll < cursor)
+                {
+                    return entry.prefab;
+                }
+            }
+
+            return null;
+        }
+
+        private GameObject GetRandomLegacyTilePrefab()
         {
             if (tilePrefabs == null || tilePrefabs.Length == 0)
             {
@@ -202,7 +278,7 @@ namespace LegendOfZed.LegacyMapGenerator
 
                 if (WorldToCell(spawn.transform.position) == targetCell)
                 {
-                    Destroy(spawn);
+                    SafeDestroyGameObject(spawn);
                 }
             }
 
@@ -235,5 +311,56 @@ namespace LegendOfZed.LegacyMapGenerator
             bakingNavMeshCompleted = true;
             Debug.Log("Legacy map tile generation completed. Use the current project NavMesh pass after tile placement.", this);
         }
+
+        private static void SafeDestroyGameObject(GameObject target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (Selection.activeGameObject == target || IsSelectionChildOf(target.transform))
+                {
+                    Selection.activeObject = null;
+                }
+
+                Object.DestroyImmediate(target);
+                return;
+            }
+
+            if (Selection.activeGameObject == target || IsSelectionChildOf(target.transform))
+            {
+                Selection.activeObject = null;
+            }
+#endif
+
+            Object.Destroy(target);
+        }
+
+#if UNITY_EDITOR
+        private static bool IsSelectionChildOf(Transform target)
+        {
+            if (target == null || Selection.activeTransform == null)
+            {
+                return false;
+            }
+
+            Transform current = Selection.activeTransform;
+            while (current != null)
+            {
+                if (current == target)
+                {
+                    return true;
+                }
+
+                current = current.parent;
+            }
+
+            return false;
+        }
+#endif
     }
 }
