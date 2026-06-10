@@ -119,6 +119,323 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &508106402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 508106404}
+  - component: {fileID: 508106403}
+  m_Layer: 0
+  m_Name: Zed_RoadFrontage_StreetPropSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &508106403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508106402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df25135631284e35ae6d695c18fa60f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedRoadFrontageStreetPropSpawner
+  mapGenerator: {fileID: 645172293}
+  scanRoot: {fileID: 0}
+  streetLightPrefabs:
+  - {fileID: 164056, guid: a9f14b08b980e5340ab72441d5b1c6a9, type: 3}
+  - {fileID: 128712, guid: 6236698dc875fa04bb2666c2983e5d7c, type: 3}
+  benchPrefabs:
+  - {fileID: 164744, guid: 2d5723aa36882bc4aaf7b25039f59c10, type: 3}
+  trashCanPrefabs:
+  - {fileID: 122224, guid: 1ad07ec2e83d7f54dbf5edde074d7e1d, type: 3}
+  - {fileID: 182694, guid: 8682cd588e7c6194991cfce8b1e07458, type: 3}
+  - {fileID: 188538, guid: 12e26b086f625404aa649a35c3b5a558, type: 3}
+  hydrantPrefabs:
+  - {fileID: 118212, guid: c5395edc057eb8146be5660e7c6f5ee5, type: 3}
+  mailboxPrefabs:
+  - {fileID: 121442, guid: ddf7153011c1a334197496b86e980b01, type: 3}
+  paperDebrisPrefabs:
+  - {fileID: 134504, guid: f4109b4ace4fead48ab10c8c20352070, type: 3}
+  - {fileID: 189404, guid: 327c79045d45c0c48aa41cf9e8c9395c, type: 3}
+  - {fileID: 119182, guid: c3b30ca4d7091834dba2b6311e68e5d3, type: 3}
+  - {fileID: 124120, guid: 64c608c3f2d99064994a29f65ba8ad65, type: 3}
+  - {fileID: 183214, guid: 2f8fca70cac484b46b835c12fac61c7a, type: 3}
+  - {fileID: 105448, guid: 126bc93d36fea2645877273d729dbcb3, type: 3}
+  - {fileID: 168018, guid: 4807b3b30ca88b0428d0b442b946cb44, type: 3}
+  - {fileID: 179988, guid: c8cae67e030d23c439d7e4b589c8ca7b, type: 3}
+  - {fileID: 103300, guid: 27ad2b1e1ab55a345981aae397089130, type: 3}
+  - {fileID: 177750, guid: d9aaea64d10283042964e1e00a81a785, type: 3}
+  - {fileID: 122224, guid: 1ad07ec2e83d7f54dbf5edde074d7e1d, type: 3}
+  - {fileID: 182694, guid: 8682cd588e7c6194991cfce8b1e07458, type: 3}
+  - {fileID: 188538, guid: 12e26b086f625404aa649a35c3b5a558, type: 3}
+  - {fileID: 143328, guid: 9b5da54f3574f59499341376e5edb2ec, type: 3}
+  - {fileID: 1861323014949584, guid: fcd2af9145fe1bc4393996625be1492a, type: 3}
+  - {fileID: 1952597488943592, guid: fe1e8e79a71ed684d9d38ce0d6f33d1d, type: 3}
+  - {fileID: 1143089213465246, guid: 833e9374b882f7643a398c51be276558, type: 3}
+  - {fileID: 1417984174142554, guid: a7053d9157aad3046874e98d692fd602, type: 3}
+  - {fileID: 1731127450007970, guid: 5c9b49501b2ade64f852a05d4976fede, type: 3}
+  - {fileID: 1086131048920578, guid: acbda931b33df3f40bcf618e83280806, type: 3}
+  - {fileID: 134504, guid: d0a449419dc6e404d94d5081fa710767, type: 3}
+  - {fileID: 189404, guid: fbd2941af06c48e4cbb32be48b18d045, type: 3}
+  - {fileID: 119182, guid: 9e7b9a5d5dab450459315a75ec16fa02, type: 3}
+  - {fileID: 124120, guid: fc189f6b0af3f6843b28de731f5b15e1, type: 3}
+  - {fileID: 183214, guid: 97d18204e4538e64f9bdf47d8db7c5e5, type: 3}
+  - {fileID: 105448, guid: 1bc6dc700e247464a9f5a53bd3213bea, type: 3}
+  - {fileID: 168018, guid: bbe271edc5b4fd04589440e05e4a0ff8, type: 3}
+  - {fileID: 179988, guid: 5e9f23a0d535d65438771a89191d0f83, type: 3}
+  - {fileID: 103300, guid: 70a4fe26c99cdd645b53ab796679e200, type: 3}
+  - {fileID: 177750, guid: 5b20f7f96ea80dc4cbd7199fbb4d4d3e, type: 3}
+  - {fileID: 122224, guid: 008c6febfb8d88a4496fe51f2a2d409a, type: 3}
+  - {fileID: 182694, guid: e1cc26c508a6ec34e95a50f62aa7b3df, type: 3}
+  - {fileID: 188538, guid: f738f6acdbb1d5844bd657732cb05e13, type: 3}
+  - {fileID: 143328, guid: 34805116d018a9f4899f8ec1bb2948b3, type: 3}
+  - {fileID: 8821665969352926371, guid: 8af81d950c39c18499cba36e9fd24291, type: 3}
+  - {fileID: 1862969569460105856, guid: ff480208ea27b004fa62747883edc287, type: 3}
+  - {fileID: 303051368072453540, guid: dda5da9d39243c94a9eb2337b4ba52cf, type: 3}
+  - {fileID: 6355491548808843180, guid: d59f75fc3e488114d82923c61350f244, type: 3}
+  - {fileID: 104350, guid: 2542a9ff06990e44da55b4f43ea522df, type: 3}
+  - {fileID: 138250, guid: 5074978a229b21744b92bdafa95cf24b, type: 3}
+  - {fileID: 166834, guid: 00c0ced0fa963d543951199274774aaa, type: 3}
+  dumpsterPrefabs:
+  - {fileID: 149540, guid: c5544819c74ed3447a8f418f1fcc6d6d, type: 3}
+  - {fileID: 168790, guid: 54fafb87d8937ab40afaf099adcf0320, type: 3}
+  trashPilePrefabs:
+  - {fileID: 134504, guid: f4109b4ace4fead48ab10c8c20352070, type: 3}
+  - {fileID: 189404, guid: 327c79045d45c0c48aa41cf9e8c9395c, type: 3}
+  - {fileID: 119182, guid: c3b30ca4d7091834dba2b6311e68e5d3, type: 3}
+  - {fileID: 124120, guid: 64c608c3f2d99064994a29f65ba8ad65, type: 3}
+  - {fileID: 183214, guid: 2f8fca70cac484b46b835c12fac61c7a, type: 3}
+  - {fileID: 105448, guid: 126bc93d36fea2645877273d729dbcb3, type: 3}
+  - {fileID: 168018, guid: 4807b3b30ca88b0428d0b442b946cb44, type: 3}
+  - {fileID: 1861323014949584, guid: fcd2af9145fe1bc4393996625be1492a, type: 3}
+  - {fileID: 1952597488943592, guid: fe1e8e79a71ed684d9d38ce0d6f33d1d, type: 3}
+  - {fileID: 1143089213465246, guid: 833e9374b882f7643a398c51be276558, type: 3}
+  - {fileID: 1417984174142554, guid: a7053d9157aad3046874e98d692fd602, type: 3}
+  - {fileID: 1731127450007970, guid: 5c9b49501b2ade64f852a05d4976fede, type: 3}
+  - {fileID: 1086131048920578, guid: acbda931b33df3f40bcf618e83280806, type: 3}
+  - {fileID: 134504, guid: d0a449419dc6e404d94d5081fa710767, type: 3}
+  - {fileID: 189404, guid: fbd2941af06c48e4cbb32be48b18d045, type: 3}
+  - {fileID: 119182, guid: 9e7b9a5d5dab450459315a75ec16fa02, type: 3}
+  - {fileID: 124120, guid: fc189f6b0af3f6843b28de731f5b15e1, type: 3}
+  - {fileID: 183214, guid: 97d18204e4538e64f9bdf47d8db7c5e5, type: 3}
+  - {fileID: 105448, guid: 1bc6dc700e247464a9f5a53bd3213bea, type: 3}
+  - {fileID: 168018, guid: bbe271edc5b4fd04589440e05e4a0ff8, type: 3}
+  - {fileID: 8821665969352926371, guid: 8af81d950c39c18499cba36e9fd24291, type: 3}
+  - {fileID: 1862969569460105856, guid: ff480208ea27b004fa62747883edc287, type: 3}
+  - {fileID: 303051368072453540, guid: dda5da9d39243c94a9eb2337b4ba52cf, type: 3}
+  - {fileID: 6355491548808843180, guid: d59f75fc3e488114d82923c61350f244, type: 3}
+  - {fileID: 3629168384926254020, guid: cfaf8de74c728614d944eae8a98b9869, type: 3}
+  - {fileID: 179988, guid: c8cae67e030d23c439d7e4b589c8ca7b, type: 3}
+  - {fileID: 103300, guid: 27ad2b1e1ab55a345981aae397089130, type: 3}
+  - {fileID: 177750, guid: d9aaea64d10283042964e1e00a81a785, type: 3}
+  - {fileID: 104350, guid: 2542a9ff06990e44da55b4f43ea522df, type: 3}
+  - {fileID: 138250, guid: 5074978a229b21744b92bdafa95cf24b, type: 3}
+  - {fileID: 166834, guid: 00c0ced0fa963d543951199274774aaa, type: 3}
+  roadNameContains:
+  - road
+  - street
+  - asphalt
+  rejectRoadNameContains:
+  - sidewalk
+  - pavement
+  - curb
+  - kerb
+  - line
+  - marking
+  - crosswalk
+  - spawn
+  - trigger
+  - wall
+  - building
+  - prop
+  - tree
+  - grass
+  - park
+  maxRoadCenterY: 2
+  maxRoadRendererHeight: 1.5
+  minRoadRendererSize: 0.25
+  roadCellSize: 2.5
+  roadPieceInset: 0.02
+  curbPropOffsetFromRoad: 2.25
+  sidewalkPropOffsetFromRoad: 5.25
+  segmentEndMargin: 4
+  propFootprintPadding: 0.4
+  buildingClearance: 0.75
+  streetLightSpacing: 18
+  benchSpacing: 32
+  trashCanSpacing: 22
+  hydrantSpacing: 38
+  mailboxSpacing: 48
+  paperDebrisSpacing: 3.5
+  streetLightChance: 0.8
+  benchChance: 0.35
+  trashCanChance: 0.45
+  hydrantChance: 0.28
+  mailboxChance: 0.18
+  paperDebrisChance: 0.92
+  dumpsterChancePerBuilding: 0.28
+  dumpsterSpacing: 18
+  dumpsterFootprintWidth: 3.2
+  dumpsterFootprintDepth: 2.2
+  trashPilesPerDumpster: 4
+  trashPileScatterRadius: 2.2
+  dumpsterBuildingOffset: 0.35
+  benchesFaceRoad: 1
+  mailboxesFaceRoad: 1
+  trashCansRandomYaw: 1
+  paperDebrisRandomYaw: 1
+  generatedRootName: Generated_RoadFrontage_StreetProps
+  buildingRootName: Generated_RoadFrontage_Buildings
+  runOnStart: 1
+  waitForMapGenerator: 1
+  clearPreviousGeneratedProps: 1
+  drawGizmos: 1
+  logDetails: 1
+  randomSeed: 0
+--- !u!4 &508106404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508106402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &563499097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 563499099}
+  - component: {fileID: 563499098}
+  m_Layer: 0
+  m_Name: Zed_RoadFrontage_BuildingSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &563499098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563499097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1480e2fb6f1e48a7839dab4d188cbc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedRoadFrontageBuildingSpawner
+  mapGenerator: {fileID: 645172293}
+  buildingPrefabs:
+  - {fileID: 7028095771982235631, guid: 0ad0a837c41133a4082f1840da912b0f, type: 3}
+  - {fileID: 6695190644320161991, guid: a2e088e45f75e9641a3802fd24e99801, type: 3}
+  - {fileID: 100086, guid: 5abd374e4bd9ac7408ed9d4416ee00ea, type: 3}
+  - {fileID: 194766, guid: 704a341d144bdbf488537fe1c42d4280, type: 3}
+  - {fileID: 120682, guid: 03e0377933aed974daf67a5b8beae506, type: 3}
+  - {fileID: 103440, guid: 0d581919e9e7d434597da4d21f9fa773, type: 3}
+  - {fileID: 103878, guid: 942ddb218ec0b7a48a4ff5505f5ea37a, type: 3}
+  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
+  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
+  - {fileID: 126382, guid: 74e2ec188e21dab4dae6203c14a6c526, type: 3}
+  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
+  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
+  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
+  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
+  scanRoot: {fileID: 0}
+  roadNameContains:
+  - road
+  - street
+  - asphalt
+  rejectNameContains:
+  - sidewalk
+  - pavement
+  - curb
+  - kerb
+  - line
+  - marking
+  - crosswalk
+  - spawn
+  - trigger
+  - wall
+  - building
+  - prop
+  - tree
+  - grass
+  - park
+  maxRoadCenterY: 2
+  maxRoadRendererHeight: 1.5
+  minRoadRendererSize: 0.25
+  roadCellSize: 2.5
+  roadPieceInset: 0.02
+  frontageOffsetFromRoad: 4.5
+  minFrontageSegmentLength: 6
+  maxFrontageSegments: 1024
+  buildingSetback: 0.25
+  segmentEndMargin: 2.5
+  buildingGap: 0.35
+  buildingGapJitter: 0.25
+  minRemainingSegmentSpace: 3
+  preferLargerBuildings: 1
+  buildingSelectionTopPercent: 0.35
+  footprintPadding: 0.35
+  alignVisualBoundsToPlacementCenter: 1
+  useActualRendererBoundsForFootprints: 1
+  avoidImmediatePrefabRepeats: 1
+  recentPrefabMemory: 3
+  useDistrictStyleBuckets: 1
+  districtCellSize: 80
+  anchorBuildingChance: 0.35
+  minAnchorSegmentLength: 45
+  districtCandidatePercent: 0.65
+  varietySeed: 0
+  maxTotalBuildings: 800
+  maxBuildingsPerSegment: 96
+  useRoundRobinCoverage: 1
+  guaranteedAlleyEveryNBuildings: 6
+  randomAlleyChance: 0.08
+  alleyWidthMin: 3
+  alleyWidthMax: 6
+  generatedRootName: Generated_RoadFrontage_Buildings
+  runOnStart: 1
+  waitForMapGenerator: 1
+  clearPreviousGeneratedBuildings: 1
+  logDetails: 1
+  drawGizmos: 1
+--- !u!4 &563499099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563499097}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &645172292
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,13 +475,36 @@ MonoBehaviour:
   - {fileID: 3861404993499561602, guid: b06172f24fa7b604a919aef93da5bd29, type: 3}
   - {fileID: 3861404993499561602, guid: 2838e22dec252be46929dc6dda606c26, type: 3}
   - {fileID: 7434624236691401900, guid: 0fd8429797094f14b9b38cfa3e19a9cb, type: 3}
-  - {fileID: 7434624236691401900, guid: 2622cb591e4cb4e4e82a0340fa356fa0, type: 3}
-  - {fileID: 1866406071337700638, guid: 75fba2b33d6cb5c4c8c623ca6a7033cc, type: 3}
-  - {fileID: 5757877098351933139, guid: bf7f6d5370849d14e938b709284a50cb, type: 3}
-  - {fileID: 5003994330363549578, guid: 542289ec58643994eb25b83fad76cc7a, type: 3}
-  - {fileID: 3861404993499561602, guid: 7547124314cf6564cb810cb392a40a8d, type: 3}
-  - {fileID: 3861404993499561602, guid: d1fe6a83c73281c48a85423e078cad42, type: 3}
-  - {fileID: 3861404993499561602, guid: 5cdad98a4007b234bbadb19d7769b873, type: 3}
+  useWeightedTilePrefabs: 1
+  weightedTilePrefabs:
+  - prefab: {fileID: 1866406071337700638, guid: 7ed602028ec086d498a9dafa50fa7f43, type: 3}
+    weight: 10
+  - prefab: {fileID: 5757877098351933139, guid: 17d9b65ceb9c4b84ba8b30af744a4b1b, type: 3}
+    weight: 10
+  - prefab: {fileID: 5003994330363549578, guid: 5a6afa0ab15370d42a5da85df5daaa4a, type: 3}
+    weight: 10
+  - prefab: {fileID: 3861404993499561602, guid: 06dc92a09ccb16c429bd3030a61a2a89, type: 3}
+    weight: 10
+  - prefab: {fileID: 3861404993499561602, guid: b06172f24fa7b604a919aef93da5bd29, type: 3}
+    weight: 10
+  - prefab: {fileID: 3861404993499561602, guid: 2838e22dec252be46929dc6dda606c26, type: 3}
+    weight: 10
+  - prefab: {fileID: 7434624236691401900, guid: 0fd8429797094f14b9b38cfa3e19a9cb, type: 3}
+    weight: 10
+  - prefab: {fileID: 1866406071337700638, guid: 75fba2b33d6cb5c4c8c623ca6a7033cc, type: 3}
+    weight: 2
+  - prefab: {fileID: 5757877098351933139, guid: bf7f6d5370849d14e938b709284a50cb, type: 3}
+    weight: 2
+  - prefab: {fileID: 5003994330363549578, guid: 542289ec58643994eb25b83fad76cc7a, type: 3}
+    weight: 2
+  - prefab: {fileID: 3861404993499561602, guid: 7547124314cf6564cb810cb392a40a8d, type: 3}
+    weight: 2
+  - prefab: {fileID: 3861404993499561602, guid: d1fe6a83c73281c48a85423e078cad42, type: 3}
+    weight: 2
+  - prefab: {fileID: 3861404993499561602, guid: 5cdad98a4007b234bbadb19d7769b873, type: 3}
+    weight: 2
+  - prefab: {fileID: 7434624236691401900, guid: 2622cb591e4cb4e4e82a0340fa356fa0, type: 3}
+    weight: 2
   tileCount: 22
   tileGridSize: 20
   bakingNavMeshCompleted: 0
@@ -233,6 +573,87 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743326654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &910626277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 910626279}
+  - component: {fileID: 910626278}
+  m_Layer: 0
+  m_Name: Zed_RoadFrontage_DebugLines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &910626278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910626277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5d0efbd85540ce9a3b09ad9f6efd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedRoadFrontageDebugLines
+  mapGenerator: {fileID: 0}
+  scanRoot: {fileID: 0}
+  roadNameContains:
+  - road
+  - street
+  - asphalt
+  rejectNameContains:
+  - sidewalk
+  - pavement
+  - curb
+  - kerb
+  - line
+  - marking
+  - crosswalk
+  - spawn
+  - trigger
+  - wall
+  - building
+  - prop
+  - tree
+  - grass
+  - park
+  maxRoadCenterY: 2
+  maxRoadRendererHeight: 1.5
+  minRoadRendererSize: 0.25
+  roadCellSize: 2.5
+  roadPieceInset: 0.02
+  frontageOffsetFromRoad: 4.5
+  minFrontageSegmentLength: 6
+  maxFrontageSegments: 512
+  drawRoadFacingArrows: 1
+  arrowSpacing: 12
+  arrowLength: 3
+  runOnStart: 0
+  waitForMapGenerator: 1
+  logDetails: 1
+  drawGizmos: 1
+--- !u!4 &910626279
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910626277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -538,6 +959,10 @@ MonoBehaviour:
   player: {fileID: 0}
   playerPrefab: {fileID: 0}
   gameplayCamera: {fileID: 0}
+  playerTag: Player
+  autoFindTaggedPlayer: 1
+  spawnPlayerPrefabIfNoPlayer: 1
+  spawnedPlayerName: Zed_Runtime_Player
   spawnHeight: 0.25
   groundRayHeight: 12
   groundMask:
@@ -563,6 +988,99 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1754943070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1754943072}
+  - component: {fileID: 1754943071}
+  m_Layer: 0
+  m_Name: Zed_PostGeneration_CityBlockBuildingFiller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1754943071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754943070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6163293489d24279a0d8484c1a83b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedPostGenerationCityBlockBuildingFiller
+  mapGenerator: {fileID: 645172293}
+  buildingPrefabs:
+  - {fileID: 7028095771982235631, guid: 0ad0a837c41133a4082f1840da912b0f, type: 3}
+  - {fileID: 6695190644320161991, guid: a2e088e45f75e9641a3802fd24e99801, type: 3}
+  - {fileID: 194766, guid: 704a341d144bdbf488537fe1c42d4280, type: 3}
+  - {fileID: 103878, guid: 942ddb218ec0b7a48a4ff5505f5ea37a, type: 3}
+  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
+  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
+  - {fileID: 126382, guid: 74e2ec188e21dab4dae6203c14a6c526, type: 3}
+  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
+  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
+  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
+  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
+  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
+  suppressLegacyTileBuildingSpawns: 1
+  cityBlockTag: CityBlock
+  scanChildRenderersOfTaggedRoots: 1
+  minRendererPieceSize: 0.25
+  maxRendererPieceHeight: 2
+  maxSurfaceCenterY: 2
+  contourCellSize: 2.5
+  pieceInset: 0.02
+  minContourEdgeLength: 5
+  maxPlacementEdges: 128
+  useRoundRobinStreetCoverage: 1
+  minStreetCoverageEdgeLength: 8
+  guaranteedAlleyEveryNBuildings: 5
+  trySurfaceRendererDetection: 0
+  fallbackToGeneratedTileFootprints: 0
+  edgeInset: 1.2
+  generatedBuildingPadding: 0.35
+  preventGeneratedBuildingOverlap: 1
+  requireBuildingCenterOnCityBlock: 1
+  buildingGap: 0.1
+  alleyChance: 0.12
+  alleyWidthMin: 2
+  alleyWidthMax: 4
+  minEdgeLength: 10
+  maxBuildingsPerEdge: 10
+  maxTotalBuildings: 160
+  overlapCheckHalfHeight: 4
+  blockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  useOverlapCheck: 0
+  generatedRootName: Generated_City_Block_Buildings
+  runOnStart: 0
+  logDetails: 1
+  drawDebugGizmos: 1
+--- !u!4 &1754943072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754943070}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -572,3 +1090,7 @@ SceneRoots:
   - {fileID: 645172294}
   - {fileID: 1249786258}
   - {fileID: 743326656}
+  - {fileID: 1754943072}
+  - {fileID: 910626279}
+  - {fileID: 563499099}
+  - {fileID: 508106404}
