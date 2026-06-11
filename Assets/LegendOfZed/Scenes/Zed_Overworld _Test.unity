@@ -517,15 +517,54 @@ MonoBehaviour:
   - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
   autoFindBuildingPrefabsIfEmpty: 1
   runtimeBuildingPrefabSearchRoot: MapGeneratorImport/Prefabs/Buildings
+  filterPrefabsByAuthoredLotCategory: 1
+  lotMarkerCategoryIsOnlyTruth: 1
+  allowAnyPrefabFallbackForCategory: 0
+  strictCornerCategoryRequiresCornerPrefab: 1
+  cornerCategoryKeywords:
+  - Corner
+  smallShopCategoryKeywords:
+  - Shop
+  - Store
+  - Cafe
+  - Market
+  - Restaurant
+  apartmentCategoryKeywords:
+  - Apartment
+  - Apt
+  - Residential
+  officeCategoryKeywords:
+  - Office
+  - Business
+  - Commercial
+  fillerCategoryKeywords:
+  - Bld
+  - Bldg
+  - Building
+  - Block
+  - House
+  - Shop
+  - Store
+  - Apartment
+  - Office
+  - Commercial
+  - Residential
+  - City
+  alleyCategoryKeywords:
+  - Alley
+  - Garage
+  - Shed
+  - Back
+  - Small
   startDelay: 1
+  extraBuildDelaySeconds: 0.75
   clearPreviousBuildings: 1
   suppressLegacyTileBuildingSpawns: 1
-  disableOldFrontageSpawners: 1
+  disableOldExperimentalBuildingSpawners: 1
   rejectOverlappingLots: 1
   rejectRoadOverlapsByName: 1
   overlapPadding: 0.35
-  useActualSpawnedPrefabBoundsForSafety: 1
-  fallbackToLotMarkerBoundsWhenPrefabHasNoRenderers: 1
+  roadRejectClearance: 1.5
   centerSpawnedPrefabBoundsOnLot: 1
   blockInteriorSetback: 1.25
   tryMultipleBuildingPrefabsPerLot: 1
@@ -533,31 +572,11 @@ MonoBehaviour:
   avoidRepeatingSamePrefabOnBlock: 1
   recentPrefabMemory: 10
   prefabRepeatPenalty: 1000
-  preferCornerPrefabsForCornerLots: 1
-  cornerRoadTouchDistance: 6
-  cornerPrefabNameKeywords:
-  - corner
-  - apartment
-  - shop
-  - office
-  - hotel
-  allowRegularPrefabsOnCornerFallback: 1
-  cornerPrefabScoreBonus: 2000
-  orientCornerBuildingsToExposeFrontAndRightSide: 1
   maxPrefabAttemptsPerLot: 0
-  blockPackingSafetyFootprintScale: 0.92
-  faceNearestRoadInsteadOfLotForward: 1
-  buildingFacingYawOffsetDegrees: 0
-  snapStreetFacingToCardinalAxes: 1
-  chooseFacingByFrontEdgeRoadScore: 1
-  frontEdgeRoadSearchDistance: 14
-  roadRejectClearance: 1.5
-  useActualRoadGeometryBlockers: 1
-  extraBuildDelaySeconds: 0.75
-  tryFourCardinalPrefabRotationsForRoadFit: 0
   useLegacyBlgSpawnMarkersIfNoLots: 1
   legacyLotWidth: 8
   legacyLotDepth: 8
+  stampDebugInfoInGeneratedNames: 1
 --- !u!4 &821998725
 Transform:
   m_ObjectHideFlags: 0
