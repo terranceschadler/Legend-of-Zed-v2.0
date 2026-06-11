@@ -46,6 +46,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 201408386742237978}
+  - component: {fileID: 7931946952720724775}
   m_Layer: 0
   m_Name: blgSpawn (1)
   m_TagString: BuildingSpawn
@@ -68,6 +69,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &7931946952720724775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2655383157955664345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 1
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1 &4087851444233891749
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,6 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633011363076290346}
+  - component: {fileID: 4652625473229673925}
   m_Layer: 0
   m_Name: blgSpawn (2)
   m_TagString: BuildingSpawn
@@ -99,6 +121,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4652625473229673925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087851444233891749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 0
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1 &5757877096790740887
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,18 +979,7 @@ MonoBehaviour:
   - {fileID: 9147533308585055400}
   - {fileID: 8174792307827415448}
   - {fileID: 6838204888669263744}
-  buildingPrefabs:
-  - {fileID: 7028095771982235631, guid: 0ad0a837c41133a4082f1840da912b0f, type: 3}
-  - {fileID: 6695190644320161991, guid: a2e088e45f75e9641a3802fd24e99801, type: 3}
-  - {fileID: 103878, guid: 942ddb218ec0b7a48a4ff5505f5ea37a, type: 3}
-  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
-  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
-  - {fileID: 126382, guid: 74e2ec188e21dab4dae6203c14a6c526, type: 3}
-  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
-  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
-  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
-  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
-  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
+  buildingPrefabs: []
   gateWays: []
   floor: {fileID: 0}
   _randomMapGenerator: {fileID: 0}
@@ -1313,6 +1344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6598108822654969258}
+  - component: {fileID: 1983450871464883147}
   m_Layer: 0
   m_Name: blgSpawn
   m_TagString: BuildingSpawn
@@ -1335,6 +1367,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1983450871464883147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880796581043349723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 0
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1 &6132527360781830016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,6 +1470,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8868674502667342849}
+  - component: {fileID: 724610127076181589}
   m_Layer: 0
   m_Name: blgSpawn (5)
   m_TagString: BuildingSpawn
@@ -1440,6 +1493,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &724610127076181589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838204888669263744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 0
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1 &7451112314574153820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +1951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3953312557072263929}
+  - component: {fileID: 111150707737852147}
   m_Layer: 0
   m_Name: blgSpawn (4)
   m_TagString: BuildingSpawn
@@ -1900,6 +1974,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &111150707737852147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8174792307827415448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 0
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1 &9128544124684936456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,6 +2037,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9160784719462459907}
+  - component: {fileID: 7914680356807192911}
   m_Layer: 0
   m_Name: blgSpawn (3)
   m_TagString: BuildingSpawn
@@ -1965,6 +2060,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3398991103269158514}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7914680356807192911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9147533308585055400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ea8c78d562417e91e2805cd64fdba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedAuthoredBuildingLot
+  approvedForRuntimeSpawning: 1
+  canSpawnBuilding: 1
+  buildingCategory: 0
+  width: 8
+  depth: 8
+  overrideBuildingPrefab: {fileID: 0}
+  drawGizmos: 1
+  gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
 --- !u!1001 &341373711344309983
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,6 +6,8 @@ namespace LegendOfZed.LegacyMapGenerator
 {
     public class ZedLegacyRoomTile : MonoBehaviour
     {
+        public static bool SuppressLegacyTileBuildingSpawns = false;
+
         public GameObject[] buildingSpawns;
         public List<GameObject> buildingPrefabs = new List<GameObject>();
         public GameObject[] gateWays;
@@ -13,12 +15,9 @@ namespace LegendOfZed.LegacyMapGenerator
         public ZedLegacyRandomMapGenerator _randomMapGenerator;
         public bool spawningBuildings = false;
 
-        [Header("Building Lot Filler")]
-        [Tooltip("Disabled by default. Tile-local lot filling is not the preferred path anymore; use post-generation city block filling.")]
-        public bool useBuildingLotFiller = false;
-
-        [Tooltip("If the lot filler cannot place anything, the old fixed marker building spawn system is used as fallback.")]
-        public bool fallbackToFixedSpawnsIfLotFillerCannotFill = true;
+        [Header("Legacy Building Spawn")]
+        [Tooltip("Deprecated. Legacy room tiles no longer call removed experimental tile-local lot filler code.")]
+        public bool legacyFixedMarkerBuildingSpawnsOnly = true;
 
         [Header("Park Tile Safety")]
         [Tooltip("When true, this room tile will not spawn random buildings.")]
@@ -63,7 +62,7 @@ namespace LegendOfZed.LegacyMapGenerator
 
         private bool ShouldSuppressBuildingSpawns()
         {
-            if (ZedPostGenerationCityBlockBuildingFiller.SuppressLegacyTileBuildingSpawns)
+            if (SuppressLegacyTileBuildingSpawns)
             {
                 return true;
             }
@@ -115,19 +114,9 @@ namespace LegendOfZed.LegacyMapGenerator
                 return;
             }
 
-            if (useBuildingLotFiller)
-            {
-                ZedBuildingLotFiller existingFiller = GetComponent<ZedBuildingLotFiller>();
-                if (existingFiller != null && existingFiller.Fill(this))
-                {
-                    return;
-                }
-
-                if (!fallbackToFixedSpawnsIfLotFillerCannotFill)
-                {
-                    return;
-                }
-            }
+            // v3.10AC2 cleanup:
+            // Removed dependency on old experimental tile-local lot filler.
+            // Legacy room tiles now either use fixed legacy markers or are suppressed by the authored-lot pipeline.
 
             SpawnBuildingsFromFixedMarkers();
         }
