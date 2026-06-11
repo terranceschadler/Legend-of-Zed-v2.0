@@ -9,46 +9,48 @@ namespace LegendOfZed.MapIntegration.EditorTools
     /// </summary>
     public static class ZedLotMarkerAuthoringMenu
     {
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Corner")]
+        private const string MenuRoot = "Legend Of Zed/Map Authoring/Lots/";
+
+        [MenuItem(MenuRoot + "Set Category/Corner")]
         public static void SetCategoryCorner() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Corner); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Small Shop")]
+        [MenuItem(MenuRoot + "Set Category/Small Shop")]
         public static void SetCategorySmallShop() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.SmallShop); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Apartment")]
+        [MenuItem(MenuRoot + "Set Category/Apartment")]
         public static void SetCategoryApartment() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Apartment); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Office")]
+        [MenuItem(MenuRoot + "Set Category/Office")]
         public static void SetCategoryOffice() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Office); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Generic Block")]
+        [MenuItem(MenuRoot + "Set Category/Generic Block")]
         public static void SetCategoryGenericBlock() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Filler); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Back Lot / Service")]
+        [MenuItem(MenuRoot + "Set Category/Back Lot / Service")]
         public static void SetCategoryBackLot() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Alley); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Set Category/Any (Migration Only)")]
+        [MenuItem(MenuRoot + "Set Category/Any (Migration Only)")]
         public static void SetCategoryAny() { SetSelectedCategory(ZedAuthoredBuildingLotCategory.Any); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Set Facing North")]
+        [MenuItem(MenuRoot + "Facing/Set Facing North")]
         public static void SetFacingNorth() { SetSelectedFacing(Vector3.forward); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Set Facing East")]
+        [MenuItem(MenuRoot + "Facing/Set Facing East")]
         public static void SetFacingEast() { SetSelectedFacing(Vector3.right); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Set Facing South")]
+        [MenuItem(MenuRoot + "Facing/Set Facing South")]
         public static void SetFacingSouth() { SetSelectedFacing(Vector3.back); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Set Facing West")]
+        [MenuItem(MenuRoot + "Facing/Set Facing West")]
         public static void SetFacingWest() { SetSelectedFacing(Vector3.left); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Rotate 90 CW")]
+        [MenuItem(MenuRoot + "Facing/Rotate 90 CW")]
         public static void Rotate90Clockwise() { RotateSelected(90f); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Facing/Rotate 90 CCW")]
+        [MenuItem(MenuRoot + "Facing/Rotate 90 CCW")]
         public static void Rotate90CounterClockwise() { RotateSelected(-90f); }
 
-        [MenuItem("Legend of Zed/Map Authoring/Lots/Validate Open Scene Lot Markers")]
+        [MenuItem(MenuRoot + "Validate Open Scene Lot Markers")]
         public static void ValidateOpenSceneLots()
         {
             ZedAuthoredBuildingLot[] lots = Object.FindObjectsByType<ZedAuthoredBuildingLot>(FindObjectsInactive.Include);

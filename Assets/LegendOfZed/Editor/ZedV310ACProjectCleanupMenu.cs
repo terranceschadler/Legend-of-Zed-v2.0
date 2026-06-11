@@ -15,6 +15,7 @@ namespace LegendOfZed.MapIntegration.EditorTools
     public static class ZedV310ACProjectCleanupMenu
     {
         private const string AutoRunKey = "LegendOfZed.V310AC.ProjectCleanup.AutoRunComplete";
+        private const string MenuRoot = "Legend Of Zed/Cleanup/v3.10AC/";
 
         private static readonly string[] ObsoleteTypeNames =
         {
@@ -106,7 +107,7 @@ namespace LegendOfZed.MapIntegration.EditorTools
             RunCleanup();
         }
 
-        [MenuItem("Legend of Zed/Cleanup/v3.10AC/Run Project Cleanup Now")]
+        [MenuItem(MenuRoot + "Run Project Cleanup Now")]
         public static void RunCleanup()
         {
             int componentsRemoved = RemoveObsoleteOpenSceneComponents();
@@ -118,7 +119,7 @@ namespace LegendOfZed.MapIntegration.EditorTools
             Debug.Log("V3.10AC project cleanup complete. ComponentsRemoved=" + componentsRemoved + ", ScriptsDeleted=" + scriptsDeleted + ".");
         }
 
-        [MenuItem("Legend of Zed/Cleanup/v3.10AC/Reset Cleanup Auto-Run Flag")]
+        [MenuItem(MenuRoot + "Reset Cleanup Auto-Run Flag")]
         public static void ResetAutoRunFlag()
         {
             EditorPrefs.DeleteKey(AutoRunKey);

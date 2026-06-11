@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +7,10 @@ namespace LegendOfZed.Overworld
     [DisallowMultipleComponent]
     public class ZedOverworldRuntimeNavMeshBuilder : MonoBehaviour
     {
+        public static bool HasSuccessfulRuntimeBuild { get; private set; }
+        public static float LastSuccessfulBuildTime { get; private set; }
+        public static int LastSuccessfulBuildFrame { get; private set; }
+
         [Header("Build")]
         public bool BuildOnStart = true;
         public Vector3 BoundsCenter = Vector3.zero;
@@ -23,12 +27,15 @@ namespace LegendOfZed.Overworld
         public bool UseColliderBoundsOnly = true;
 
         [Header("Debug")]
-        public bool LogBuild = true;
+        public bool LogBuild = false;
 
         private NavMeshData _navMeshData;
         private NavMeshDataInstance _navMeshInstance;
 
         private readonly List<NavMeshBuildSource> _sources = new List<NavMeshBuildSource>();
+
+        public bool HasBuiltValidNavMesh => _navMeshData != null && _navMeshInstance.valid;
+        public int LastSourceCount => _sources.Count;
 
         private void Start()
         {
@@ -63,6 +70,9 @@ namespace LegendOfZed.Overworld
             }
 
             _navMeshInstance = NavMesh.AddNavMeshData(_navMeshData);
+            HasSuccessfulRuntimeBuild = true;
+            LastSuccessfulBuildTime = Time.time;
+            LastSuccessfulBuildFrame = Time.frameCount;
 
             if (LogBuild)
             {
@@ -88,7 +98,7 @@ namespace LegendOfZed.Overworld
 
         private void CollectSources()
         {
-            Collider[] colliders = FindObjectsByType<Collider>(FindObjectsInactive.Exclude);
+            Collider[] colliders = FindObjectsByType<Collider>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             for (int i = 0; i < colliders.Length; i++)
             {
                 Collider collider = colliders[i];

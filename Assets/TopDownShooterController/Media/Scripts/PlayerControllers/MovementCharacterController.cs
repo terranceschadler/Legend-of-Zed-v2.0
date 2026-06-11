@@ -6,6 +6,8 @@ namespace TopDownShooter
 {
     public class MovementCharacterController : MonoBehaviour
     {
+        private const float DirectionEpsilon = 0.0001f;
+
         [Header("Player Controller Settings")] [Tooltip("Speed for the player.")]
         public float RunningSpeed = 5f;
 
@@ -181,15 +183,20 @@ namespace TopDownShooter
                 }
 
                 //this activate or deactivate jetPack Object and effect.
-                JetPackObject.SetActive(Jetpack && _flyJetPack && JetPackFuel > 0);
+                if (JetPackObject != null)
+                {
+                    JetPackObject.SetActive(Jetpack && _flyJetPack && JetPackFuel > 0);
+                }
 
                 //slowFall
                 if (HaveSlowFall && _slowFall)
                 {
                     _activeFall = !_activeFall;
-                    SlowFallObject.SetActive(_activeFall);
+                    if (SlowFallObject != null)
+                    {
+                        SlowFallObject.SetActive(_activeFall);
+                    }
                 }
-                
             }
             else
             {
@@ -225,12 +232,20 @@ namespace TopDownShooter
                 }
                 else
                 {
-                    SlowFallObject.SetActive(false);
+                    if (SlowFallObject != null)
+                    {
+                        SlowFallObject.SetActive(false);
+                    }
                     _activeFall = false;
                 }
             }
             //get the input direction for the camera position.
-            _forward = _cameraTransform.TransformDirection(Vector3.forward);
+            if (_cameraTransform == null && Camera.main != null)
+            {
+                _cameraTransform = Camera.main.transform;
+            }
+
+            _forward = _cameraTransform != null ? _cameraTransform.TransformDirection(Vector3.forward) : Vector3.forward;
             _forward.y = 0f;
             _forward = _forward.normalized;
             _right = new Vector3(_forward.z, 0.0f, -_forward.x);
@@ -285,17 +300,17 @@ namespace TopDownShooter
                 _direction = Vector3.zero;
             }
 
-            if (_direction != Vector3.zero)
+            if (HasUsableDirection(_direction))
             {
                 _shooting = true;
-                transform.forward = Vector3.Lerp(transform.forward, _direction, 1f);
+                FaceDirectionSafely(_direction, 1f);
             }
             else
             {
-                if (_move != Vector3.zero && PlayerController.ShooterController.DelayToTurnOn <= 0)
+                if (HasUsableDirection(_move) && PlayerController.ShooterController.DelayToTurnOn <= 0)
                 {
                     _shooting = false;
-                    transform.forward = Vector3.Lerp(transform.forward, _move, 0.5f);
+                    FaceDirectionSafely(_move, 0.5f);
                 }
             }
 
@@ -338,7 +353,10 @@ namespace TopDownShooter
 
             //removing parachute if active;
             _activeFall = false;
-            SlowFallObject.SetActive(_activeFall);
+            if (SlowFallObject != null)
+            {
+                SlowFallObject.SetActive(_activeFall);
+            }
 
             //
             if (_controller.isGrounded)
@@ -391,7 +409,7 @@ namespace TopDownShooter
             SetDashAnimation();
             StartCoroutine(Dashing(DashForce / 10));
 
-            if (_direction != Vector3.zero && _move != Vector3.zero)
+            if (HasUsableDirection(_direction) && HasUsableDirection(_move))
             {
                 _velocity += Vector3.Scale(_move,
                     DashForce * new Vector3((Mathf.Log(1f / (Time.deltaTime * DragForce.x + 1)) / -Time.deltaTime),
@@ -416,7 +434,10 @@ namespace TopDownShooter
             if (_activeFall)
             {
                 _activeFall = false;
-                SlowFallObject.SetActive(false);
+                if (SlowFallObject != null)
+                {
+                    SlowFallObject.SetActive(false);
+                }
             }
 
             JetPackFuel -= Time.deltaTime * FuelConsumeSpeed;
@@ -506,17 +527,56 @@ namespace TopDownShooter
         {
             _hitNormal = hit.normal;
         }
+
+        private static bool HasUsableDirection(Vector3 direction)
+        {
+            direction.y = 0f;
+            return direction.sqrMagnitude > DirectionEpsilon;
+        }
+
+        private void FaceDirectionSafely(Vector3 direction, float lerpAmount)
+        {
+            direction.y = 0f;
+            if (direction.sqrMagnitude <= DirectionEpsilon)
+            {
+                return;
+            }
+
+            Vector3 currentForward = transform.forward;
+            currentForward.y = 0f;
+            if (currentForward.sqrMagnitude <= DirectionEpsilon)
+            {
+                currentForward = direction.normalized;
+            }
+
+            Vector3 targetForward = Vector3.Lerp(currentForward.normalized, direction.normalized, Mathf.Clamp01(lerpAmount));
+            targetForward.y = 0f;
+            if (targetForward.sqrMagnitude <= DirectionEpsilon)
+            {
+                return;
+            }
+
+            transform.forward = targetForward.normalized;
+        }
         //Animation
 
         #region Animator
 
         private void SetRunningAnimation(bool run)
         {
-            PlayerAnimator.SetBool("Running", run);
+            if (PlayerAnimator != null)
+            {
+                PlayerAnimator.SetBool("Running", run);
+            }
         }
 
         private void SetAimAnimation(Vector3 movementDirection)
         {
+            if (PlayerAnimator == null)
+            {
+                return;
+            }
+
             Vector3 aimDirection = transform.InverseTransformDirection(movementDirection);
             PlayerAnimator.SetFloat("Y", aimDirection.z, 0.1f, Time.deltaTime);
             PlayerAnimator.SetFloat("X", aimDirection.x, 0.1f, Time.deltaTime);
@@ -524,16 +584,27 @@ namespace TopDownShooter
 
         private void SetJumpAnimation()
         {
-            PlayerAnimator.SetTrigger("Jump");
+            if (PlayerAnimator != null)
+            {
+                PlayerAnimator.SetTrigger("Jump");
+            }
         }
 
         private void SetDashAnimation()
         {
-            PlayerAnimator.SetTrigger("Dash");
+            if (PlayerAnimator != null)
+            {
+                PlayerAnimator.SetTrigger("Dash");
+            }
         }
 
         private void SetGorundedState()
         {
+            if (PlayerAnimator == null || _controller == null)
+            {
+                return;
+            }
+
             //avoid set the grounded var in animator multiple time
             if (PlayerAnimator.GetBool("Grounded") != _controller.isGrounded)
             {
