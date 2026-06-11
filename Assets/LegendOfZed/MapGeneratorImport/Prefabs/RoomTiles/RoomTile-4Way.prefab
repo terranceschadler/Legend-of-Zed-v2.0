@@ -1,69 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &128309503400638718
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2119600969130305816}
-  - component: {fileID: 5848959040338290705}
-  m_Layer: 0
-  m_Name: BuildZone_NorthWest_Corner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2119600969130305816
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128309503400638718}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  m_LocalPosition: {x: -17.4, y: 0, z: 17.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3404194956113763151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5848959040338290705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128309503400638718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fa2dbf060fe4100a36728978ec3ecae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedBuildableZone
-  width: 15
-  depth: 15
-  edgeInset: 0.25
-  depthAlignment: 2
-  depthOffset: 0
-  buildingYawOffset: 180
-  allowAlleys: 1
-  alleyChance: 0.04
-  alleyWidthMin: 1.25
-  alleyWidthMax: 2.25
-  sidePadding: 0.15
-  buildingPrefabs:
-  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
-  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
-  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
-  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
-  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
-  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
-  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
-  gizmoColor: {r: 0.2, g: 1, b: 0.4, a: 0.85}
 --- !u!1 &1653403797434353677
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,70 +252,6 @@ Transform:
   - {fileID: 4368321267793840478}
   m_Father: {fileID: 2721431765084296540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6509032362818406514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5017218704449033357}
-  - component: {fileID: 3484079882832670160}
-  m_Layer: 0
-  m_Name: BuildZone_SouthEast_Corner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5017218704449033357
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6509032362818406514}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.7, y: 0, z: -17.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3404194956113763151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3484079882832670160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6509032362818406514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fa2dbf060fe4100a36728978ec3ecae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedBuildableZone
-  width: 15
-  depth: 15
-  edgeInset: 0.25
-  depthAlignment: 2
-  depthOffset: 0
-  buildingYawOffset: 180
-  allowAlleys: 1
-  alleyChance: 0.04
-  alleyWidthMin: 1.25
-  alleyWidthMax: 2.25
-  sidePadding: 0.15
-  buildingPrefabs:
-  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
-  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
-  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
-  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
-  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
-  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
-  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
-  gizmoColor: {r: 0.2, g: 1, b: 0.4, a: 0.85}
 --- !u!1 &6561105686228875504
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,134 +291,6 @@ Transform:
   - {fileID: 2340939904369657461}
   m_Father: {fileID: 2721431765084296540}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
---- !u!1 &6784447922466184325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1438393815464979714}
-  - component: {fileID: 482939575802336603}
-  m_Layer: 0
-  m_Name: BuildZone_NorthEast_Corner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1438393815464979714
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6784447922466184325}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  m_LocalPosition: {x: 17.4, y: 0, z: 17.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3404194956113763151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &482939575802336603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6784447922466184325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fa2dbf060fe4100a36728978ec3ecae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedBuildableZone
-  width: 15
-  depth: 15
-  edgeInset: 0.25
-  depthAlignment: 2
-  depthOffset: 0
-  buildingYawOffset: 180
-  allowAlleys: 1
-  alleyChance: 0.04
-  alleyWidthMin: 1.25
-  alleyWidthMax: 2.25
-  sidePadding: 0.15
-  buildingPrefabs:
-  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
-  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
-  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
-  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
-  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
-  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
-  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
-  gizmoColor: {r: 0.2, g: 1, b: 0.4, a: 0.85}
---- !u!1 &7342323664655818107
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6493662765909466676}
-  - component: {fileID: 4178419093254132359}
-  m_Layer: 0
-  m_Name: BuildZone_SouthWest_Corner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6493662765909466676
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7342323664655818107}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.4, y: 0, z: -17.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3404194956113763151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4178419093254132359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7342323664655818107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fa2dbf060fe4100a36728978ec3ecae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedBuildableZone
-  width: 15
-  depth: 15
-  edgeInset: 0.25
-  depthAlignment: 2
-  depthOffset: 0
-  buildingYawOffset: 180
-  allowAlleys: 1
-  alleyChance: 0.04
-  alleyWidthMin: 1.25
-  alleyWidthMax: 2.25
-  sidePadding: 0.15
-  buildingPrefabs:
-  - {fileID: 109168, guid: d27a4271891e123439500dcc33833ee2, type: 3}
-  - {fileID: 131012, guid: 5b34dc431beaa6645bd55fb28982da97, type: 3}
-  - {fileID: 195682, guid: 64b2cf881f1d23e4684184fedab02fbc, type: 3}
-  - {fileID: 192830, guid: 5ed3f8c66bf83bf4eacbb37d9c5fd230, type: 3}
-  - {fileID: 113012, guid: 1d4f4783340a2d44cab856f9affd5e8b, type: 3}
-  - {fileID: 143728, guid: 8b6e0e4d79c303b46901f99cbabd3ef6, type: 3}
-  - {fileID: 115170, guid: c83b837c67e351c439be651248f83a1d, type: 3}
-  gizmoColor: {r: 0.2, g: 1, b: 0.4, a: 0.85}
 --- !u!1 &7434624235194348271
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,7 +2266,6 @@ GameObject:
   - component: {fileID: 7434624236691401902}
   - component: {fileID: 7434624236691401901}
   - component: {fileID: 2587233158644645070}
-  - component: {fileID: 1010736244748878431}
   m_Layer: 0
   m_Name: RoomTile-4Way
   m_TagString: RoomTile
@@ -2546,7 +2289,6 @@ Transform:
   - {fileID: 7434624236758091625}
   - {fileID: 7434624236272720815}
   - {fileID: 7434624236239345129}
-  - {fileID: 3404194956113763151}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7434624236691401901
@@ -2571,8 +2313,7 @@ MonoBehaviour:
   floor: {fileID: 0}
   _randomMapGenerator: {fileID: 0}
   spawningBuildings: 0
-  useBuildingLotFiller: 1
-  fallbackToFixedSpawnsIfLotFillerCannotFill: 0
+  legacyFixedMarkerBuildingSpawnsOnly: 1
   disableBuildingSpawns: 0
   parkTileNamePrefix: ParkTile
   treeSpawnTag: TreeSpawn
@@ -2588,29 +2329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c818716a4ca4a1e8c83b4a918d69771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.LegacyMapGenerator.ZedLegacyRoomTileSpawnRegistryHook
---- !u!114 &1010736244748878431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434624236691401900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e2fe81795d4e738b516b520e24e8ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegendOfZed.MapIntegration.ZedBuildingLotFiller
-  requireExplicitBuildableZones: 1
-  requireFullFootprintInsideZone: 1
-  zoneEdgeInset: 0.25
-  buildingGap: 0.05
-  preferMultipleBuildingsPerZone: 1
-  targetBuildingsPerZone: 2
-  maxPreferredWidthFraction: 0.55
-  trySingleBestFitIfRowEmpty: 1
-  maxBuildingsPerRow: 8
-  logFillResults: 0
-  logRejectedBuildings: 0
 --- !u!1 &7434624236758091624
 GameObject:
   m_ObjectHideFlags: 0
@@ -3083,41 +2801,6 @@ MonoBehaviour:
   overrideBuildingPrefab: {fileID: 0}
   drawGizmos: 1
   gizmoColor: {r: 0.35, g: 1, b: 0.35, a: 0.9}
---- !u!1 &8450638561843883299
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3404194956113763151}
-  m_Layer: 0
-  m_Name: BuildableZones_Prototype
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3404194956113763151
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8450638561843883299}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2119600969130305816}
-  - {fileID: 1438393815464979714}
-  - {fileID: 6493662765909466676}
-  - {fileID: 5017218704449033357}
-  m_Father: {fileID: 7434624236691401902}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9143898177166598210
 GameObject:
   m_ObjectHideFlags: 0

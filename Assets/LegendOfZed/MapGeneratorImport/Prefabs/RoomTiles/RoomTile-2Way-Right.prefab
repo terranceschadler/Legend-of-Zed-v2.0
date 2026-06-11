@@ -984,8 +984,7 @@ MonoBehaviour:
   floor: {fileID: 0}
   _randomMapGenerator: {fileID: 0}
   spawningBuildings: 0
-  useBuildingLotFiller: 0
-  fallbackToFixedSpawnsIfLotFillerCannotFill: 1
+  legacyFixedMarkerBuildingSpawnsOnly: 1
   disableBuildingSpawns: 0
   parkTileNamePrefix: ParkTile
   treeSpawnTag: TreeSpawn
